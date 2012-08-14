@@ -37,8 +37,8 @@ DLSRC = dl_dlopen.xs
 EXE_EXT = .exe
 FULL_AR = /usr/bin/ar
 LD = g++-4
-LDDLFLAGS =  --shared  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -L/usr/local/lib -L../../lib -fstack-protector
-LDFLAGS =  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -fstack-protector -L/usr/local/lib -L../../lib
+LDDLFLAGS =  --shared  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -L/usr/local/lib -fstack-protector
+LDFLAGS =  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -fstack-protector -L/usr/local/lib
 LIBC = /usr/lib/libc.a
 LIB_EXT = .a
 OBJ_EXT = .o
@@ -186,10 +186,16 @@ PERL_ARCHIVE       = $(PERL_INC)/cygperl5_14.dll
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/Hdf5.pm
+TO_INST_PM = Hdf5.pm \
+	example.pl \
+	lib/Hdf5.pm
 
 PM_TO_BLIB = lib/Hdf5.pm \
-	blib/lib/Hdf5.pm
+	blib/lib/Hdf5.pm \
+	Hdf5.pm \
+	$(INST_LIB)/Hdf5.pm \
+	example.pl \
+	$(INST_LIB)/example.pl
 
 
 # --- MakeMaker platform_constants section:
@@ -209,8 +215,8 @@ XSUBPPDIR = /usr/lib/perl5/5.14/ExtUtils
 XSUBPP = $(XSUBPPDIR)$(DFSEP)xsubpp
 XSUBPPRUN = $(PERLRUN) $(XSUBPP)
 XSPROTOARG = 
-XSUBPPDEPS = /usr/lib/perl5/5.14/ExtUtils/typemap $(XSUBPP)
-XSUBPPARGS = -typemap /usr/lib/perl5/5.14/ExtUtils/typemap -typemap ./typemap
+XSUBPPDEPS = /usr/lib/perl5/5.14/ExtUtils/typemap typemap $(XSUBPP)
+XSUBPPARGS = -typemap /usr/lib/perl5/5.14/ExtUtils/typemap -typemap typemap
 XSUBPP_EXTRA_ARGS = 
 
 
@@ -951,7 +957,9 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/Hdf5.pm blib/lib/Hdf5.pm 
+	  lib/Hdf5.pm blib/lib/Hdf5.pm \
+	  Hdf5.pm $(INST_LIB)/Hdf5.pm \
+	  example.pl $(INST_LIB)/example.pl 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

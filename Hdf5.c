@@ -184,6 +184,30 @@ XS(XS_Hdf5_constant)
 /* INCLUDE: Returning to 'Hdf5.xs' from 'const-xs.inc' */
 
 
+XS(XS_Hdf5_H5Fopen); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Fopen)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 3)
+       croak_xs_usage(cv,  "name, flags, access_id");
+    {
+	const char *	name = (const char *)SvPV_nolen(ST(0));
+	unsigned int	flags = (unsigned int)SvUV(ST(1));
+	hid_t	access_id = (hid_t)SvUV(ST(2));
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Fopen(name, flags, access_id);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
 XS(XS_Hdf5_H5Fcreate); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Hdf5_H5Fcreate)
 {
@@ -233,6 +257,7 @@ XS(boot_Hdf5)
     XS_VERSION_BOOTCHECK ;
 
         newXS("Hdf5::constant", XS_Hdf5_constant, file);
+        newXS("Hdf5::H5Fopen", XS_Hdf5_H5Fopen, file);
         newXS("Hdf5::H5Fcreate", XS_Hdf5_H5Fcreate, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
