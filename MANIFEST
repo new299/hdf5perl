@@ -1,0 +1,10 @@
+Changes
+Hdf5.xs
+Makefile.PL
+MANIFEST
+ppport.h
+README
+t/Hdf5.t
+fallback/const-c.inc
+fallback/const-xs.inc
+lib/Hdf5.pm

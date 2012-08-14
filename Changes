@@ -1,0 +1,6 @@
+Revision history for Perl extension Hdf5.
+
+0.01  Tue Aug 14 05:25:07 2012
+	- original version; created by h2xs 1.23 with options
+		/home/user/hdf5/include/hdf5.h -lhdf5 -O -lz -lsz -L~/hdf5/include -L~/szip-2.1/src/.libs
+
