@@ -232,6 +232,424 @@ XS(XS_Hdf5_H5Fcreate)
     XSRETURN(1);
 }
 
+
+XS(XS_Hdf5_H5Dopen2); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Dopen2)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 3)
+       croak_xs_usage(cv,  "loc_id, name, dapl_id");
+    {
+	hid_t	loc_id = (hid_t)SvUV(ST(0));
+	const char *	name = (const char *)SvPV_nolen(ST(1));
+	hid_t	dapl_id = (hid_t)SvUV(ST(2));
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Dopen2(loc_id, name, dapl_id);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Dget_type); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Dget_type)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "dataset");
+    {
+	hid_t	dataset = (hid_t)SvUV(ST(0));
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Dget_type(dataset);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Tget_class); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Tget_class)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "dtype_id");
+    {
+	hid_t	dtype_id = (hid_t)SvUV(ST(0));
+	H5T_class_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tget_class(dtype_id);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Tget_order); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Tget_order)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "dtype_id");
+    {
+	hid_t	dtype_id = (hid_t)SvUV(ST(0));
+	H5T_order_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tget_order(dtype_id);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Tget_size); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Tget_size)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "dtype_id");
+    {
+	hid_t	dtype_id = (hid_t)SvUV(ST(0));
+	size_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tget_size(dtype_id);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Dget_space); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Dget_space)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "dataset_id");
+    {
+	hid_t	dataset_id = (hid_t)SvUV(ST(0));
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Dget_space(dataset_id);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Sget_simple_extent_ndims); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Sget_simple_extent_ndims)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "space_id");
+    {
+	hid_t	space_id = (hid_t)SvUV(ST(0));
+	int	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Sget_simple_extent_ndims(space_id);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Sget_simple_extent_dims); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Sget_simple_extent_dims)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 3)
+       croak_xs_usage(cv,  "space_id, dims, maxdims");
+    {
+	hid_t	space_id = (hid_t)SvUV(ST(0));
+	hsize_t *	dims;
+	hsize_t *	maxdims;
+	int	RETVAL;
+	dXSTARG;
+
+	if (SvROK(ST(1))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(1)));
+	    dims = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Sget_simple_extent_dims",
+			"dims");
+
+	if (SvROK(ST(2))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(2)));
+	    maxdims = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Sget_simple_extent_dims",
+			"maxdims");
+
+	RETVAL = H5Sget_simple_extent_dims(space_id, dims, maxdims);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Sselect_hyperslab); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Sselect_hyperslab)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 6)
+       croak_xs_usage(cv,  "space_id, op, start, stride, count, block");
+    {
+	hid_t	space_id = (hid_t)SvUV(ST(0));
+	H5S_seloper_t	op = (int)SvIV(ST(1));
+	hsize_t *	start;
+	hsize_t *	stride;
+	hsize_t *	count;
+	hsize_t *	block;
+	herr_t	RETVAL;
+	dXSTARG;
+
+	if (SvROK(ST(2))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(2)));
+	    start = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Sselect_hyperslab",
+			"start");
+
+	if (SvROK(ST(3))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(3)));
+	    stride = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Sselect_hyperslab",
+			"stride");
+
+	if (SvROK(ST(4))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(4)));
+	    count = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Sselect_hyperslab",
+			"count");
+
+	if (SvROK(ST(5))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(5)));
+	    block = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Sselect_hyperslab",
+			"block");
+
+	RETVAL = H5Sselect_hyperslab(space_id, op, start, stride, count, block);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Screate_simple); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Screate_simple)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 3)
+       croak_xs_usage(cv,  "rank, current_dims, maximum_dims");
+    {
+	int	rank = (int)SvIV(ST(0));
+	hsize_t *	current_dims;
+	hsize_t *	maximum_dims;
+	hid_t	RETVAL;
+	dXSTARG;
+
+	if (SvROK(ST(1))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(1)));
+	    current_dims = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Screate_simple",
+			"current_dims");
+
+	if (SvROK(ST(2))) {
+	    IV tmp = SvIV((SV*)SvRV(ST(2)));
+	    maximum_dims = INT2PTR(hsize_t *,tmp);
+	}
+	else
+	    Perl_croak(aTHX_ "%s: %s is not a reference",
+			"Hdf5::H5Screate_simple",
+			"maximum_dims");
+
+	RETVAL = H5Screate_simple(rank, current_dims, maximum_dims);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Dread); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Dread)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 6)
+       croak_xs_usage(cv,  "dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf");
+    {
+	hid_t	dataset_id = (hid_t)SvUV(ST(0));
+	hid_t	mem_type_id = (hid_t)SvUV(ST(1));
+	hid_t	mem_space_id = (hid_t)SvUV(ST(2));
+	hid_t	file_space_id = (hid_t)SvUV(ST(3));
+	hid_t	xfer_plist_id = (hid_t)SvUV(ST(4));
+	void *	buf = INT2PTR(void *,SvIV(ST(5)));
+	herr_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Dread(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Tclose); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Tclose)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "datatype");
+    {
+	hid_t	datatype = (hid_t)SvUV(ST(0));
+	herr_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tclose(datatype);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Dclose); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Dclose)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "dataset");
+    {
+	hid_t	dataset = (hid_t)SvUV(ST(0));
+	herr_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Dclose(dataset);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Sclose); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Sclose)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "dataspace");
+    {
+	hid_t	dataspace = (hid_t)SvUV(ST(0));
+	herr_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Sclose(dataspace);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Fclose); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Fclose)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "file");
+    {
+	hid_t	file = (hid_t)SvUV(ST(0));
+	herr_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Fclose(file);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
 #ifdef __cplusplus
 extern "C"
 #endif
@@ -259,6 +677,21 @@ XS(boot_Hdf5)
         newXS("Hdf5::constant", XS_Hdf5_constant, file);
         newXS("Hdf5::H5Fopen", XS_Hdf5_H5Fopen, file);
         newXS("Hdf5::H5Fcreate", XS_Hdf5_H5Fcreate, file);
+        newXS("Hdf5::H5Dopen2", XS_Hdf5_H5Dopen2, file);
+        newXS("Hdf5::H5Dget_type", XS_Hdf5_H5Dget_type, file);
+        newXS("Hdf5::H5Tget_class", XS_Hdf5_H5Tget_class, file);
+        newXS("Hdf5::H5Tget_order", XS_Hdf5_H5Tget_order, file);
+        newXS("Hdf5::H5Tget_size", XS_Hdf5_H5Tget_size, file);
+        newXS("Hdf5::H5Dget_space", XS_Hdf5_H5Dget_space, file);
+        newXS("Hdf5::H5Sget_simple_extent_ndims", XS_Hdf5_H5Sget_simple_extent_ndims, file);
+        newXS("Hdf5::H5Sget_simple_extent_dims", XS_Hdf5_H5Sget_simple_extent_dims, file);
+        newXS("Hdf5::H5Sselect_hyperslab", XS_Hdf5_H5Sselect_hyperslab, file);
+        newXS("Hdf5::H5Screate_simple", XS_Hdf5_H5Screate_simple, file);
+        newXS("Hdf5::H5Dread", XS_Hdf5_H5Dread, file);
+        newXS("Hdf5::H5Tclose", XS_Hdf5_H5Tclose, file);
+        newXS("Hdf5::H5Dclose", XS_Hdf5_H5Dclose, file);
+        newXS("Hdf5::H5Sclose", XS_Hdf5_H5Sclose, file);
+        newXS("Hdf5::H5Fclose", XS_Hdf5_H5Fclose, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

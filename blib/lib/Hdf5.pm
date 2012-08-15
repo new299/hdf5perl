@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 
 require Exporter;
-use AutoLoader;
+#use AutoLoader;
 
 our @ISA = qw(Exporter);
 
@@ -18,13 +18,11 @@ our @ISA = qw(Exporter);
 # If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
 # will save memory.
 our %EXPORT_TAGS = ( 'all' => [ qw(
-	
 ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw(
-	
 );
 
 our $VERSION = '0.01';
@@ -54,6 +52,14 @@ sub AUTOLOAD {
 
 require XSLoader;
 XSLoader::load('Hdf5', $VERSION);
+
+$Hdf5::H5F_ACC_RDONLY = 0;
+$Hdf5::H5F_ACC_RDWR   = 1;
+$Hdf5::H5F_ACC_TRUNC  = 2;
+$Hdf5::H5F_ACC_EXCL   = 4;
+$Hdf5::H5F_ACC_DEBUG  = 8;
+$Hdf5::H5F_ACC_CREAT  = 16;
+$Hdf5::H5P_DEFAULT    = 0;
 
 # Preloaded methods go here.
 

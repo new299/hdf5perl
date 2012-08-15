@@ -1,1 +1,7 @@
 hid_t	T_UV
+herr_t	T_INT
+hsize_t	T_U_LONG
+hsize_t * T_PTRREF
+H5S_seloper_t	T_INT
+H5T_class_t T_INT
+H5T_order_t T_INT
