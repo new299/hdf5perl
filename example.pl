@@ -30,9 +30,10 @@ Hdf5::H5Fclose($file);
 
 
 #Read the created file
-#$file = Hdf5::H5Fopen("./abit.fast5",$Hdf5::H5F_ACC_RDONLY,$Hdf5::H5P_DEFAULT);
-#$dataset = Hdf5::H5Dopen2($file,"IntArray",$Hdf5::H5P_DEFAULT);
-#$datatype = H5Dget_type($dataset);
-#$t_class = H5Tget_class($datatype);
-#$size = H5Tget_size($datatype);
+$file     = Hdf5::H5Fopen("./test.hdf5",$Hdf5::H5F_ACC_RDONLY,$Hdf5::H5P_DEFAULT);
+$dataset  = Hdf5::H5Dopen2($file,"IntArray",$Hdf5::H5P_DEFAULT);
+$datatype = Hdf5::H5Dget_type($dataset);
+$t_class  = Hdf5::H5Tget_class($datatype);
+$size     = Hdf5::H5Tget_size($datatype);
 
+print $size;
