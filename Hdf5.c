@@ -508,6 +508,51 @@ XS(XS_Hdf5_H5Screate_simple)
 }
 
 
+XS(XS_Hdf5_H5Screate_simpleNULL); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Screate_simpleNULL)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 2)
+       croak_xs_usage(cv,  "rank, current_dims");
+    {
+	int	rank = (int)SvIV(ST(0));
+	AV *	current_dims;
+	hid_t	RETVAL;
+	dXSTARG;
+
+	STMT_START {
+		SV* const xsub_tmp_sv = ST(1);
+		SvGETMAGIC(xsub_tmp_sv);
+		if (SvROK(xsub_tmp_sv) && SvTYPE(SvRV(xsub_tmp_sv)) == SVt_PVAV){
+		    current_dims = (AV*)SvRV(xsub_tmp_sv);
+		}
+		else{
+		    Perl_croak(aTHX_ "%s: %s is not an ARRAY reference",
+				"Hdf5::H5Screate_simpleNULL",
+				"current_dims");
+		}
+	} STMT_END;
+#line 98 "Hdf5.xs"
+	int i=0;
+	hsize_t d[100];
+	for(i=0;i<rank;i++) {
+		SV** e = av_fetch(current_dims,i,0);
+		d[i] = SvNV(*e);
+	}
+	printf("current_dims[0]: %d",d[0]);
+	printf("current_dims[1]: %d",d[1]);
+	RETVAL = H5Screate_simple(rank,d,NULL);
+#line 550 "Hdf5.c"
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
 XS(XS_Hdf5_H5Dread); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Hdf5_H5Dread)
 {
@@ -524,9 +569,22 @@ XS(XS_Hdf5_H5Dread)
 	hid_t	mem_space_id = (hid_t)SvUV(ST(2));
 	hid_t	file_space_id = (hid_t)SvUV(ST(3));
 	hid_t	xfer_plist_id = (hid_t)SvUV(ST(4));
-	void *	buf = INT2PTR(void *,SvIV(ST(5)));
+	void *	buf;
 	herr_t	RETVAL;
 	dXSTARG;
+
+	STMT_START {
+		SV* const xsub_tmp_sv = ST(5);
+		SvGETMAGIC(xsub_tmp_sv);
+		if (SvROK(xsub_tmp_sv) && SvTYPE(SvRV(xsub_tmp_sv)) == SVt_PVAV){
+		    buf = (AV*)SvRV(xsub_tmp_sv);
+		}
+		else{
+		    Perl_croak(aTHX_ "%s: %s is not an ARRAY reference",
+				"Hdf5::H5Dread",
+				"buf");
+		}
+	} STMT_END;
 
 	RETVAL = H5Dread(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
 	XSprePUSH; PUSHi((IV)RETVAL);
@@ -712,11 +770,33 @@ XS(XS_Hdf5_H5Dwrite)
 	hid_t	mem_space_id = (hid_t)SvUV(ST(2));
 	hid_t	file_space_id = (hid_t)SvUV(ST(3));
 	hid_t	xfer_plist_id = (hid_t)SvUV(ST(4));
-	void *	buf = INT2PTR(void *,SvIV(ST(5)));
+	AV *	buf;
 	herr_t	RETVAL;
 	dXSTARG;
 
-	RETVAL = H5Dwrite(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
+	STMT_START {
+		SV* const xsub_tmp_sv = ST(5);
+		SvGETMAGIC(xsub_tmp_sv);
+		if (SvROK(xsub_tmp_sv) && SvTYPE(SvRV(xsub_tmp_sv)) == SVt_PVAV){
+		    buf = (AV*)SvRV(xsub_tmp_sv);
+		}
+		else{
+		    Perl_croak(aTHX_ "%s: %s is not an ARRAY reference",
+				"Hdf5::H5Dwrite",
+				"buf");
+		}
+	} STMT_END;
+#line 163 "Hdf5.xs"
+	int i=0;
+	unsigned long buffer[100];
+	for(i=0;i<av_len(buf);i++) {
+		SV** e = av_fetch(buf,i,0);
+		buffer[i] = SvNV(*e);
+	}
+	printf("buffer[0]: %d",buffer[0]);
+	printf("buffer[1]: %d",buffer[1]);
+	RETVAL = H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buffer);
+#line 800 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -761,6 +841,7 @@ XS(boot_Hdf5)
         newXS("Hdf5::H5Sget_simple_extent_dims", XS_Hdf5_H5Sget_simple_extent_dims, file);
         newXS("Hdf5::H5Sselect_hyperslab", XS_Hdf5_H5Sselect_hyperslab, file);
         newXS("Hdf5::H5Screate_simple", XS_Hdf5_H5Screate_simple, file);
+        newXS("Hdf5::H5Screate_simpleNULL", XS_Hdf5_H5Screate_simpleNULL, file);
         newXS("Hdf5::H5Dread", XS_Hdf5_H5Dread, file);
         newXS("Hdf5::H5Tclose", XS_Hdf5_H5Tclose, file);
         newXS("Hdf5::H5Dclose", XS_Hdf5_H5Dclose, file);

@@ -90,6 +90,22 @@ H5Screate_simple(rank,current_dims,maximum_dims)
 	hsize_t * current_dims
 	hsize_t * maximum_dims
 	
+hid_t
+H5Screate_simpleNULL(rank,current_dims)
+	int	rank
+	AV * current_dims
+CODE:
+	int i=0;
+	hsize_t d[100];
+	for(i=0;i<rank;i++) {
+		SV** e = av_fetch(current_dims,i,0);
+		d[i] = SvNV(*e);
+	}
+	printf("current_dims[0]: %d",d[0]);
+	printf("current_dims[1]: %d",d[1]);
+	RETVAL = H5Screate_simple(rank,d,NULL);
+OUTPUT:
+	RETVAL
 
 herr_t
 H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
@@ -125,7 +141,6 @@ H5Tset_order(type_id,order)
 	hid_t	type_id
 	H5T_order_t	order
 
-
 hid_t
 H5Dcreate2(loc_id,name,dtype_id,space_id,lcpl_id,dcpl_id,dapl_id)
 	hid_t	loc_id
@@ -143,4 +158,16 @@ H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
 	hid_t	mem_space_id
 	hid_t	file_space_id
 	hid_t	xfer_plist_id
-	void *	buf
+	AV * buf
+CODE:
+	int i=0;
+	unsigned long buffer[100];
+	for(i=0;i<av_len(buf);i++) {
+		SV** e = av_fetch(buf,i,0);
+		buffer[i] = SvNV(*e);
+	}
+	printf("buffer[0]: %d",buffer[0]);
+	printf("buffer[1]: %d",buffer[1]);
+	RETVAL = H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buffer);
+OUTPUT:
+	RETVAL
