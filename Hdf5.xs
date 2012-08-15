@@ -107,14 +107,6 @@ CODE:
 OUTPUT:
 	RETVAL
 
-herr_t
-H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
-	hid_t dataset_id
-	hid_t mem_type_id
-	hid_t mem_space_id
-	hid_t file_space_id
-	hid_t xfer_plist_id
-	void *buf
 
 herr_t
 H5Tclose(datatype)
@@ -171,3 +163,22 @@ CODE:
 	RETVAL = H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buffer);
 OUTPUT:
 	RETVAL
+
+herr_t 
+H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
+	hid_t dataset_id
+	hid_t mem_type_id
+	hid_t mem_space_id
+	hid_t file_space_id
+	hid_t xfer_plist_id
+	AV * buf
+CODE:
+	int data[100];
+	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
+	int i=0;
+	for(i=0;i<30;i++) { // need to figure out how to set the size here
+		av_store(buf,i,newSVnv(data[i]));
+	}
+OUTPUT:
+	RETVAL
+	
