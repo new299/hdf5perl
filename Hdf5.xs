@@ -12,6 +12,20 @@ MODULE = Hdf5		PACKAGE = Hdf5
 
 INCLUDE: const-xs.inc
 
+hid_t
+get_H5T_STD_I32LE()
+CODE:
+	RETVAL = H5T_STD_I32LE_g;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_NATIVE_INT()
+CODE:
+	RETVAL = H5T_NATIVE_INT_g;
+OUTPUT:
+	RETVAL
+
 hid_t 
 H5Fopen(name,flags,access_id)
 	const char *name
@@ -110,6 +124,7 @@ herr_t
 H5Tset_order(type_id,order)
 	hid_t	type_id
 	H5T_order_t	order
+
 
 hid_t
 H5Dcreate2(loc_id,name,dtype_id,space_id,lcpl_id,dcpl_id,dapl_id)

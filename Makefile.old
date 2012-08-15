@@ -186,14 +186,11 @@ PERL_ARCHIVE       = $(PERL_INC)/cygperl5_14.dll
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = Hdf5.pm \
-	example.pl \
+TO_INST_PM = example.pl \
 	lib/Hdf5.pm
 
 PM_TO_BLIB = lib/Hdf5.pm \
 	blib/lib/Hdf5.pm \
-	Hdf5.pm \
-	$(INST_LIB)/Hdf5.pm \
 	example.pl \
 	$(INST_LIB)/example.pl
 
@@ -958,7 +955,6 @@ ppd :
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  lib/Hdf5.pm blib/lib/Hdf5.pm \
-	  Hdf5.pm $(INST_LIB)/Hdf5.pm \
 	  example.pl $(INST_LIB)/example.pl 
 	$(NOECHO) $(TOUCH) pm_to_blib
 

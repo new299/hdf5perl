@@ -184,6 +184,50 @@ XS(XS_Hdf5_constant)
 /* INCLUDE: Returning to 'Hdf5.xs' from 'const-xs.inc' */
 
 
+XS(XS_Hdf5_get_H5T_STD_I32LE); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_get_H5T_STD_I32LE)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 0)
+       croak_xs_usage(cv,  "");
+    {
+	hid_t	RETVAL;
+	dXSTARG;
+#line 18 "Hdf5.xs"
+	RETVAL = H5T_STD_I32LE_g;
+#line 203 "Hdf5.c"
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_get_H5T_NATIVE_INT); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_get_H5T_NATIVE_INT)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 0)
+       croak_xs_usage(cv,  "");
+    {
+	hid_t	RETVAL;
+	dXSTARG;
+#line 25 "Hdf5.xs"
+	RETVAL = H5T_NATIVE_INT_g;
+#line 225 "Hdf5.c"
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
 XS(XS_Hdf5_H5Fopen); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Hdf5_H5Fopen)
 {
@@ -703,6 +747,8 @@ XS(boot_Hdf5)
     XS_VERSION_BOOTCHECK ;
 
         newXS("Hdf5::constant", XS_Hdf5_constant, file);
+        newXS("Hdf5::get_H5T_STD_I32LE", XS_Hdf5_get_H5T_STD_I32LE, file);
+        newXS("Hdf5::get_H5T_NATIVE_INT", XS_Hdf5_get_H5T_NATIVE_INT, file);
         newXS("Hdf5::H5Fopen", XS_Hdf5_H5Fopen, file);
         newXS("Hdf5::H5Fcreate", XS_Hdf5_H5Fcreate, file);
         newXS("Hdf5::H5Dopen2", XS_Hdf5_H5Dopen2, file);

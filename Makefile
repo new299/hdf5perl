@@ -522,11 +522,17 @@ manifypods : pure_all  \
 
 # --- MakeMaker subdirs section:
 
-# none
+# The default clean, realclean and test targets in this Makefile
+# have automatically been given entries for each subdir.
+
+
+subdirs ::
+	$(NOECHO) cd tttt && $(MAKE) $(USEMAKEFILE) $(FIRST_MAKEFILE) all $(PASTHRU)
+
 
 # --- MakeMaker clean_subdirs section:
 clean_subdirs :
-	$(NOECHO) $(NOOP)
+	$(ABSPERLRUN)  -e 'chdir '\''tttt'\'';  system '\''$(MAKE) clean'\'' if -f '\''$(FIRST_MAKEFILE)'\'';' --
 
 
 # --- MakeMaker clean section:
@@ -549,8 +555,8 @@ clean :: clean_subdirs
 	  core.*perl.*.? $(MAKE_APERL_FILE) \
 	  $(BASEEXT).def perl \
 	  core.[0-9][0-9][0-9] mon.out \
-	  lib$(BASEEXT).def perlmain.c \
-	  perl.exe so_locations \
+	  lib$(BASEEXT).def perl.exe \
+	  perlmain.c so_locations \
 	  $(BASEEXT).exp 
 	- $(RM_RF) \
 	  blib 
@@ -559,7 +565,8 @@ clean :: clean_subdirs
 
 # --- MakeMaker realclean_subdirs section:
 realclean_subdirs :
-	$(NOECHO) $(NOOP)
+	- $(ABSPERLRUN)  -e 'chdir '\''tttt'\'';  system '\''$(MAKE) $(USEMAKEFILE) $(MAKEFILE_OLD) realclean'\'' if -f '\''$(MAKEFILE_OLD)'\'';' --
+	- $(ABSPERLRUN)  -e 'chdir '\''tttt'\'';  system '\''$(MAKE) $(USEMAKEFILE) $(FIRST_MAKEFILE) realclean'\'' if -f '\''$(FIRST_MAKEFILE)'\'';' --
 
 
 # --- MakeMaker realclean section:
@@ -900,7 +907,7 @@ $(MAP_TARGET) :: static $(MAKE_APERL_FILE)
 $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 	$(NOECHO) $(ECHO) Writing \"$(MAKE_APERL_FILE)\" for this $(MAP_TARGET)
 	$(NOECHO) $(PERLRUNINST) \
-		Makefile.PL DIR= \
+		Makefile.PL DIR=tttt \
 		MAKEFILE=$(MAKE_APERL_FILE) LINKTYPE=static \
 		MAKEAPERL=1 NORECURS=1 CCCDLFLAGS=
 
@@ -919,6 +926,9 @@ test :: $(TEST_TYPE) subdirs-test
 
 subdirs-test ::
 	$(NOECHO) $(NOOP)
+
+subdirs-test ::
+	$(NOECHO) cd tttt && $(MAKE) test $(PASTHRU)
 
 
 test_dynamic :: pure_all
@@ -961,6 +971,221 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 
 # --- MakeMaker selfdocument section:
 
+# Full list of MakeMaker attribute values:
+# ABSPERL => q[$(PERL)]
+# ABSPERLRUN => q[$(ABSPERL)]
+# ABSPERLRUNINST => q[$(ABSPERLRUN) "-I$(INST_ARCHLIB)" "-I$(INST_LIB)"]
+# ABSTRACT => q[Perl extension for blah blah blah]
+# ABSTRACT_FROM => q[lib/Hdf5.pm]
+# AR => q[ar]
+# ARGS => { NAME=>q[Hdf5], AUTHOR=>[q[U-user-PC\user <user@x-ray.at>]], LIBS=>[q[-lhdf5 -lz -lsz -L~/hdf5/include -L~/szip-2.1/src/.libs]], INC=>q[-I.], DEFINE=>q[], ABSTRACT_FROM=>q[lib/Hdf5.pm], VERSION_FROM=>q[lib/Hdf5.pm], PREREQ_PM=>{  } }
+# AR_STATIC_ARGS => q[cr]
+# AUTHOR => [q[U-user-PC\user <user@x-ray.at>]]
+# BASEEXT => q[Hdf5]
+# BOOTDEP => q[]
+# BSLOADLIBS => q[]
+# BUILD_REQUIRES => {  }
+# C => [q[Hdf5.c]]
+# CC => q[gcc-4]
+# CCCDLFLAGS => q[ ]
+# CCDLFLAGS => q[ ]
+# CCFLAGS => q[-DPERL_USE_SAFE_PUTENV -U__STRICT_ANSI__ -g -fno-strict-aliasing -pipe -fstack-protector -DUSEIMPORTLIB]
+# CFLAGS => q[ CCFLAGS = -DPERL_USE_SAFE_PUTENV -U__STRICT_ANSI__ -g -fno-strict-aliasing -pipe -fstack-protector -DUSEIMPORTLIB OPTIMIZE = -O3 PERLTYPE =  ]
+# CHILDREN => { PACK002=>PACK002=HASH(...) }
+# CHMOD => q[chmod]
+# CI => q[ci -u]
+# COMPRESS => q[gzip --best]
+# CONFIG => [q[ar], q[cc], q[cccdlflags], q[ccdlflags], q[dlext], q[dlsrc], q[exe_ext], q[full_ar], q[ld], q[lddlflags], q[ldflags], q[libc], q[lib_ext], q[obj_ext], q[osname], q[osvers], q[ranlib], q[sitelibexp], q[sitearchexp], q[so], q[vendorarchexp], q[vendorlibexp]]
+# CONST_CCCMD => q[CCCMD = $(CC) -c $(PASTHRU_INC) $(INC) \ 	$(CCFLAGS) $(OPTIMIZE) \ 	$(PERLTYPE) $(MPOLLUTE) $(DEFINE_VERSION) \ 	$(XS_DEFINE_VERSION)]
+# CP => q[cp]
+# DEFINE => q[]
+# DEFINE_VERSION => q[-D$(VERSION_MACRO)=\"$(VERSION)\"]
+# DESTDIR => q[]
+# DESTINSTALLARCHLIB => q[$(DESTDIR)$(INSTALLARCHLIB)]
+# DESTINSTALLBIN => q[$(DESTDIR)$(INSTALLBIN)]
+# DESTINSTALLMAN1DIR => q[$(DESTDIR)$(INSTALLMAN1DIR)]
+# DESTINSTALLMAN3DIR => q[$(DESTDIR)$(INSTALLMAN3DIR)]
+# DESTINSTALLPRIVLIB => q[$(DESTDIR)$(INSTALLPRIVLIB)]
+# DESTINSTALLSCRIPT => q[$(DESTDIR)$(INSTALLSCRIPT)]
+# DESTINSTALLSITEARCH => q[$(DESTDIR)$(INSTALLSITEARCH)]
+# DESTINSTALLSITEBIN => q[$(DESTDIR)$(INSTALLSITEBIN)]
+# DESTINSTALLSITELIB => q[$(DESTDIR)$(INSTALLSITELIB)]
+# DESTINSTALLSITEMAN1DIR => q[$(DESTDIR)$(INSTALLSITEMAN1DIR)]
+# DESTINSTALLSITEMAN3DIR => q[$(DESTDIR)$(INSTALLSITEMAN3DIR)]
+# DESTINSTALLSITESCRIPT => q[$(DESTDIR)$(INSTALLSITESCRIPT)]
+# DESTINSTALLVENDORARCH => q[$(DESTDIR)$(INSTALLVENDORARCH)]
+# DESTINSTALLVENDORBIN => q[$(DESTDIR)$(INSTALLVENDORBIN)]
+# DESTINSTALLVENDORLIB => q[$(DESTDIR)$(INSTALLVENDORLIB)]
+# DESTINSTALLVENDORMAN1DIR => q[$(DESTDIR)$(INSTALLVENDORMAN1DIR)]
+# DESTINSTALLVENDORMAN3DIR => q[$(DESTDIR)$(INSTALLVENDORMAN3DIR)]
+# DESTINSTALLVENDORSCRIPT => q[$(DESTDIR)$(INSTALLVENDORSCRIPT)]
+# DEV_NULL => q[> /dev/null 2>&1]
+# DFSEP => q[$(DIRFILESEP)]
+# DIR => [q[tttt]]
+# DIRFILESEP => q[/]
+# DISTNAME => q[Hdf5]
+# DISTVNAME => q[Hdf5-0.01]
+# DIST_CP => q[best]
+# DIST_DEFAULT => q[tardist]
+# DLBASE => q[$(BASEEXT)]
+# DLEXT => q[dll]
+# DLSRC => q[dl_dlopen.xs]
+# DOC_INSTALL => q[$(ABSPERLRUN) -MExtUtils::Command::MM -e 'perllocal_install' --]
+# ECHO => q[echo]
+# ECHO_N => q[echo -n]
+# EQUALIZE_TIMESTAMP => q[$(ABSPERLRUN) -MExtUtils::Command -e 'eqtime' --]
+# EXE_EXT => q[.exe]
+# EXPORT_LIST => q[]
+# EXTRALIBS => q[-lhdf5 -lz -lsz]
+# FALSE => q[false]
+# FIRST_MAKEFILE => q[Makefile]
+# FIXIN => q[$(ABSPERLRUN) -MExtUtils::MY -e 'MY->fixin(shift)' --]
+# FULLEXT => q[Hdf5]
+# FULLPERL => q[/usr/bin/perl.exe]
+# FULLPERLRUN => q[$(FULLPERL)]
+# FULLPERLRUNINST => q[$(FULLPERLRUN) "-I$(INST_ARCHLIB)" "-I$(INST_LIB)"]
+# FULL_AR => q[/usr/bin/ar]
+# H => [q[ppport.h]]
+# HAS_LINK_CODE => q[1]
+# INC => q[-I.]
+# INSTALLARCHLIB => q[/usr/lib/perl5/5.14/i686-cygwin-threads-64int]
+# INSTALLBIN => q[/usr/bin]
+# INSTALLDIRS => q[site]
+# INSTALLMAN1DIR => q[/usr/share/man/man1]
+# INSTALLMAN3DIR => q[/usr/share/man/man3]
+# INSTALLPRIVLIB => q[/usr/lib/perl5/5.14]
+# INSTALLSCRIPT => q[/usr/bin]
+# INSTALLSITEARCH => q[/usr/lib/perl5/site_perl/5.14/i686-cygwin-threads-64int]
+# INSTALLSITEBIN => q[/usr/local/bin]
+# INSTALLSITELIB => q[/usr/lib/perl5/site_perl/5.14]
+# INSTALLSITEMAN1DIR => q[/usr/share/man/man1]
+# INSTALLSITEMAN3DIR => q[/usr/share/man/man3]
+# INSTALLSITESCRIPT => q[/usr/local/bin]
+# INSTALLVENDORARCH => q[/usr/lib/perl5/vendor_perl/5.14/i686-cygwin-threads-64int]
+# INSTALLVENDORBIN => q[/usr/bin]
+# INSTALLVENDORLIB => q[/usr/lib/perl5/vendor_perl/5.14]
+# INSTALLVENDORMAN1DIR => q[/usr/share/man/man1]
+# INSTALLVENDORMAN3DIR => q[/usr/share/man/man3]
+# INSTALLVENDORSCRIPT => q[/usr/bin]
+# INST_ARCHAUTODIR => q[$(INST_ARCHLIB)/auto/$(FULLEXT)]
+# INST_ARCHLIB => q[blib/arch]
+# INST_ARCHLIBDIR => q[$(INST_ARCHLIB)]
+# INST_AUTODIR => q[$(INST_LIB)/auto/$(FULLEXT)]
+# INST_BIN => q[blib/bin]
+# INST_BOOT => q[$(INST_ARCHAUTODIR)/$(BASEEXT).bs]
+# INST_DYNAMIC => q[$(INST_ARCHAUTODIR)/$(DLBASE).$(DLEXT)]
+# INST_LIB => q[blib/lib]
+# INST_LIBDIR => q[$(INST_LIB)]
+# INST_MAN1DIR => q[blib/man1]
+# INST_MAN3DIR => q[blib/man3]
+# INST_SCRIPT => q[blib/script]
+# INST_STATIC => q[$(INST_ARCHAUTODIR)/$(BASEEXT)$(LIB_EXT)]
+# LD => q[g++-4]
+# LDDLFLAGS => q[ --shared  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -L/usr/local/lib -fstack-protector]
+# LDFLAGS => q[ -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -fstack-protector -L/usr/local/lib]
+# LDFROM => q[$(OBJECT)]
+# LDLOADLIBS => q[-lhdf5 -lz -lsz]
+# LD_RUN_PATH => q[]
+# LIBC => q[/usr/lib/libc.a]
+# LIBPERL_A => q[libperl.a]
+# LIBS => [q[-lhdf5 -lz -lsz -L~/hdf5/include -L~/szip-2.1/src/.libs]]
+# LIB_EXT => q[.a]
+# LINKTYPE => q[dynamic]
+# MACROEND => q[]
+# MACROSTART => q[]
+# MAKE => q[make]
+# MAKEFILE => q[Makefile]
+# MAKEFILE_OLD => q[Makefile.old]
+# MAKEMAKER => q[/usr/lib/perl5/5.14/ExtUtils/MakeMaker.pm]
+# MAKE_APERL_FILE => q[Makefile.aperl]
+# MAN1EXT => q[1]
+# MAN1PODS => {  }
+# MAN3EXT => q[3pm]
+# MAN3PODS => { lib/Hdf5.pm=>q[$(INST_MAN3DIR)/Hdf5.$(MAN3EXT)] }
+# MAP_TARGET => q[perl]
+# MKPATH => q[$(ABSPERLRUN) -MExtUtils::Command -e 'mkpath' --]
+# MM_REVISION => q[65705]
+# MM_Unix_VERSION => q[6.57_05]
+# MM_VERSION => q[6.57_05]
+# MOD_INSTALL => q[$(ABSPERLRUN) -MExtUtils::Install -e 'install([ from_to => {@ARGV}, verbose => '\''$(VERBINST)'\'', uninstall_shadows => '\''$(UNINST)'\'', dir_mode => '\''$(PERM_DIR)'\'' ]);' --]
+# MPOLLUTE => q[]
+# MV => q[mv]
+# NAME => q[Hdf5]
+# NAME_SYM => q[Hdf5]
+# NEEDS_LINKING => q[1]
+# NOECHO => q[@]
+# NOOP => q[$(TRUE)]
+# OBJECT => q[$(BASEEXT)$(OBJ_EXT)]
+# OBJ_EXT => q[.o]
+# OPTIMIZE => q[-O3]
+# OSNAME => q[cygwin]
+# OSVERS => q[1.7.15\(0.26053\)]
+# O_FILES => [q[Hdf5.o]]
+# PARENT_NAME => q[]
+# PERL => q[/usr/bin/perl.exe]
+# PERLMAINCC => q[$(CC)]
+# PERLPREFIX => q[/usr]
+# PERLRUN => q[$(PERL)]
+# PERLRUNINST => q[$(PERLRUN) "-I$(INST_ARCHLIB)" "-I$(INST_LIB)"]
+# PERLTYPE => q[]
+# PERL_ARCHIVE => q[$(PERL_INC)/cygperl5_14.dll]
+# PERL_ARCHIVE_AFTER => q[]
+# PERL_ARCHLIB => q[/usr/lib/perl5/5.14/i686-cygwin-threads-64int]
+# PERL_CORE => q[0]
+# PERL_INC => q[/usr/lib/perl5/5.14/i686-cygwin-threads-64int/CORE]
+# PERL_LIB => q[/usr/lib/perl5/5.14]
+# PERL_MALLOC_DEF => q[-DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc]
+# PERL_SRC => undef
+# PERM_DIR => q[755]
+# PERM_RW => q[644]
+# PERM_RWX => q[755]
+# PL_FILES => {  }
+# PM => { lib/Hdf5.pm=>q[blib/lib/Hdf5.pm], example.pl=>q[$(INST_LIB)/example.pl] }
+# PMLIBDIRS => [q[lib]]
+# PMLIBPARENTDIRS => [q[lib]]
+# POSTOP => q[$(NOECHO) $(NOOP)]
+# PREFIX => q[$(SITEPREFIX)]
+# PREOP => q[$(NOECHO) $(NOOP)]
+# PREREQ_PM => {  }
+# RANLIB => q[:]
+# RCS_LABEL => q[rcs -Nv$(VERSION_SYM): -q]
+# RM_F => q[rm -f]
+# RM_RF => q[rm -rf]
+# SHAR => q[shar]
+# SHELL => q[/bin/sh]
+# SITEARCHEXP => q[/usr/lib/perl5/site_perl/5.14/i686-cygwin-threads-64int]
+# SITELIBEXP => q[/usr/lib/perl5/site_perl/5.14]
+# SITEPREFIX => q[/usr]
+# SKIPHASH => {  }
+# SO => q[dll]
+# SUFFIX => q[.gz]
+# TAR => q[tar]
+# TARFLAGS => q[cvf]
+# TEST_F => q[test -f]
+# TOUCH => q[touch]
+# TO_UNIX => q[$(NOECHO) $(NOOP)]
+# TRUE => q[true]
+# UMASK_NULL => q[umask 0]
+# UNINST => q[0]
+# UNINSTALL => q[$(ABSPERLRUN) -MExtUtils::Command::MM -e 'uninstall' --]
+# USEMAKEFILE => q[-f]
+# VENDORARCHEXP => q[/usr/lib/perl5/vendor_perl/5.14/i686-cygwin-threads-64int]
+# VENDORLIBEXP => q[/usr/lib/perl5/vendor_perl/5.14]
+# VENDORPREFIX => q[/usr]
+# VERBINST => q[0]
+# VERSION => q[0.01]
+# VERSION_FROM => q[lib/Hdf5.pm]
+# VERSION_MACRO => q[VERSION]
+# VERSION_SYM => q[0_01]
+# WARN_IF_OLD_PACKLIST => q[$(ABSPERLRUN) -MExtUtils::Command::MM -e 'warn_if_old_packlist' --]
+# XS => { Hdf5.xs=>q[Hdf5.c] }
+# XSPROTOARG => q[]
+# XS_DEFINE_VERSION => q[-D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"]
+# XS_VERSION => q[0.01]
+# XS_VERSION_MACRO => q[XS_VERSION]
+# ZIP => q[zip]
+# ZIPFLAGS => q[-r]
+# _MAX_EXEC_LEN => q[32000]
 
 # --- MakeMaker postamble section:
 
