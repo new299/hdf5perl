@@ -650,6 +650,106 @@ XS(XS_Hdf5_H5Fclose)
     XSRETURN(1);
 }
 
+
+XS(XS_Hdf5_H5Tcopy); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Tcopy)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 1)
+       croak_xs_usage(cv,  "type_id");
+    {
+	hid_t	type_id = (hid_t)SvUV(ST(0));
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tcopy(type_id);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Tset_order); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Tset_order)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 2)
+       croak_xs_usage(cv,  "type_id, order");
+    {
+	hid_t	type_id = (hid_t)SvUV(ST(0));
+	H5T_order_t	order = (int)SvIV(ST(1));
+	herr_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tset_order(type_id, order);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Dcreate2); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Dcreate2)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 7)
+       croak_xs_usage(cv,  "loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id");
+    {
+	hid_t	loc_id = (hid_t)SvUV(ST(0));
+	char *	name = (char *)SvPV_nolen(ST(1));
+	hid_t	dtype_id = (hid_t)SvUV(ST(2));
+	hid_t	space_id = (hid_t)SvUV(ST(3));
+	hid_t	lcpl_id = (hid_t)SvUV(ST(4));
+	hid_t	dcpl_id = (hid_t)SvUV(ST(5));
+	hid_t	dapl_id = (hid_t)SvUV(ST(6));
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Dcreate2(loc_id, name, dtype_id, space_id, lcpl_id, dcpl_id, dapl_id);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS(XS_Hdf5_H5Dwrite); /* prototype to pass -Wmissing-prototypes */
+XS(XS_Hdf5_H5Dwrite)
+{
+#ifdef dVAR
+    dVAR; dXSARGS;
+#else
+    dXSARGS;
+#endif
+    if (items != 6)
+       croak_xs_usage(cv,  "dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf");
+    {
+	hid_t	dataset_id = (hid_t)SvUV(ST(0));
+	hid_t	mem_type_id = (hid_t)SvUV(ST(1));
+	hid_t	mem_space_id = (hid_t)SvUV(ST(2));
+	hid_t	file_space_id = (hid_t)SvUV(ST(3));
+	hid_t	xfer_plist_id = (hid_t)SvUV(ST(4));
+	void *	buf = INT2PTR(void *,SvIV(ST(5)));
+	herr_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Dwrite(dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
 #ifdef __cplusplus
 extern "C"
 #endif
@@ -692,6 +792,10 @@ XS(boot_Hdf5)
         newXS("Hdf5::H5Dclose", XS_Hdf5_H5Dclose, file);
         newXS("Hdf5::H5Sclose", XS_Hdf5_H5Sclose, file);
         newXS("Hdf5::H5Fclose", XS_Hdf5_H5Fclose, file);
+        newXS("Hdf5::H5Tcopy", XS_Hdf5_H5Tcopy, file);
+        newXS("Hdf5::H5Tset_order", XS_Hdf5_H5Tset_order, file);
+        newXS("Hdf5::H5Dcreate2", XS_Hdf5_H5Dcreate2, file);
+        newXS("Hdf5::H5Dwrite", XS_Hdf5_H5Dwrite, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

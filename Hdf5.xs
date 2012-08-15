@@ -100,3 +100,31 @@ H5Sclose(dataspace)
 herr_t
 H5Fclose(file)
 	hid_t file
+
+hid_t
+H5Tcopy(type_id)
+	hid_t	type_id
+
+herr_t
+H5Tset_order(type_id,order)
+	hid_t	type_id
+	H5T_order_t	order
+
+hid_t
+H5Dcreate2(loc_id,name,dtype_id,space_id,lcpl_id,dcpl_id,dapl_id)
+	hid_t	loc_id
+	char *	name
+	hid_t	dtype_id
+	hid_t	space_id
+	hid_t	lcpl_id
+	hid_t	dcpl_id
+	hid_t	dapl_id
+
+herr_t
+H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
+	hid_t	dataset_id
+	hid_t	mem_type_id
+	hid_t	mem_space_id
+	hid_t	file_space_id
+	hid_t	xfer_plist_id
+	void *	buf

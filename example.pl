@@ -4,7 +4,28 @@ use lib './blib/arch/auto/Hdf5';
 
 use Hdf5;
 
-#$res = Hdf5::H5Fcreate("./test.hdf5",0,0,0);
-print $Hdf5::H5F_ACC_RDWR;
-#$res = Hdf5::H5Fopen("./abit.fast5",0,0);
-$res = Hdf5::H5Fopen("./abit.fast5",$Hdf5::H5F_ACC_RDONLY,$Hdf5::H5P_DEFAULT);
+#Create a file
+$file = Hdf5::H5Fcreate("./test.hdf5",$Hdf5::H5F_ACC_TRUNC,$Hdf5::H5P_DEFAULT,$Hdf5::H5P_DEFAULT);
+
+@dimsf = ( 5 , 6 );
+
+# create an array called data filled with data.
+$dataspace = Hdf5::H5Screate_simple(2,\@dimsf,\@dimsf);
+$datatype  = Hdf5::H5Tcopy(H5T_NATIVE_INT);
+$status    = H5Tset_order(datatype, H5T_ORDER_LE);
+$dataset   = Hdf5::H5Dcreate($file,"IntArray",$datatype,$dataspace,$Hdf5::H5P_DEFAULT,$Hdf5::H5P_DEFAULT,$Hdf5::H5P_DEFAULT);
+$status	= Hdf5::H5Dwrite($dataset,$Hdf5::H5T_NATIVE_INT,$Hdf5::H5S_ALL,$Hdf5::H5P_DEFAULT,$data);
+
+Hdf5::H5Sclose($dataspace);
+Hdf5::H5Tclose($datatype);
+Hdf5::H5Dclose($dataset);
+Hdf5::H5Fclose($file);
+
+
+#Read the created file
+$file = Hdf5::H5Fopen("./abit.fast5",$Hdf5::H5F_ACC_RDONLY,$Hdf5::H5P_DEFAULT);
+$dataset = Hdf5::H5Dopen2($file,"IntArray",$Hdf5::H5P_DEFAULT);
+$datatype = H5Dget_type($dataset);
+$t_class = H5Tget_class($datatype);
+$size = H5Tget_size($datatype);
+
