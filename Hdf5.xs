@@ -58,23 +58,24 @@ H5Sget_simple_extent_ndims(space_id)
 int
 H5Sget_simple_extent_dims(space_id,dims,maxdims)
 	hid_t	space_id
-	hsize_t *dims
-	hsize_t	*maxdims
+	hsize_t * dims
+	hsize_t * maxdims
 
 herr_t
 H5Sselect_hyperslab(space_id,op,start,stride,count,block)
 	hid_t	space_id
 	H5S_seloper_t	op
-	hsize_t *start
-	hsize_t *stride
-	hsize_t	*count
-	hsize_t	*block
+	hsize_t * start
+	hsize_t * stride
+	hsize_t * count
+	hsize_t * block
 
 hid_t
 H5Screate_simple(rank,current_dims,maximum_dims)
 	int	rank
-	hsize_t	*current_dims
-	hsize_t	*maximum_dims
+	hsize_t * current_dims
+	hsize_t * maximum_dims
+	
 
 herr_t
 H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)

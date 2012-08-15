@@ -401,28 +401,10 @@ XS(XS_Hdf5_H5Sget_simple_extent_dims)
        croak_xs_usage(cv,  "space_id, dims, maxdims");
     {
 	hid_t	space_id = (hid_t)SvUV(ST(0));
-	hsize_t *	dims;
-	hsize_t *	maxdims;
+	hsize_t *	dims = ST(1);
+	hsize_t *	maxdims = ST(2);
 	int	RETVAL;
 	dXSTARG;
-
-	if (SvROK(ST(1))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(1)));
-	    dims = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Sget_simple_extent_dims",
-			"dims");
-
-	if (SvROK(ST(2))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(2)));
-	    maxdims = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Sget_simple_extent_dims",
-			"maxdims");
 
 	RETVAL = H5Sget_simple_extent_dims(space_id, dims, maxdims);
 	XSprePUSH; PUSHi((IV)RETVAL);
@@ -444,48 +426,12 @@ XS(XS_Hdf5_H5Sselect_hyperslab)
     {
 	hid_t	space_id = (hid_t)SvUV(ST(0));
 	H5S_seloper_t	op = (int)SvIV(ST(1));
-	hsize_t *	start;
-	hsize_t *	stride;
-	hsize_t *	count;
-	hsize_t *	block;
+	hsize_t *	start = ST(2);
+	hsize_t *	stride = ST(3);
+	hsize_t *	count = ST(4);
+	hsize_t *	block = ST(5);
 	herr_t	RETVAL;
 	dXSTARG;
-
-	if (SvROK(ST(2))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(2)));
-	    start = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Sselect_hyperslab",
-			"start");
-
-	if (SvROK(ST(3))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(3)));
-	    stride = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Sselect_hyperslab",
-			"stride");
-
-	if (SvROK(ST(4))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(4)));
-	    count = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Sselect_hyperslab",
-			"count");
-
-	if (SvROK(ST(5))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(5)));
-	    block = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Sselect_hyperslab",
-			"block");
 
 	RETVAL = H5Sselect_hyperslab(space_id, op, start, stride, count, block);
 	XSprePUSH; PUSHi((IV)RETVAL);
@@ -506,28 +452,10 @@ XS(XS_Hdf5_H5Screate_simple)
        croak_xs_usage(cv,  "rank, current_dims, maximum_dims");
     {
 	int	rank = (int)SvIV(ST(0));
-	hsize_t *	current_dims;
-	hsize_t *	maximum_dims;
+	hsize_t *	current_dims = ST(1);
+	hsize_t *	maximum_dims = ST(2);
 	hid_t	RETVAL;
 	dXSTARG;
-
-	if (SvROK(ST(1))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(1)));
-	    current_dims = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Screate_simple",
-			"current_dims");
-
-	if (SvROK(ST(2))) {
-	    IV tmp = SvIV((SV*)SvRV(ST(2)));
-	    maximum_dims = INT2PTR(hsize_t *,tmp);
-	}
-	else
-	    Perl_croak(aTHX_ "%s: %s is not a reference",
-			"Hdf5::H5Screate_simple",
-			"maximum_dims");
 
 	RETVAL = H5Screate_simple(rank, current_dims, maximum_dims);
 	XSprePUSH; PUSHu((UV)RETVAL);
