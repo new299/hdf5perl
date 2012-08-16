@@ -44,6 +44,13 @@ CODE:
 OUTPUT:
 	RETVAL
 
+hid_t
+get_H5T_NATIVE_DOUBLE()
+CODE:
+	RETVAL = H5T_NATIVE_DOUBLE_g;
+OUTPUT:
+	RETVAL
+
 hid_t 
 H5Fopen(name,flags,access_id)
 	const char *name
@@ -249,3 +256,29 @@ CODE:
 	free(hblock);
 OUTPUT:
 	RETVAL
+
+hid_t
+H5Aopen_name(loc_id,name)
+	hid_t	loc_id
+	const char * name
+
+herr_t
+H5Aread64f(attr_id,mem_type_id,buf)
+	hid_t attr_id
+	hid_t mem_type_id
+	AV * buf
+CODE:
+	double *data = malloc((av_len(buf)+1)*sizeof(double));
+	RETVAL = H5Aread(attr_id,mem_type_id,data);
+	int i=0;
+	for(i=0;i<=av_len(buf);i++) { 
+		av_store(buf,i,newSVnv(data[i]));
+	}
+	free(data);
+OUTPUT:
+	RETVAL
+
+hid_t
+H5Gopen1(loc_id,name)
+	hid_t loc_id
+	const char *name
