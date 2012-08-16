@@ -138,6 +138,10 @@ herr_t
 H5Fclose(file)
 	hid_t file
 
+herr_t
+H5Aclose(attr)
+	hid_t attr
+
 hid_t
 H5Tcopy(type_id)
 	hid_t	type_id
