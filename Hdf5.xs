@@ -8,9 +8,18 @@
 
 #include "const-c.inc"
 
+#include <stdint.h>
+
 MODULE = Hdf5		PACKAGE = Hdf5		
 
 INCLUDE: const-xs.inc
+
+hid_t
+get_H5T_STD_I16LE()
+CODE:
+	RETVAL = H5T_STD_I16LE_g;
+OUTPUT:
+	RETVAL
 
 hid_t
 get_H5T_STD_I32LE()
@@ -19,10 +28,19 @@ CODE:
 OUTPUT:
 	RETVAL
 
+
+
 hid_t
 get_H5T_NATIVE_INT()
 CODE:
 	RETVAL = H5T_NATIVE_INT_g;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_NATIVE_FLOAT()
+CODE:
+	RETVAL = H5T_NATIVE_FLOAT_g;
 OUTPUT:
 	RETVAL
 
@@ -75,15 +93,6 @@ H5Sget_simple_extent_dims(space_id,dims,maxdims)
 	hsize_t * dims
 	hsize_t * maxdims
 
-herr_t
-H5Sselect_hyperslab(space_id,op,start,stride,count,block)
-	hid_t	space_id
-	H5S_seloper_t	op
-	hsize_t * start
-	hsize_t * stride
-	hsize_t * count
-	hsize_t * block
-
 hid_t
 H5Screate_simple(rank,current_dims,maximum_dims)
 	int	rank
@@ -101,8 +110,6 @@ CODE:
 		SV** e = av_fetch(current_dims,i,0);
 		d[i] = SvNV(*e);
 	}
-	//printf("current_dims[0]: %d",d[0]);
-	//printf("current_dims[1]: %d",d[1]);
 	RETVAL = H5Screate_simple(rank,d,NULL);
 OUTPUT:
 	RETVAL
@@ -154,18 +161,16 @@ H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
 CODE:
 	int i=0;
 	unsigned long buffer[100];
-	for(i=0;i<av_len(buf);i++) {
+	for(i=0;i<=av_len(buf);i++) {
 		SV** e = av_fetch(buf,i,0);
 		buffer[i] = SvNV(*e);
 	}
-	//printf("buffer[0]: %d",buffer[0]);
-	//printf("buffer[1]: %d",buffer[1]);
 	RETVAL = H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buffer);
 OUTPUT:
 	RETVAL
 
 herr_t 
-H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
+H5Dread32(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
 	hid_t dataset_id
 	hid_t mem_type_id
 	hid_t mem_space_id
@@ -173,12 +178,74 @@ H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
 	hid_t xfer_plist_id
 	AV * buf
 CODE:
-	int data[100];
+	int32_t *data = malloc(av_len(buf)*sizeof(int32_t));
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
 	int i=0;
-	for(i=0;i<30;i++) { // need to figure out how to set the size here
+	for(i=0;i<=av_len(buf);i++) { 
 		av_store(buf,i,newSVnv(data[i]));
 	}
+	free(data);
+OUTPUT:
+	RETVAL
+
+herr_t 
+H5Dread16(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
+	hid_t dataset_id
+	hid_t mem_type_id
+	hid_t mem_space_id
+	hid_t file_space_id
+	hid_t xfer_plist_id
+	AV * buf
+CODE:
+	int16_t *data = malloc(av_len(buf)*sizeof(int16_t));
+	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
+	int i=0;
+	for(i=0;i<=av_len(buf);i++) { 
+		av_store(buf,i,newSVnv(data[i]));
+	}
+	free(data);
 OUTPUT:
 	RETVAL
 	
+herr_t
+H5Sselect_hyperslab(space_id,op,start,stride,count,block)
+	hid_t space_id
+	H5S_seloper_t	op
+	AV * start
+	AV * stride
+	AV * count
+	AV * block
+CODE:
+	hsize_t *hstart  = malloc(sizeof(hsize_t)*av_len(start)); 
+	hsize_t *hstride = malloc(sizeof(hsize_t)*av_len(stride));
+	hsize_t *hcount  = malloc(sizeof(hsize_t)*av_len(count));
+	hsize_t *hblock  = malloc(sizeof(hsize_t)*av_len(block));
+
+	int n;
+	for(n=0;n<=av_len(start);n++) {
+		SV** a = av_fetch(start,n,0);
+		hstart[n] = SvNV(*a);
+	}
+
+	for(n=0;n<=av_len(stride);n++) {
+		SV** b = av_fetch(stride,n,0);
+		hstride[n] = SvNV(*b);
+	}
+
+	for(n=0;n<=av_len(count);n++) {
+		SV** c = av_fetch(count,n,0);
+		hcount[n] = SvNV(*c);
+	}
+
+	for(n=0;n<=av_len(block);n++) {
+		SV** d = av_fetch(block,n,0);
+		hblock[n] = SvNV(*d);
+	}
+
+	RETVAL = H5Sselect_hyperslab(space_id,op,hstart,hstride,hcount,hblock);
+	free(hstart);
+	free(hstride);
+	free(hcount);
+	free(hblock);
+OUTPUT:
+	RETVAL

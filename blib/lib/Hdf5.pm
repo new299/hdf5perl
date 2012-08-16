@@ -65,6 +65,8 @@ $Hdf5::H5T_NATIVE_INT = 50331660;
 $Hdf5::H5T_ORDER_LE   = 0;
 $Hdf5::H5S_ALL        = 0;
 
+$Hdf5::H5S_SELECT_SET = 0;
+
 # Preloaded methods go here.
 
 # Autoload methods go after =cut, and are processed by the autosplit program.
