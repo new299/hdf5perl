@@ -97,8 +97,21 @@ H5Sget_simple_extent_ndims(space_id)
 int
 H5Sget_simple_extent_dims(space_id,dims,maxdims)
 	hid_t	space_id
-	hsize_t * dims
-	hsize_t * maxdims
+	AV * dims
+	AV * maxdims
+CODE:
+	hsize_t *cdims    = malloc((av_len(dims)+1)   *sizeof(hsize_t));
+	hsize_t *cmaxdims = malloc((av_len(maxdims)+1)*sizeof(hsize_t));
+	RETVAL = H5Sget_simple_extent_dims(space_id,cdims,cmaxdims);
+	int i=0;
+	for(i=0;i<=av_len(dims);i++) { 
+		av_store(dims,i,newSVnv(cdims[i]));
+		av_store(maxdims,i,newSVnv(cmaxdims[i]));
+	}
+	free(cdims);
+	free(cmaxdims);
+OUTPUT:
+	RETVAL
 
 hid_t
 H5Screate_simple(rank,current_dims,maximum_dims)
@@ -141,6 +154,10 @@ H5Fclose(file)
 herr_t
 H5Aclose(attr)
 	hid_t attr
+
+herr_t
+H5Gclose(group)
+	hid_t group
 
 hid_t
 H5Tcopy(type_id)
@@ -286,3 +303,13 @@ hid_t
 H5Gopen1(loc_id,name)
 	hid_t loc_id
 	const char *name
+
+herr_t
+H5Gget_num_objs(loc_id,num_obj)
+	hid_t loc_id
+	AV * num_obj
+CODE:
+	hsize_t cnum_obj;
+	RETVAL = H5Gget_num_objs(loc_id,&cnum_obj);
+	av_store(num_obj,0,newSVnv(cnum_obj));
+	
