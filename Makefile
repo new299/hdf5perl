@@ -189,12 +189,18 @@ PERL_ARCHIVE_AFTER =
 TO_INST_PM = ONTFast5Reader.pm \
 	example.pl \
 	fast5.pl \
+	fast5_events.pl \
+	fast5_raw.pl \
 	lib/Hdf5.pm
 
 PM_TO_BLIB = lib/Hdf5.pm \
 	blib/lib/Hdf5.pm \
 	fast5.pl \
 	$(INST_LIB)/fast5.pl \
+	fast5_raw.pl \
+	$(INST_LIB)/fast5_raw.pl \
+	fast5_events.pl \
+	$(INST_LIB)/fast5_events.pl \
 	ONTFast5Reader.pm \
 	$(INST_LIB)/ONTFast5Reader.pm \
 	example.pl \
@@ -962,6 +968,8 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  lib/Hdf5.pm blib/lib/Hdf5.pm \
 	  fast5.pl $(INST_LIB)/fast5.pl \
+	  fast5_raw.pl $(INST_LIB)/fast5_raw.pl \
+	  fast5_events.pl $(INST_LIB)/fast5_events.pl \
 	  ONTFast5Reader.pm $(INST_LIB)/ONTFast5Reader.pm \
 	  example.pl $(INST_LIB)/example.pl 
 	$(NOECHO) $(TOUCH) pm_to_blib
