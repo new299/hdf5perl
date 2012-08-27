@@ -28,7 +28,26 @@ CODE:
 OUTPUT:
 	RETVAL
 
+H5T_class_t
+get_H5T_COMPOUND()
+CODE:
+	RETVAL = H5T_COMPOUND;
+OUTPUT:
+	RETVAL
 
+hid_t
+get_H5S_SELECT_SET()
+CODE:
+	RETVAL = H5S_SELECT_SET;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_IEEE_F64LE()
+CODE:
+	RETVAL = H5T_IEEE_F64LE;
+OUTPUT:
+	RETVAL
 
 hid_t
 get_H5T_NATIVE_INT()
@@ -134,6 +153,18 @@ CODE:
 OUTPUT:
 	RETVAL
 
+hid_t
+H5Tcreate(class,size)
+	H5T_class_t class
+	size_t size
+
+herr_t
+H5Tinsert(dtype_id,name,offset,field_id)
+	hid_t dtype_id
+	const char * name
+	size_t offset
+	hid_t field_id
+
 
 herr_t
 H5Tclose(datatype)
@@ -231,6 +262,25 @@ CODE:
 	for(i=0;i<=av_len(buf);i++) { 
 		av_store(buf,i,newSVnv(data[i]));
 	}
+	free(data);
+OUTPUT:
+	RETVAL
+
+herr_t 
+H5DreadRaw(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
+	hid_t dataset_id
+	hid_t mem_type_id
+	hid_t mem_space_id
+	hid_t file_space_id
+	hid_t xfer_plist_id
+	SV * buf
+CODE:
+	// testing by reading 100bytes
+	int read_size=100;
+	int8_t *data = malloc(100);
+	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
+
+        sv_setpvn(buf,data,read_size);
 	free(data);
 OUTPUT:
 	RETVAL
