@@ -1096,8 +1096,8 @@ XS(XS_Hdf5_H5DreadRaw)
 #else
     dXSARGS;
 #endif
-    if (items != 6)
-       croak_xs_usage(cv,  "dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf");
+    if (items != 7)
+       croak_xs_usage(cv,  "dataset_id, mem_type_id, mem_space_id, file_space_id, xfer_plist_id, buf, size");
     {
 	hid_t	dataset_id = (hid_t)SvUV(ST(0));
 	hid_t	mem_type_id = (hid_t)SvUV(ST(1));
@@ -1105,11 +1105,12 @@ XS(XS_Hdf5_H5DreadRaw)
 	hid_t	file_space_id = (hid_t)SvUV(ST(3));
 	hid_t	xfer_plist_id = (hid_t)SvUV(ST(4));
 	SV*	buf = ST(5);
+	size_t	size = (size_t)SvUV(ST(6));
 	herr_t	RETVAL;
 	dXSTARG;
-#line 278 "Hdf5.xs"
+#line 279 "Hdf5.xs"
 	// testing by reading 100bytes
-	int read_size=10000;
+	size_t read_size=size;
 
 	SvUPGRADE(buf, SVt_PV);
         SvPOK_only(buf);
@@ -1117,13 +1118,8 @@ XS(XS_Hdf5_H5DreadRaw)
 	data[0]='a';
 	data[1]=0;
 	SvCUR_set(buf,read_size);
-	//size_t n;
-	//for(n=0;n<10000;n++) data[n]=5;
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
-        printf("data in function: %d %d %d %d %d %d %d %d %d %d\n",data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]);
-	//for(n=0;n<10;n++) data[n]=5;
-        //data[99] = 0;
-#line 1127 "Hdf5.c"
+#line 1123 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1201,7 +1197,7 @@ XS(XS_Hdf5_H5Sselect_hyperslab)
 				"block");
 		}
 	} STMT_END;
-#line 305 "Hdf5.xs"
+#line 301 "Hdf5.xs"
 	hsize_t *hstart  = malloc(sizeof(hsize_t)*av_len(start)); 
 	hsize_t *hstride = malloc(sizeof(hsize_t)*av_len(stride));
 	hsize_t *hcount  = malloc(sizeof(hsize_t)*av_len(count));
@@ -1233,7 +1229,7 @@ XS(XS_Hdf5_H5Sselect_hyperslab)
 	free(hstride);
 	free(hcount);
 	free(hblock);
-#line 1237 "Hdf5.c"
+#line 1233 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1292,7 +1288,7 @@ XS(XS_Hdf5_H5Aread64f)
 				"buf");
 		}
 	} STMT_END;
-#line 350 "Hdf5.xs"
+#line 346 "Hdf5.xs"
 	double *data = malloc((av_len(buf)+1)*sizeof(double));
 	RETVAL = H5Aread(attr_id,mem_type_id,data);
 	int i=0;
@@ -1300,7 +1296,7 @@ XS(XS_Hdf5_H5Aread64f)
 		av_store(buf,i,newSVnv(data[i]));
 	}
 	free(data);
-#line 1304 "Hdf5.c"
+#line 1300 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1358,11 +1354,11 @@ XS(XS_Hdf5_H5Gget_num_objs)
 				"num_obj");
 		}
 	} STMT_END;
-#line 370 "Hdf5.xs"
+#line 366 "Hdf5.xs"
 	hsize_t cnum_obj;
 	RETVAL = H5Gget_num_objs(loc_id,&cnum_obj);
 	av_store(num_obj,0,newSVnv(cnum_obj));
-#line 1366 "Hdf5.c"
+#line 1362 "Hdf5.c"
     }
     XSRETURN(1);
 }

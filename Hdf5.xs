@@ -267,16 +267,16 @@ OUTPUT:
 	RETVAL
 
 herr_t 
-H5DreadRaw(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf)
+H5DreadRaw(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buf,size)
 	hid_t dataset_id
 	hid_t mem_type_id
 	hid_t mem_space_id
 	hid_t file_space_id
 	hid_t xfer_plist_id
 	SV* buf
+	size_t size
 CODE:
-	// testing by reading 100bytes
-	int read_size=10000;
+	size_t read_size=size;
 
 	SvUPGRADE(buf, SVt_PV);
         SvPOK_only(buf);
@@ -284,12 +284,7 @@ CODE:
 	data[0]='a';
 	data[1]=0;
 	SvCUR_set(buf,read_size);
-	//size_t n;
-	//for(n=0;n<10000;n++) data[n]=5;
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
-        printf("data in function: %d %d %d %d %d %d %d %d %d %d\n",data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]);
-	//for(n=0;n<10;n++) data[n]=5;
-        //data[99] = 0;
 OUTPUT:
 	RETVAL
 	
