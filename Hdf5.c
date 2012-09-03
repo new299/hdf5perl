@@ -1375,6 +1375,35 @@ XS_EUPXS(XS_Hdf5_H5Gget_num_objs)
     XSRETURN(1);
 }
 
+
+XS_EUPXS(XS_Hdf5_H5Gget_objname_by_idx); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Gget_objname_by_idx)
+{
+    dVAR; dXSARGS;
+    if (items != 4)
+       croak_xs_usage(cv,  "loc_id, idx, name, size");
+    {
+	hid_t	loc_id = (hid_t)SvUV(ST(0))
+;
+	hsize_t	idx = (unsigned long)SvUV(ST(1))
+;
+	SV *	name = ST(2)
+;
+	size_t	size = (size_t)SvUV(ST(3))
+;
+	ssize_t	RETVAL;
+	dXSTARG;
+#line 377 "Hdf5.xs"
+	SvUPGRADE(name, SVt_PV);
+        SvPOK_only(name);
+	char *data = SvGROW(name,size);
+	SvCUR_set(name,size);
+	H5Gget_objname_by_idx(loc_id,idx,data,size);
+#line 1403 "Hdf5.c"
+    }
+    XSRETURN(1);
+}
+
 #ifdef __cplusplus
 extern "C"
 #endif
@@ -1436,6 +1465,7 @@ XS_EXTERNAL(boot_Hdf5)
         newXS("Hdf5::H5Aread64f", XS_Hdf5_H5Aread64f, file);
         newXS("Hdf5::H5Gopen1", XS_Hdf5_H5Gopen1, file);
         newXS("Hdf5::H5Gget_num_objs", XS_Hdf5_H5Gget_num_objs, file);
+        newXS("Hdf5::H5Gget_objname_by_idx", XS_Hdf5_H5Gget_objname_by_idx, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

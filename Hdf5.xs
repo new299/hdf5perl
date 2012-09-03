@@ -366,3 +366,17 @@ CODE:
 	RETVAL = H5Gget_num_objs(loc_id,&cnum_obj);
 	av_store(num_obj,0,newSVnv(cnum_obj));
 	
+
+ssize_t
+H5Gget_objname_by_idx(loc_id,idx,name,size)
+	hid_t loc_id
+	hsize_t idx
+	SV *name
+	size_t size
+CODE:
+	SvUPGRADE(name, SVt_PV);
+        SvPOK_only(name);
+	char *data = SvGROW(name,size);
+	SvCUR_set(name,size);
+	H5Gget_objname_by_idx(loc_id,idx,data,size);
+

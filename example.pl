@@ -39,6 +39,14 @@ $file      = Hdf5::H5Fopen("./test.hdf5",$Hdf5::H5F_ACC_RDONLY,$Hdf5::H5P_DEFAUL
 $dataset   = Hdf5::H5Dopen2($file,"IntArray",$Hdf5::H5P_DEFAULT);
 $status    = Hdf5::H5Dread32($dataset,Hdf5::get_H5T_NATIVE_INT(),$Hdf5::H5S_ALL,$Hdf5::H5S_ALL,$Hdf5::H5P_DEFAULT,\@dataout);
 
+@num_obj = ( 0 );
+
+Hdf5::H5Gget_num_objs($file,\@num_obj);
+print "obj count: ", $num_obj[0], "\n";
+
+Hdf5::H5Gget_objname_by_idx($file,0,$str,40);
+print "name: ", $str, "END\n";
+
 for($c=0;$c<30;$c++) {
 	print $dataout[$c];
 	print " ";
