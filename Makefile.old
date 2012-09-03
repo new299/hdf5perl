@@ -26,30 +26,30 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /usr/lib/perl5/5.14/i686-cygwin-threads-64int/Config.pm).
+# These definitions are from config.sh (via /usr/local/ActivePerl-5.14/lib/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
-CC = gcc-4
+CC = gcc
 CCCDLFLAGS =  
 CCDLFLAGS =  
-DLEXT = dll
+DLEXT = bundle
 DLSRC = dl_dlopen.xs
-EXE_EXT = .exe
+EXE_EXT = 
 FULL_AR = /usr/bin/ar
-LD = g++-4
-LDDLFLAGS =  --shared  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -L/usr/local/lib -fstack-protector
-LDFLAGS =  -Wl,--enable-auto-import -Wl,--export-all-symbols -Wl,--enable-auto-image-base -fstack-protector -L/usr/local/lib
-LIBC = /usr/lib/libc.a
+LD = cc -mmacosx-version-min=10.5
+LDDLFLAGS =  -bundle -undefined dynamic_lookup -Wl,-search_paths_first -arch i386 -fstack-protector
+LDFLAGS =  -Wl,-search_paths_first -arch i386 -fstack-protector
+LIBC = 
 LIB_EXT = .a
 OBJ_EXT = .o
-OSNAME = cygwin
-OSVERS = 1.7.15\(0.26053\)
-RANLIB = :
-SITELIBEXP = /usr/lib/perl5/site_perl/5.14
-SITEARCHEXP = /usr/lib/perl5/site_perl/5.14/i686-cygwin-threads-64int
-SO = dll
-VENDORARCHEXP = /usr/lib/perl5/vendor_perl/5.14/i686-cygwin-threads-64int
-VENDORLIBEXP = /usr/lib/perl5/vendor_perl/5.14
+OSNAME = darwin
+OSVERS = 9.8.0
+RANLIB = /usr/bin/ar s
+SITELIBEXP = /usr/local/ActivePerl-5.14/site/lib
+SITEARCHEXP = /usr/local/ActivePerl-5.14/site/lib
+SO = dylib
+VENDORARCHEXP = 
+VENDORLIBEXP = 
 
 
 # --- MakeMaker constants section:
@@ -71,60 +71,67 @@ INST_BIN = blib/bin
 INST_LIB = blib/lib
 INST_MAN1DIR = blib/man1
 INST_MAN3DIR = blib/man3
+INST_HTMLDIR = blib/html
 MAN1EXT = 1
-MAN3EXT = 3pm
+MAN3EXT = 3
 INSTALLDIRS = site
 DESTDIR = 
 PREFIX = $(SITEPREFIX)
-PERLPREFIX = /usr
-SITEPREFIX = /usr
-VENDORPREFIX = /usr
-INSTALLPRIVLIB = /usr/lib/perl5/5.14
+PERLPREFIX = /usr/local/ActivePerl-5.14
+SITEPREFIX = /usr/local/ActivePerl-5.14/site
+VENDORPREFIX = 
+INSTALLPRIVLIB = /usr/local/ActivePerl-5.14/lib
 DESTINSTALLPRIVLIB = $(DESTDIR)$(INSTALLPRIVLIB)
-INSTALLSITELIB = /usr/lib/perl5/site_perl/5.14
+INSTALLSITELIB = /usr/local/ActivePerl-5.14/site/lib
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
-INSTALLVENDORLIB = /usr/lib/perl5/vendor_perl/5.14
+INSTALLVENDORLIB = 
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = /usr/lib/perl5/5.14/i686-cygwin-threads-64int
+INSTALLARCHLIB = /usr/local/ActivePerl-5.14/lib
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = /usr/lib/perl5/site_perl/5.14/i686-cygwin-threads-64int
+INSTALLSITEARCH = /usr/local/ActivePerl-5.14/site/lib
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = /usr/lib/perl5/vendor_perl/5.14/i686-cygwin-threads-64int
+INSTALLVENDORARCH = 
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
-INSTALLBIN = /usr/bin
+INSTALLBIN = /usr/local/ActivePerl-5.14/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
-INSTALLSITEBIN = /usr/local/bin
+INSTALLSITEBIN = /usr/local/ActivePerl-5.14/site/bin
 DESTINSTALLSITEBIN = $(DESTDIR)$(INSTALLSITEBIN)
-INSTALLVENDORBIN = /usr/bin
+INSTALLVENDORBIN = 
 DESTINSTALLVENDORBIN = $(DESTDIR)$(INSTALLVENDORBIN)
-INSTALLSCRIPT = /usr/bin
+INSTALLSCRIPT = /usr/local/ActivePerl-5.14/bin
 DESTINSTALLSCRIPT = $(DESTDIR)$(INSTALLSCRIPT)
-INSTALLSITESCRIPT = /usr/local/bin
+INSTALLSITESCRIPT = /usr/local/ActivePerl-5.14/site/bin
 DESTINSTALLSITESCRIPT = $(DESTDIR)$(INSTALLSITESCRIPT)
-INSTALLVENDORSCRIPT = /usr/bin
+INSTALLVENDORSCRIPT = 
 DESTINSTALLVENDORSCRIPT = $(DESTDIR)$(INSTALLVENDORSCRIPT)
-INSTALLMAN1DIR = /usr/share/man/man1
+INSTALLMAN1DIR = /usr/local/ActivePerl-5.14/man/man1
 DESTINSTALLMAN1DIR = $(DESTDIR)$(INSTALLMAN1DIR)
-INSTALLSITEMAN1DIR = /usr/share/man/man1
+INSTALLSITEMAN1DIR = /usr/local/ActivePerl-5.14/site/man/man1
 DESTINSTALLSITEMAN1DIR = $(DESTDIR)$(INSTALLSITEMAN1DIR)
-INSTALLVENDORMAN1DIR = /usr/share/man/man1
+INSTALLVENDORMAN1DIR = 
 DESTINSTALLVENDORMAN1DIR = $(DESTDIR)$(INSTALLVENDORMAN1DIR)
-INSTALLMAN3DIR = /usr/share/man/man3
+INSTALLMAN3DIR = /usr/local/ActivePerl-5.14/man/man3
 DESTINSTALLMAN3DIR = $(DESTDIR)$(INSTALLMAN3DIR)
-INSTALLSITEMAN3DIR = /usr/share/man/man3
+INSTALLSITEMAN3DIR = /usr/local/ActivePerl-5.14/site/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
-INSTALLVENDORMAN3DIR = /usr/share/man/man3
+INSTALLVENDORMAN3DIR = 
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
-PERL_LIB = /usr/lib/perl5/5.14
-PERL_ARCHLIB = /usr/lib/perl5/5.14/i686-cygwin-threads-64int
+INSTALLHTMLDIR = /usr/local/ActivePerl-5.14/html
+DESTINSTALLHTMLDIR = $(DESTDIR)$(INSTALLHTMLDIR)
+INSTALLSITEHTMLDIR = /usr/local/ActivePerl-5.14/html
+DESTINSTALLSITEHTMLDIR = $(DESTDIR)$(INSTALLSITEHTMLDIR)
+INSTALLVENDORHTMLDIR = /usr/local/ActivePerl-5.14/html
+DESTINSTALLVENDORHTMLDIR = $(DESTDIR)$(INSTALLVENDORHTMLDIR)
+PERL_LIB = /usr/local/ActivePerl-5.14/lib
+PERL_ARCHLIB = /usr/local/ActivePerl-5.14/lib
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /usr/lib/perl5/5.14/i686-cygwin-threads-64int/CORE
-PERL = /usr/bin/perl.exe
-FULLPERL = /usr/bin/perl.exe
+PERL_INC = /usr/local/ActivePerl-5.14/lib/CORE
+PERL = /usr/local/ActivePerl-5.14/bin/perl
+FULLPERL = /usr/local/ActivePerl-5.14/bin/perl
 ABSPERL = $(PERL)
 PERLRUN = $(PERL)
 FULLPERLRUN = $(FULLPERL)
@@ -137,7 +144,7 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /usr/lib/perl5/5.14/ExtUtils/MakeMaker.pm
+MAKEMAKER   = /usr/local/ActivePerl-5.14/lib/ExtUtils/MakeMaker.pm
 MM_VERSION  = 6.57_05
 MM_REVISION = 65705
 
@@ -182,27 +189,15 @@ INST_BOOT        = $(INST_ARCHAUTODIR)/$(BASEEXT).bs
 
 # Extra linker info
 EXPORT_LIST        = 
-PERL_ARCHIVE       = $(PERL_INC)/cygperl5_14.dll
+PERL_ARCHIVE       = 
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = ONTFast5Reader.pm \
-	example.pl \
-	fast5.pl \
-	fast5_events.pl \
-	fast5_raw.pl \
+TO_INST_PM = example.pl \
 	lib/Hdf5.pm
 
 PM_TO_BLIB = lib/Hdf5.pm \
 	blib/lib/Hdf5.pm \
-	fast5.pl \
-	$(INST_LIB)/fast5.pl \
-	fast5_raw.pl \
-	$(INST_LIB)/fast5_raw.pl \
-	fast5_events.pl \
-	$(INST_LIB)/fast5_events.pl \
-	ONTFast5Reader.pm \
-	$(INST_LIB)/ONTFast5Reader.pm \
 	example.pl \
 	$(INST_LIB)/example.pl
 
@@ -220,12 +215,12 @@ AUTOSPLITFILE = $(ABSPERLRUN)  -e 'use AutoSplit;  autosplit($$ARGV[0], $$ARGV[1
 
 # --- MakeMaker tool_xsubpp section:
 
-XSUBPPDIR = /usr/lib/perl5/5.14/ExtUtils
+XSUBPPDIR = /usr/local/ActivePerl-5.14/lib/ExtUtils
 XSUBPP = $(XSUBPPDIR)$(DFSEP)xsubpp
 XSUBPPRUN = $(PERLRUN) $(XSUBPP)
 XSPROTOARG = 
-XSUBPPDEPS = /usr/lib/perl5/5.14/ExtUtils/typemap typemap $(XSUBPP)
-XSUBPPARGS = -typemap /usr/lib/perl5/5.14/ExtUtils/typemap -typemap typemap
+XSUBPPDEPS = /usr/local/ActivePerl-5.14/lib/ExtUtils/typemap typemap $(XSUBPP)
+XSUBPPARGS = -typemap /usr/local/ActivePerl-5.14/lib/ExtUtils/typemap -typemap typemap
 XSUBPP_EXTRA_ARGS = 
 
 
@@ -266,7 +261,7 @@ makemakerdflt : all
 
 
 # --- MakeMaker dist section:
-TAR = tar
+TAR = COPY_EXTENDED_ATTRIBUTES_DISABLE=1 COPYFILE_DISABLE=1 tar
 TARFLAGS = cvf
 ZIP = zip
 ZIPFLAGS = -r
@@ -292,9 +287,10 @@ DISTVNAME = Hdf5-0.01
 
 # --- MakeMaker cflags section:
 
-CCFLAGS = -DPERL_USE_SAFE_PUTENV -U__STRICT_ANSI__ -g -fno-strict-aliasing -pipe -fstack-protector -DUSEIMPORTLIB
+CCFLAGS = -fno-common -DPERL_DARWIN -arch i386 -DUSE_SITECUSTOMIZE -DPERL_RELOCATABLE_INCPUSH -fno-merge-constants -fno-strict-aliasing -pipe -fstack-protector
 OPTIMIZE = -O3
 PERLTYPE = 
+MPOLLUTE = 
 
 
 # --- MakeMaker const_loadlibs section:
@@ -302,9 +298,10 @@ PERLTYPE =
 # Hdf5 might depend on some other libraries:
 # See ExtUtils::Liblist for details
 #
-EXTRALIBS = -lhdf5 -lz -lsz
-LDLOADLIBS = -lhdf5 -lz -lsz
+EXTRALIBS = -lhdf5 -lz
+LDLOADLIBS = -lhdf5 -lz
 BSLOADLIBS = 
+LD_RUN_PATH = /usr/local/lib:/usr/lib
 
 
 # --- MakeMaker const_cccmd section:
@@ -336,7 +333,7 @@ PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 # --- MakeMaker c_o section:
 
 .c.i:
-	gcc-4 -E -c $(PASTHRU_INC) $(INC) \
+	gcc -E -c $(PASTHRU_INC) $(INC) \
 	$(CCFLAGS) $(OPTIMIZE) \
 	$(PERLTYPE) $(MPOLLUTE) $(DEFINE_VERSION) \
 	$(XS_DEFINE_VERSION) $(CCCDLFLAGS) "-I$(PERL_INC)" $(PASTHRU_DEFINE) $(DEFINE) $*.c > $*.i
@@ -374,7 +371,7 @@ PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 
 
 # --- MakeMaker top_targets section:
-all :: pure_all manifypods
+all :: pure_all htmlifypods manifypods
 	$(NOECHO) $(NOOP)
 
 
@@ -489,7 +486,7 @@ INST_DYNAMIC_FIX =
 
 $(INST_DYNAMIC): $(OBJECT) $(MYEXTLIB) $(BOOTSTRAP) $(INST_ARCHAUTODIR)$(DFSEP).exists $(EXPORT_LIST) $(PERL_ARCHIVE) $(PERL_ARCHIVE_AFTER) $(INST_DYNAMIC_DEP)
 	$(RM_F) $@
-	$(LD)  $(LDDLFLAGS) $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB)	\
+	LD_RUN_PATH="$(LD_RUN_PATH)" $(LD)  $(LDDLFLAGS) $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB)	\
 	  $(PERL_ARCHIVE) $(LDLOADLIBS) $(PERL_ARCHIVE_AFTER) $(EXPORT_LIST)	\
 	  $(INST_DYNAMIC_FIX)
 	$(CHMOD) $(PERM_RWX) $@
@@ -523,6 +520,18 @@ manifypods : pure_all  \
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
 	  lib/Hdf5.pm $(INST_MAN3DIR)/Hdf5.$(MAN3EXT) 
 
+
+
+
+# --- MakeMaker htmlifypods section:
+
+POD2HTML_EXE = $(PERLRUN) "-MActivePerl::DocTools" -e "UpdateHTML_blib(installdirs => "$(INSTALLDIRS)")"
+POD2HTML = $(POD2HTML_EXE)
+
+
+htmlifypods :  \
+	lib/Hdf5.pm
+	$(NOECHO) $(POD2HTML)
 
 
 
@@ -716,7 +725,7 @@ distsignature : create_distdir
 
 # --- MakeMaker install section:
 
-install :: pure_install doc_install
+install :: pure_install doc_install doc_update
 	$(NOECHO) $(NOOP)
 
 install_perl :: pure_perl_install doc_perl_install
@@ -729,11 +738,13 @@ install_vendor :: pure_vendor_install doc_vendor_install
 	$(NOECHO) $(NOOP)
 
 pure_install :: pure_$(INSTALLDIRS)_install
-	$(CHMOD) $(PERM_RWX) $(DESTDIR)/usr/lib/perl5/site_perl/5.14/i686-cygwin-threads-64int/auto/Hdf5/Hdf5.dll
-	test -n "$(DESTDIR)" || /bin/rebase -s /usr/lib/perl5/site_perl/5.14/i686-cygwin-threads-64int/auto/Hdf5/Hdf5.dll
+	$(NOECHO) $(NOOP)
 
 doc_install :: doc_$(INSTALLDIRS)_install
 	$(NOECHO) $(NOOP)
+
+doc_update ::
+	$(NOECHO) $(PERLRUN) "-MActivePerl::DocTools" -e ActivePerl::DocTools::WriteTOC
 
 pure__install : pure_site_install
 	$(NOECHO) $(ECHO) INSTALLDIRS not defined, defaulting to INSTALLDIRS=site
@@ -750,7 +761,8 @@ pure_perl_install :: all
 		$(INST_BIN) $(DESTINSTALLBIN) \
 		$(INST_SCRIPT) $(DESTINSTALLSCRIPT) \
 		$(INST_MAN1DIR) $(DESTINSTALLMAN1DIR) \
-		$(INST_MAN3DIR) $(DESTINSTALLMAN3DIR)
+		$(INST_MAN3DIR) $(DESTINSTALLMAN3DIR) \
+		$(INST_HTMLDIR) $(DESTINSTALLHTMLDIR)
 	$(NOECHO) $(WARN_IF_OLD_PACKLIST) \
 		$(SITEARCHEXP)/auto/$(FULLEXT)
 
@@ -764,7 +776,8 @@ pure_site_install :: all
 		$(INST_BIN) $(DESTINSTALLSITEBIN) \
 		$(INST_SCRIPT) $(DESTINSTALLSITESCRIPT) \
 		$(INST_MAN1DIR) $(DESTINSTALLSITEMAN1DIR) \
-		$(INST_MAN3DIR) $(DESTINSTALLSITEMAN3DIR)
+		$(INST_MAN3DIR) $(DESTINSTALLSITEMAN3DIR) \
+		$(INST_HTMLDIR) $(DESTINSTALLSITEHTMLDIR)
 	$(NOECHO) $(WARN_IF_OLD_PACKLIST) \
 		$(PERL_ARCHLIB)/auto/$(FULLEXT)
 
@@ -777,7 +790,8 @@ pure_vendor_install :: all
 		$(INST_BIN) $(DESTINSTALLVENDORBIN) \
 		$(INST_SCRIPT) $(DESTINSTALLVENDORSCRIPT) \
 		$(INST_MAN1DIR) $(DESTINSTALLVENDORMAN1DIR) \
-		$(INST_MAN3DIR) $(DESTINSTALLVENDORMAN3DIR)
+		$(INST_MAN3DIR) $(DESTINSTALLVENDORMAN3DIR) \
+		$(INST_HTMLDIR) $(DESTINSTALLVENDORHTMLDIR)
 
 doc_perl_install :: all
 	$(NOECHO) $(ECHO) Appending installation info to $(DESTINSTALLARCHLIB)/perllocal.pod
@@ -813,7 +827,7 @@ doc_vendor_install :: all
 		>> $(DESTINSTALLARCHLIB)/perllocal.pod
 
 
-uninstall :: uninstall_from_$(INSTALLDIRS)dirs
+uninstall :: uninstall_from_$(INSTALLDIRS)dirs doc_update
 	$(NOECHO) $(NOOP)
 
 uninstall_from_perldirs ::
@@ -904,7 +918,7 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 
 # --- MakeMaker makeaperl section ---
 MAP_TARGET    = perl
-FULLPERL      = /usr/bin/perl.exe
+FULLPERL      = /usr/local/ActivePerl-5.14/bin/perl
 
 $(MAP_TARGET) :: static $(MAKE_APERL_FILE)
 	$(MAKE) $(USEMAKEFILE) $(MAKE_APERL_FILE) $@
@@ -956,7 +970,7 @@ ppd :
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl extension for blah blah blah</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>U-user-PC\user &lt;user@x-ray.at&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="cygwin-thread-multi-64int-5.14" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.14" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '</SOFTPKG>' >> $(DISTNAME).ppd
@@ -967,10 +981,6 @@ ppd :
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  lib/Hdf5.pm blib/lib/Hdf5.pm \
-	  fast5.pl $(INST_LIB)/fast5.pl \
-	  fast5_raw.pl $(INST_LIB)/fast5_raw.pl \
-	  fast5_events.pl $(INST_LIB)/fast5_events.pl \
-	  ONTFast5Reader.pm $(INST_LIB)/ONTFast5Reader.pm \
 	  example.pl $(INST_LIB)/example.pl 
 	$(NOECHO) $(TOUCH) pm_to_blib
 

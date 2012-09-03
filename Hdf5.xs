@@ -4,7 +4,7 @@
 
 #include "ppport.h"
 
-#include </home/user/hdf5/include/hdf5.h>
+#include <hdf5.h>
 
 #include "const-c.inc"
 
