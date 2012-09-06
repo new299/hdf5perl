@@ -1400,7 +1400,9 @@ XS_EUPXS(XS_Hdf5_H5Gget_objname_by_idx)
 	SvCUR_set(name,size);
 	for(int n=0;n<size;n++) data[n] = 0;
 	H5Gget_objname_by_idx(loc_id,idx,data,size);
-#line 1404 "Hdf5.c"
+	int len = strlen(data);
+	SvCUR_set(name,len);
+#line 1406 "Hdf5.c"
     }
     XSRETURN(1);
 }
@@ -1420,7 +1422,7 @@ XS_EUPXS(XS_Hdf5_H5Gget_objtype)
 	SV *	type = ST(2)
 ;
 	bool	RETVAL;
-#line 390 "Hdf5.xs"
+#line 392 "Hdf5.xs"
 	SvUPGRADE(type, SVt_PV);
         SvPOK_only(type);
 	char *data = SvGROW(type,40);
@@ -1438,8 +1440,10 @@ XS_EUPXS(XS_Hdf5_H5Gget_objtype)
 	if(info.type == H5G_RESERVED_5) strcpy(data,"RESERVED_5");
 	if(info.type == H5G_RESERVED_6) strcpy(data,"RESERVED_6");
 	if(info.type == H5G_RESERVED_7) strcpy(data,"RESERVED_7");
+	int len = strlen(data);
+	SvCUR_set(type,len);
 	RETVAL = 1;
-#line 1443 "Hdf5.c"
+#line 1447 "Hdf5.c"
 	ST(0) = boolSV(RETVAL);
 	sv_2mortal(ST(0));
     }

@@ -380,6 +380,8 @@ CODE:
 	SvCUR_set(name,size);
 	for(int n=0;n<size;n++) data[n] = 0;
 	H5Gget_objname_by_idx(loc_id,idx,data,size);
+	int len = strlen(data);
+	SvCUR_set(name,len);
 
 bool
 H5Gget_objtype(loc_id,name,type)
@@ -404,6 +406,8 @@ CODE:
 	if(info.type == H5G_RESERVED_5) strcpy(data,"RESERVED_5");
 	if(info.type == H5G_RESERVED_6) strcpy(data,"RESERVED_6");
 	if(info.type == H5G_RESERVED_7) strcpy(data,"RESERVED_7");
+	int len = strlen(data);
+	SvCUR_set(type,len);
 	RETVAL = 1;
 OUTPUT:
 	RETVAL
