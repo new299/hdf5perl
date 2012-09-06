@@ -1398,8 +1398,50 @@ XS_EUPXS(XS_Hdf5_H5Gget_objname_by_idx)
         SvPOK_only(name);
 	char *data = SvGROW(name,size);
 	SvCUR_set(name,size);
+	for(int n=0;n<size;n++) data[n] = 0;
 	H5Gget_objname_by_idx(loc_id,idx,data,size);
-#line 1403 "Hdf5.c"
+#line 1404 "Hdf5.c"
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Gget_objtype); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Gget_objtype)
+{
+    dVAR; dXSARGS;
+    if (items != 3)
+       croak_xs_usage(cv,  "loc_id, name, type");
+    {
+	hid_t	loc_id = (hid_t)SvUV(ST(0))
+;
+	const char *	name = (const char *)SvPV_nolen(ST(1))
+;
+	SV *	type = ST(2)
+;
+	bool	RETVAL;
+#line 390 "Hdf5.xs"
+	SvUPGRADE(type, SVt_PV);
+        SvPOK_only(type);
+	char *data = SvGROW(type,40);
+	SvCUR_set(type,40);
+
+	H5G_stat_t info;
+	H5Gget_objinfo(loc_id,name,true,&info);
+
+	if(info.type == H5G_UNKNOWN)    strcpy(data,"UNKNOWN");
+	if(info.type == H5G_GROUP)      strcpy(data,"GROUP");
+	if(info.type == H5G_DATASET)    strcpy(data,"DATASET");
+	if(info.type == H5G_TYPE)       strcpy(data,"TYPE");
+	if(info.type == H5G_LINK)       strcpy(data,"LINK");
+	if(info.type == H5G_UDLINK)     strcpy(data,"UDLINK");
+	if(info.type == H5G_RESERVED_5) strcpy(data,"RESERVED_5");
+	if(info.type == H5G_RESERVED_6) strcpy(data,"RESERVED_6");
+	if(info.type == H5G_RESERVED_7) strcpy(data,"RESERVED_7");
+	RETVAL = 1;
+#line 1443 "Hdf5.c"
+	ST(0) = boolSV(RETVAL);
+	sv_2mortal(ST(0));
     }
     XSRETURN(1);
 }
@@ -1466,6 +1508,7 @@ XS_EXTERNAL(boot_Hdf5)
         newXS("Hdf5::H5Gopen1", XS_Hdf5_H5Gopen1, file);
         newXS("Hdf5::H5Gget_num_objs", XS_Hdf5_H5Gget_num_objs, file);
         newXS("Hdf5::H5Gget_objname_by_idx", XS_Hdf5_H5Gget_objname_by_idx, file);
+        newXS("Hdf5::H5Gget_objtype", XS_Hdf5_H5Gget_objtype, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

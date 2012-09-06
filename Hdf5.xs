@@ -378,5 +378,32 @@ CODE:
         SvPOK_only(name);
 	char *data = SvGROW(name,size);
 	SvCUR_set(name,size);
+	for(int n=0;n<size;n++) data[n] = 0;
 	H5Gget_objname_by_idx(loc_id,idx,data,size);
 
+bool
+H5Gget_objtype(loc_id,name,type)
+	hid_t loc_id
+	const char *name
+	SV *type
+CODE:
+	SvUPGRADE(type, SVt_PV);
+        SvPOK_only(type);
+	char *data = SvGROW(type,40);
+	SvCUR_set(type,40);
+
+	H5G_stat_t info;
+	H5Gget_objinfo(loc_id,name,true,&info);
+	
+	if(info.type == H5G_UNKNOWN)    strcpy(data,"UNKNOWN");
+	if(info.type == H5G_GROUP)      strcpy(data,"GROUP");
+	if(info.type == H5G_DATASET)    strcpy(data,"DATASET");
+	if(info.type == H5G_TYPE)       strcpy(data,"TYPE");
+	if(info.type == H5G_LINK)       strcpy(data,"LINK");
+	if(info.type == H5G_UDLINK)     strcpy(data,"UDLINK");
+	if(info.type == H5G_RESERVED_5) strcpy(data,"RESERVED_5");
+	if(info.type == H5G_RESERVED_6) strcpy(data,"RESERVED_6");
+	if(info.type == H5G_RESERVED_7) strcpy(data,"RESERVED_7");
+	RETVAL = 1;
+OUTPUT:
+	RETVAL
