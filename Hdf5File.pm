@@ -185,15 +185,75 @@ sub read_dataset_compound {
   Hdf5::H5Tget_class($datatype,$class);
   $size      = Hdf5::H5Tget_size($datatype);
 
+  my @names;
+  my @classes;
+  my @types;
+  my @sizes;
+  my $total_size;
+
   $member_count = Hdf5::H5Tget_nmembers($datatype);
   for($n=0;$n<$member_count;$n++) {
-    Hdf5::H5Tget_member_class($datatype,$n,$class);
     Hdf5::H5Tget_member_name ($datatype,$n,$name );
+    Hdf5::H5Tget_member_class($datatype,$n,$class);
 
-    print "compound: ", $name , " , " , $class , "\n";
+    $type = Hdf5::H5Tget_member_type($datatype, $n);
+    $size = Hdf5::H5Tget_size($type);
+
+    $names  [$n] = $name;
+    $classes[$n] = $class;
+    $sizes  [$n] = $size;
+    $types  [$n] = $type;
+    $total_size += $size;
   }
 
-  "";
+  my $memtype = Hdf5::H5Tcreate(Hdf5::get_H5T_COMPOUND(), $total_size);
+
+  # Build in memory representation
+  my $position=0;
+  for($n=0;$n<$member_count;$n++) {
+    Hdf5::H5Tinsert($memtype,$names[$n],$position,$types[$n]);
+    $position += $sizes[$n];
+  }
+
+  # change this so, a) they are read as arguments, and b) they can be set to -1 to read everything.
+
+  $start = 0;
+  $end   = 10;
+
+  my @file_hcount   = ( $end - $start );
+  my @file_hnstart  = ( $start );
+  my @file_hnstride = ( 1 );
+  my @file_hblock   = ( 1 );
+
+  my @mem_hcount   = ( $end - $start );
+  my @mem_hnstart  = ( 0 );
+  my @mem_hnstride = ( 1 );
+  my @mem_hblock   = ( 1 );
+
+
+  my $file_dataspace = Hdf5::H5Dget_space($dataset);
+  Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
+  
+  my $memory_dataspace = Hdf5::H5Dget_space($dataset);
+  Hdf5::H5Sselect_hyperslab($memory_dataspace, $Hdf5::H5S_SELECT_SET, \@mem_hnstart, \@mem_hnstride, \@mem_hcount, \@mem_hblock);
+
+  my $status = Hdf5::H5DreadRaw($dataset, $memtype, $memory_dataspace, $file_dataspace, $Hdf5::H5P_DEFAULT, $dataout, ($end - $start)*$total_size);
+  
+
+  my $unpack_string = "(";
+  for($n=0;$n<$member_count;$n++) {
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= "i"; }
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= "I"; }
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "v"; }
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "v"; }
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= "f"; }
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= "d"; }
+  }
+  $unpack_string .= ")*";
+
+  my @as_array = unpack q[(IIdd)*], $dataout;
+
+  [ @names, @as_array ];
 }
 
 # read a whole attribute

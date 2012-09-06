@@ -15,6 +15,13 @@ MODULE = Hdf5		PACKAGE = Hdf5
 INCLUDE: const-xs.inc
 
 hid_t
+get_H5T_STD_U16LE()
+CODE:
+	RETVAL = H5T_STD_U16LE_g;
+OUTPUT:
+	RETVAL
+
+hid_t
 get_H5T_STD_I16LE()
 CODE:
 	RETVAL = H5T_STD_I16LE_g;
@@ -25,6 +32,27 @@ hid_t
 get_H5T_STD_I32LE()
 CODE:
 	RETVAL = H5T_STD_I32LE_g;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_STD_U32LE()
+CODE:
+	RETVAL = H5T_STD_U32LE_g;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_IEEE_F32LE()
+CODE:
+	RETVAL = H5T_IEEE_F32LE;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_IEEE_F64LE()
+CODE:
+	RETVAL = H5T_IEEE_F64LE;
 OUTPUT:
 	RETVAL
 
@@ -42,12 +70,6 @@ CODE:
 OUTPUT:
 	RETVAL
 
-hid_t
-get_H5T_IEEE_F64LE()
-CODE:
-	RETVAL = H5T_IEEE_F64LE;
-OUTPUT:
-	RETVAL
 
 hid_t
 get_H5T_NATIVE_INT()
@@ -509,3 +531,13 @@ CODE:
 	RETVAL = 1;
 OUTPUT:
 	RETVAL
+
+hid_t
+H5Tget_member_type(dtype_id,field_idx)
+	hid_t dtype_id
+	unsigned int field_idx
+
+int
+H5Tequal(dtype_id1,dtype_id2)
+	hid_t dtype_id1
+	hid_t dtype_id2

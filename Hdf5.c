@@ -273,6 +273,24 @@ XS_EUPXS(XS_Hdf5_constant)
 /* INCLUDE: Returning to 'Hdf5.xs' from 'const-xs.inc' */
 
 
+XS_EUPXS(XS_Hdf5_get_H5T_STD_U16LE); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_get_H5T_STD_U16LE)
+{
+    dVAR; dXSARGS;
+    if (items != 0)
+       croak_xs_usage(cv,  "");
+    {
+	hid_t	RETVAL;
+	dXSTARG;
+#line 20 "Hdf5.xs"
+	RETVAL = H5T_STD_U16LE_g;
+#line 288 "Hdf5.c"
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
 XS_EUPXS(XS_Hdf5_get_H5T_STD_I16LE); /* prototype to pass -Wmissing-prototypes */
 XS_EUPXS(XS_Hdf5_get_H5T_STD_I16LE)
 {
@@ -282,9 +300,9 @@ XS_EUPXS(XS_Hdf5_get_H5T_STD_I16LE)
     {
 	hid_t	RETVAL;
 	dXSTARG;
-#line 20 "Hdf5.xs"
+#line 27 "Hdf5.xs"
 	RETVAL = H5T_STD_I16LE_g;
-#line 288 "Hdf5.c"
+#line 306 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
@@ -300,35 +318,17 @@ XS_EUPXS(XS_Hdf5_get_H5T_STD_I32LE)
     {
 	hid_t	RETVAL;
 	dXSTARG;
-#line 27 "Hdf5.xs"
+#line 34 "Hdf5.xs"
 	RETVAL = H5T_STD_I32LE_g;
-#line 306 "Hdf5.c"
+#line 324 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
 }
 
 
-XS_EUPXS(XS_Hdf5_get_H5T_COMPOUND); /* prototype to pass -Wmissing-prototypes */
-XS_EUPXS(XS_Hdf5_get_H5T_COMPOUND)
-{
-    dVAR; dXSARGS;
-    if (items != 0)
-       croak_xs_usage(cv,  "");
-    {
-	H5T_class_t	RETVAL;
-	dXSTARG;
-#line 34 "Hdf5.xs"
-	RETVAL = H5T_COMPOUND;
-#line 324 "Hdf5.c"
-	XSprePUSH; PUSHi((IV)RETVAL);
-    }
-    XSRETURN(1);
-}
-
-
-XS_EUPXS(XS_Hdf5_get_H5S_SELECT_SET); /* prototype to pass -Wmissing-prototypes */
-XS_EUPXS(XS_Hdf5_get_H5S_SELECT_SET)
+XS_EUPXS(XS_Hdf5_get_H5T_STD_U32LE); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_get_H5T_STD_U32LE)
 {
     dVAR; dXSARGS;
     if (items != 0)
@@ -337,8 +337,26 @@ XS_EUPXS(XS_Hdf5_get_H5S_SELECT_SET)
 	hid_t	RETVAL;
 	dXSTARG;
 #line 41 "Hdf5.xs"
-	RETVAL = H5S_SELECT_SET;
+	RETVAL = H5T_STD_U32LE_g;
 #line 342 "Hdf5.c"
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_get_H5T_IEEE_F32LE); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_get_H5T_IEEE_F32LE)
+{
+    dVAR; dXSARGS;
+    if (items != 0)
+       croak_xs_usage(cv,  "");
+    {
+	hid_t	RETVAL;
+	dXSTARG;
+#line 48 "Hdf5.xs"
+	RETVAL = H5T_IEEE_F32LE;
+#line 360 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
@@ -354,9 +372,45 @@ XS_EUPXS(XS_Hdf5_get_H5T_IEEE_F64LE)
     {
 	hid_t	RETVAL;
 	dXSTARG;
-#line 48 "Hdf5.xs"
+#line 55 "Hdf5.xs"
 	RETVAL = H5T_IEEE_F64LE;
-#line 360 "Hdf5.c"
+#line 378 "Hdf5.c"
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_get_H5T_COMPOUND); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_get_H5T_COMPOUND)
+{
+    dVAR; dXSARGS;
+    if (items != 0)
+       croak_xs_usage(cv,  "");
+    {
+	H5T_class_t	RETVAL;
+	dXSTARG;
+#line 62 "Hdf5.xs"
+	RETVAL = H5T_COMPOUND;
+#line 396 "Hdf5.c"
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_get_H5S_SELECT_SET); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_get_H5S_SELECT_SET)
+{
+    dVAR; dXSARGS;
+    if (items != 0)
+       croak_xs_usage(cv,  "");
+    {
+	hid_t	RETVAL;
+	dXSTARG;
+#line 69 "Hdf5.xs"
+	RETVAL = H5S_SELECT_SET;
+#line 414 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
@@ -372,9 +426,9 @@ XS_EUPXS(XS_Hdf5_get_H5T_NATIVE_INT)
     {
 	hid_t	RETVAL;
 	dXSTARG;
-#line 55 "Hdf5.xs"
+#line 77 "Hdf5.xs"
 	RETVAL = H5T_NATIVE_INT_g;
-#line 378 "Hdf5.c"
+#line 432 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
@@ -390,9 +444,9 @@ XS_EUPXS(XS_Hdf5_get_H5T_NATIVE_FLOAT)
     {
 	hid_t	RETVAL;
 	dXSTARG;
-#line 62 "Hdf5.xs"
+#line 84 "Hdf5.xs"
 	RETVAL = H5T_NATIVE_FLOAT_g;
-#line 396 "Hdf5.c"
+#line 450 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
@@ -408,9 +462,9 @@ XS_EUPXS(XS_Hdf5_get_H5T_NATIVE_DOUBLE)
     {
 	hid_t	RETVAL;
 	dXSTARG;
-#line 69 "Hdf5.xs"
+#line 91 "Hdf5.xs"
 	RETVAL = H5T_NATIVE_DOUBLE_g;
-#line 414 "Hdf5.c"
+#line 468 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
@@ -624,7 +678,7 @@ XS_EUPXS(XS_Hdf5_H5Sget_simple_extent_dims)
 		}
 	} STMT_END
 ;
-#line 118 "Hdf5.xs"
+#line 140 "Hdf5.xs"
 	hsize_t *cdims    = malloc((av_len(dims)+1)   *sizeof(hsize_t));
 	hsize_t *cmaxdims = malloc((av_len(maxdims)+1)*sizeof(hsize_t));
 	RETVAL = H5Sget_simple_extent_dims(space_id,cdims,cmaxdims);
@@ -635,7 +689,7 @@ XS_EUPXS(XS_Hdf5_H5Sget_simple_extent_dims)
 	}
 	free(cdims);
 	free(cmaxdims);
-#line 639 "Hdf5.c"
+#line 693 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -691,7 +745,7 @@ XS_EUPXS(XS_Hdf5_H5Screate_simpleNULL)
 		}
 	} STMT_END
 ;
-#line 142 "Hdf5.xs"
+#line 164 "Hdf5.xs"
 	int i=0;
 	hsize_t d[100];
 	for(i=0;i<rank;i++) {
@@ -699,7 +753,7 @@ XS_EUPXS(XS_Hdf5_H5Screate_simpleNULL)
 		d[i] = SvNV(*e);
 	}
 	RETVAL = H5Screate_simple(rank,d,NULL);
-#line 703 "Hdf5.c"
+#line 757 "Hdf5.c"
 	XSprePUSH; PUSHu((UV)RETVAL);
     }
     XSRETURN(1);
@@ -971,7 +1025,7 @@ XS_EUPXS(XS_Hdf5_H5Dwrite)
 		}
 	} STMT_END
 ;
-#line 217 "Hdf5.xs"
+#line 239 "Hdf5.xs"
 	int i=0;
 	unsigned long buffer[100];
 	for(i=0;i<=av_len(buf);i++) {
@@ -979,7 +1033,7 @@ XS_EUPXS(XS_Hdf5_H5Dwrite)
 		buffer[i] = SvNV(*e);
 	}
 	RETVAL = H5Dwrite(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,buffer);
-#line 983 "Hdf5.c"
+#line 1037 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1020,7 +1074,7 @@ XS_EUPXS(XS_Hdf5_H5Dread32)
 		}
 	} STMT_END
 ;
-#line 236 "Hdf5.xs"
+#line 258 "Hdf5.xs"
 	int32_t *data = malloc(av_len(buf)*sizeof(int32_t));
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
 	int i=0;
@@ -1028,7 +1082,7 @@ XS_EUPXS(XS_Hdf5_H5Dread32)
 		av_store(buf,i,newSVnv(data[i]));
 	}
 	free(data);
-#line 1032 "Hdf5.c"
+#line 1086 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1069,7 +1123,7 @@ XS_EUPXS(XS_Hdf5_H5Dread16)
 		}
 	} STMT_END
 ;
-#line 255 "Hdf5.xs"
+#line 277 "Hdf5.xs"
 	int16_t *data = malloc(av_len(buf)*sizeof(int16_t));
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
 	int i=0;
@@ -1077,7 +1131,7 @@ XS_EUPXS(XS_Hdf5_H5Dread16)
 		av_store(buf,i,newSVnv(data[i]));
 	}
 	free(data);
-#line 1081 "Hdf5.c"
+#line 1135 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1107,7 +1161,7 @@ XS_EUPXS(XS_Hdf5_H5DreadRaw)
 ;
 	herr_t	RETVAL;
 	dXSTARG;
-#line 275 "Hdf5.xs"
+#line 297 "Hdf5.xs"
 	size_t read_size=size;
 
 	SvUPGRADE(buf, SVt_PV);
@@ -1117,7 +1171,7 @@ XS_EUPXS(XS_Hdf5_H5DreadRaw)
 	data[1]=0;
 	SvCUR_set(buf,read_size);
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
-#line 1121 "Hdf5.c"
+#line 1175 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1197,7 +1251,7 @@ XS_EUPXS(XS_Hdf5_H5Sselect_hyperslab)
 		}
 	} STMT_END
 ;
-#line 296 "Hdf5.xs"
+#line 318 "Hdf5.xs"
 	hsize_t *hstart  = malloc(sizeof(hsize_t)*av_len(start)); 
 	hsize_t *hstride = malloc(sizeof(hsize_t)*av_len(stride));
 	hsize_t *hcount  = malloc(sizeof(hsize_t)*av_len(count));
@@ -1229,7 +1283,7 @@ XS_EUPXS(XS_Hdf5_H5Sselect_hyperslab)
 	free(hstride);
 	free(hcount);
 	free(hblock);
-#line 1233 "Hdf5.c"
+#line 1287 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1285,7 +1339,7 @@ XS_EUPXS(XS_Hdf5_H5Aread64f)
 		}
 	} STMT_END
 ;
-#line 341 "Hdf5.xs"
+#line 363 "Hdf5.xs"
 	double *data = malloc((av_len(buf)+1)*sizeof(double));
 	RETVAL = H5Aread(attr_id,mem_type_id,data);
 	int i=0;
@@ -1293,7 +1347,7 @@ XS_EUPXS(XS_Hdf5_H5Aread64f)
 		av_store(buf,i,newSVnv(data[i]));
 	}
 	free(data);
-#line 1297 "Hdf5.c"
+#line 1351 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1347,11 +1401,11 @@ XS_EUPXS(XS_Hdf5_H5Gget_num_objs)
 		}
 	} STMT_END
 ;
-#line 361 "Hdf5.xs"
+#line 383 "Hdf5.xs"
 	hsize_t cnum_obj;
 	RETVAL = H5Gget_num_objs(loc_id,&cnum_obj);
 	av_store(num_obj,0,newSVnv(cnum_obj));
-#line 1355 "Hdf5.c"
+#line 1409 "Hdf5.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -1375,7 +1429,7 @@ XS_EUPXS(XS_Hdf5_H5Gget_objname_by_idx)
 ;
 	ssize_t	RETVAL;
 	dXSTARG;
-#line 374 "Hdf5.xs"
+#line 396 "Hdf5.xs"
 	SvUPGRADE(name, SVt_PV);
         SvPOK_only(name);
 	char *data = SvGROW(name,size);
@@ -1384,7 +1438,7 @@ XS_EUPXS(XS_Hdf5_H5Gget_objname_by_idx)
 	H5Gget_objname_by_idx(loc_id,idx,data,size);
 	int len = strlen(data);
 	SvCUR_set(name,len);
-#line 1388 "Hdf5.c"
+#line 1442 "Hdf5.c"
     }
     XSRETURN(1);
 }
@@ -1404,7 +1458,7 @@ XS_EUPXS(XS_Hdf5_H5Gget_objtype)
 	SV *	type = ST(2)
 ;
 	bool	RETVAL;
-#line 389 "Hdf5.xs"
+#line 411 "Hdf5.xs"
 	SvUPGRADE(type, SVt_PV);
         SvPOK_only(type);
 	char *data = SvGROW(type,40);
@@ -1425,7 +1479,7 @@ XS_EUPXS(XS_Hdf5_H5Gget_objtype)
 	int len = strlen(data);
 	SvCUR_set(type,len);
 	RETVAL = 1;
-#line 1429 "Hdf5.c"
+#line 1483 "Hdf5.c"
 	ST(0) = boolSV(RETVAL);
 	sv_2mortal(ST(0));
     }
@@ -1488,7 +1542,7 @@ XS_EUPXS(XS_Hdf5_H5Aget_name)
 ;
 	ssize_t	RETVAL;
 	dXSTARG;
-#line 428 "Hdf5.xs"
+#line 450 "Hdf5.xs"
 	SvUPGRADE(buf, SVt_PV);
         SvPOK_only(buf);
 	char *data = SvGROW(buf,size);
@@ -1496,7 +1550,7 @@ XS_EUPXS(XS_Hdf5_H5Aget_name)
 	H5Aget_name(attr_id,size,data);
 	int len = strlen(data);
 	SvCUR_set(buf,len);
-#line 1500 "Hdf5.c"
+#line 1554 "Hdf5.c"
     }
     XSRETURN(1);
 }
@@ -1514,7 +1568,7 @@ XS_EUPXS(XS_Hdf5_H5Tget_class)
 	SV *	class = ST(1)
 ;
 	bool	RETVAL;
-#line 441 "Hdf5.xs"
+#line 463 "Hdf5.xs"
 	SvUPGRADE(class, SVt_PV);
         SvPOK_only(class);
 	char *data = SvGROW(class,40);
@@ -1534,7 +1588,7 @@ XS_EUPXS(XS_Hdf5_H5Tget_class)
 	int len = strlen(data);
 	SvCUR_set(class,len);
 	RETVAL = 1;
-#line 1538 "Hdf5.c"
+#line 1592 "Hdf5.c"
 	ST(0) = boolSV(RETVAL);
 	sv_2mortal(ST(0));
     }
@@ -1575,7 +1629,7 @@ XS_EUPXS(XS_Hdf5_H5Tget_member_name)
 	SV *	name = ST(2)
 ;
 	bool	RETVAL;
-#line 474 "Hdf5.xs"
+#line 496 "Hdf5.xs"
 	char *namestr = H5Tget_member_name(datatype,idx);
 
 	SvUPGRADE(name, SVt_PV);
@@ -1584,7 +1638,7 @@ XS_EUPXS(XS_Hdf5_H5Tget_member_name)
 	strcpy(data,namestr);
 	SvCUR_set(name,strlen(namestr));
 	RETVAL = 1;
-#line 1588 "Hdf5.c"
+#line 1642 "Hdf5.c"
 	ST(0) = boolSV(RETVAL);
 	sv_2mortal(ST(0));
     }
@@ -1606,7 +1660,7 @@ XS_EUPXS(XS_Hdf5_H5Tget_member_class)
 	SV *	class = ST(2)
 ;
 	bool	RETVAL;
-#line 491 "Hdf5.xs"
+#line 513 "Hdf5.xs"
 	SvUPGRADE(class, SVt_PV);
         SvPOK_only(class);
 	char *data = SvGROW(class,40);
@@ -1626,9 +1680,51 @@ XS_EUPXS(XS_Hdf5_H5Tget_member_class)
 	int len = strlen(data);
 	SvCUR_set(class,len);
 	RETVAL = 1;
-#line 1630 "Hdf5.c"
+#line 1684 "Hdf5.c"
 	ST(0) = boolSV(RETVAL);
 	sv_2mortal(ST(0));
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Tget_member_type); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Tget_member_type)
+{
+    dVAR; dXSARGS;
+    if (items != 2)
+       croak_xs_usage(cv,  "dtype_id, field_idx");
+    {
+	hid_t	dtype_id = (hid_t)SvUV(ST(0))
+;
+	unsigned int	field_idx = (unsigned int)SvUV(ST(1))
+;
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tget_member_type(dtype_id, field_idx);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Tequal); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Tequal)
+{
+    dVAR; dXSARGS;
+    if (items != 2)
+       croak_xs_usage(cv,  "dtype_id1, dtype_id2");
+    {
+	hid_t	dtype_id1 = (hid_t)SvUV(ST(0))
+;
+	hid_t	dtype_id2 = (hid_t)SvUV(ST(1))
+;
+	int	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tequal(dtype_id1, dtype_id2);
+	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
 }
@@ -1654,11 +1750,14 @@ XS_EXTERNAL(boot_Hdf5)
     XS_VERSION_BOOTCHECK;
 
         newXS("Hdf5::constant", XS_Hdf5_constant, file);
+        newXS("Hdf5::get_H5T_STD_U16LE", XS_Hdf5_get_H5T_STD_U16LE, file);
         newXS("Hdf5::get_H5T_STD_I16LE", XS_Hdf5_get_H5T_STD_I16LE, file);
         newXS("Hdf5::get_H5T_STD_I32LE", XS_Hdf5_get_H5T_STD_I32LE, file);
+        newXS("Hdf5::get_H5T_STD_U32LE", XS_Hdf5_get_H5T_STD_U32LE, file);
+        newXS("Hdf5::get_H5T_IEEE_F32LE", XS_Hdf5_get_H5T_IEEE_F32LE, file);
+        newXS("Hdf5::get_H5T_IEEE_F64LE", XS_Hdf5_get_H5T_IEEE_F64LE, file);
         newXS("Hdf5::get_H5T_COMPOUND", XS_Hdf5_get_H5T_COMPOUND, file);
         newXS("Hdf5::get_H5S_SELECT_SET", XS_Hdf5_get_H5S_SELECT_SET, file);
-        newXS("Hdf5::get_H5T_IEEE_F64LE", XS_Hdf5_get_H5T_IEEE_F64LE, file);
         newXS("Hdf5::get_H5T_NATIVE_INT", XS_Hdf5_get_H5T_NATIVE_INT, file);
         newXS("Hdf5::get_H5T_NATIVE_FLOAT", XS_Hdf5_get_H5T_NATIVE_FLOAT, file);
         newXS("Hdf5::get_H5T_NATIVE_DOUBLE", XS_Hdf5_get_H5T_NATIVE_DOUBLE, file);
@@ -1702,6 +1801,8 @@ XS_EXTERNAL(boot_Hdf5)
         newXS("Hdf5::H5Tget_nmembers", XS_Hdf5_H5Tget_nmembers, file);
         newXS("Hdf5::H5Tget_member_name", XS_Hdf5_H5Tget_member_name, file);
         newXS("Hdf5::H5Tget_member_class", XS_Hdf5_H5Tget_member_class, file);
+        newXS("Hdf5::H5Tget_member_type", XS_Hdf5_H5Tget_member_type, file);
+        newXS("Hdf5::H5Tequal", XS_Hdf5_H5Tequal, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);
