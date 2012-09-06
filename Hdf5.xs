@@ -93,10 +93,6 @@ hid_t
 H5Dget_type(dataset)
 	hid_t dataset
 
-H5T_class_t
-H5Tget_class(dtype_id)
-	hid_t	dtype_id
-
 H5T_order_t
 H5Tget_order(dtype_id)
 	hid_t	dtype_id
@@ -365,7 +361,8 @@ CODE:
 	hsize_t cnum_obj;
 	RETVAL = H5Gget_num_objs(loc_id,&cnum_obj);
 	av_store(num_obj,0,newSVnv(cnum_obj));
-	
+OUTPUT:
+	RETVAL
 
 ssize_t
 H5Gget_objname_by_idx(loc_id,idx,name,size)
@@ -435,3 +432,30 @@ CODE:
 	H5Aget_name(attr_id,size,data);
 	int len = strlen(data);
 	SvCUR_set(buf,len);
+
+bool
+H5Tget_class(dtype_id,class)
+	hid_t dtype_id
+	SV *class
+CODE:
+	SvUPGRADE(class, SVt_PV);
+        SvPOK_only(class);
+	char *data = SvGROW(class,40);
+	SvCUR_set(class,40);
+
+	H5T_class_t c = H5Tget_class(dtype_id);
+	if(c == H5T_INTEGER ) strcpy(data,"INTEGER");
+	if(c == H5T_FLOAT   ) strcpy(data,"FLOAT");
+	if(c == H5T_STRING  ) strcpy(data,"STRING");
+	if(c == H5T_BITFIELD) strcpy(data,"BITFIELD");
+	if(c == H5T_OPAQUE  ) strcpy(data,"OPAQUE");
+	if(c == H5T_COMPOUND) strcpy(data,"COMPOUND");
+	if(c == H5T_REFERENCE) strcpy(data,"REFERENCE");
+	if(c == H5T_ENUM    ) strcpy(data,"ENUM");
+	if(c == H5T_VLEN    ) strcpy(data,"VLEN");
+	if(c == H5T_ARRAY   ) strcpy(data,"ARRAY");
+	int len = strlen(data);
+	SvCUR_set(class,len);
+	RETVAL = 1;
+OUTPUT:
+	RETVAL

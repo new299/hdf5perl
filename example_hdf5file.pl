@@ -1,6 +1,7 @@
 use Hdf5File;
 use v5.14;
 
+use Data::Dumper;
 
 my $file = Hdf5File->new();
 $file->open('./random.hdf5');
@@ -45,6 +46,7 @@ sub dump_datasets {
   for(my $n=0;$n<=$#datasets;$n++) {
     say "dataset  : " , $path , $datasets[$n];
     dump_attributes_dataset($path .$datasets[$n]);
+    print Dumper($file->read_dataset($path . $datasets[$n]));
   }
 }
 
