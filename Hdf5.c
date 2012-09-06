@@ -1450,6 +1450,75 @@ XS_EUPXS(XS_Hdf5_H5Gget_objtype)
     XSRETURN(1);
 }
 
+
+XS_EUPXS(XS_Hdf5_H5Aget_num_attrs); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Aget_num_attrs)
+{
+    dVAR; dXSARGS;
+    if (items != 1)
+       croak_xs_usage(cv,  "loc_id");
+    {
+	hid_t	loc_id = (hid_t)SvUV(ST(0))
+;
+	int	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Aget_num_attrs(loc_id);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Aopen_idx); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Aopen_idx)
+{
+    dVAR; dXSARGS;
+    if (items != 2)
+       croak_xs_usage(cv,  "loc_id, idx");
+    {
+	hid_t	loc_id = (hid_t)SvUV(ST(0))
+;
+	unsigned int	idx = (unsigned int)SvUV(ST(1))
+;
+	hid_t	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Aopen_idx(loc_id, idx);
+	XSprePUSH; PUSHu((UV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Aget_name); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Aget_name)
+{
+    dVAR; dXSARGS;
+    if (items != 3)
+       croak_xs_usage(cv,  "attr_id, size, buf");
+    {
+	hid_t	attr_id = (hid_t)SvUV(ST(0))
+;
+	size_t	size = (size_t)SvUV(ST(1))
+;
+	SV *	buf = ST(2)
+;
+	ssize_t	RETVAL;
+	dXSTARG;
+#line 431 "Hdf5.xs"
+	SvUPGRADE(buf, SVt_PV);
+        SvPOK_only(buf);
+	char *data = SvGROW(buf,size);
+	SvCUR_set(buf,size);
+	H5Aget_name(attr_id,size,data);
+	int len = strlen(data);
+	SvCUR_set(buf,len);
+#line 1518 "Hdf5.c"
+    }
+    XSRETURN(1);
+}
+
 #ifdef __cplusplus
 extern "C"
 #endif
@@ -1513,6 +1582,9 @@ XS_EXTERNAL(boot_Hdf5)
         newXS("Hdf5::H5Gget_num_objs", XS_Hdf5_H5Gget_num_objs, file);
         newXS("Hdf5::H5Gget_objname_by_idx", XS_Hdf5_H5Gget_objname_by_idx, file);
         newXS("Hdf5::H5Gget_objtype", XS_Hdf5_H5Gget_objtype, file);
+        newXS("Hdf5::H5Aget_num_attrs", XS_Hdf5_H5Aget_num_attrs, file);
+        newXS("Hdf5::H5Aopen_idx", XS_Hdf5_H5Aopen_idx, file);
+        newXS("Hdf5::H5Aget_name", XS_Hdf5_H5Aget_name, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);

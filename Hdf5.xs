@@ -411,3 +411,27 @@ CODE:
 	RETVAL = 1;
 OUTPUT:
 	RETVAL
+
+int
+H5Aget_num_attrs(loc_id)
+	hid_t loc_id
+
+hid_t
+H5Aopen_idx(loc_id,idx)
+	hid_t loc_id
+	unsigned int idx
+
+
+ssize_t
+H5Aget_name(attr_id,size,buf)
+	hid_t attr_id
+	size_t size
+	SV *buf
+CODE:
+	SvUPGRADE(buf, SVt_PV);
+        SvPOK_only(buf);
+	char *data = SvGROW(buf,size);
+	SvCUR_set(buf,size);
+	H5Aget_name(attr_id,size,data);
+	int len = strlen(data);
+	SvCUR_set(buf,len);

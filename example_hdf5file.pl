@@ -8,6 +8,33 @@ $file->open('./random.hdf5');
 dump_groups("/");
 
 
+sub dump_attributes_group {
+
+  my (@args) = @_;
+  my $path = $args[0];
+
+  my @attributes = $file->get_group_attributes($path);
+
+  for(my $n=0;$n<=$#attributes;$n++) {
+    if($attributes[$n] ne "") {
+      say "attribute: " , $path , $attributes[$n];
+    }
+  }
+}
+
+sub dump_attributes_dataset {
+  my (@args) = @_;
+  my $path = $args[0];
+
+  my @attributes = $file->get_dataset_attributes($path);
+
+  for(my $n=0;$n<=$#attributes;$n++) {
+    if($attributes[$n] ne "") {
+      say "attribute: " , $path , $attributes[$n];
+    }
+  }
+}
+
 sub dump_datasets {
   my (@args) = @_;
 
@@ -16,7 +43,8 @@ sub dump_datasets {
   my @datasets = $file->get_datasets($path);
 
   for(my $n=0;$n<=$#datasets;$n++) {
-    say "dataset: " , $path , $datasets[$n];
+    say "dataset  : " , $path , $datasets[$n];
+    dump_attributes_dataset($path .$datasets[$n]);
   }
 }
 
@@ -24,7 +52,8 @@ sub dump_groups {
   my (@args) = @_;
 
   my $path = $args[0];
-  say "group  : " , $path;
+  say "group    : " , $path;
+  dump_attributes_group($path);
   dump_datasets($path);
 
   my @groups = $file->get_groups($path);
