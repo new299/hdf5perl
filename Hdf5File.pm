@@ -251,7 +251,7 @@ sub read_dataset_compound {
   }
   $unpack_string .= ")*";
 
-  my @as_array = unpack q[(IIdd)*], $dataout;
+  my @as_array = unpack $unpack_string, $dataout;
 
   [ @names, @as_array ];
 }
