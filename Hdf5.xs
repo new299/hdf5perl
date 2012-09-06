@@ -444,16 +444,66 @@ CODE:
 	SvCUR_set(class,40);
 
 	H5T_class_t c = H5Tget_class(dtype_id);
-	if(c == H5T_INTEGER ) strcpy(data,"INTEGER");
-	if(c == H5T_FLOAT   ) strcpy(data,"FLOAT");
-	if(c == H5T_STRING  ) strcpy(data,"STRING");
-	if(c == H5T_BITFIELD) strcpy(data,"BITFIELD");
-	if(c == H5T_OPAQUE  ) strcpy(data,"OPAQUE");
-	if(c == H5T_COMPOUND) strcpy(data,"COMPOUND");
+	if(c == H5T_INTEGER  ) strcpy(data,"INTEGER");
+	if(c == H5T_FLOAT    ) strcpy(data,"FLOAT");
+	if(c == H5T_STRING   ) strcpy(data,"STRING");
+	if(c == H5T_BITFIELD ) strcpy(data,"BITFIELD");
+	if(c == H5T_OPAQUE   ) strcpy(data,"OPAQUE");
+	if(c == H5T_COMPOUND ) strcpy(data,"COMPOUND");
 	if(c == H5T_REFERENCE) strcpy(data,"REFERENCE");
-	if(c == H5T_ENUM    ) strcpy(data,"ENUM");
-	if(c == H5T_VLEN    ) strcpy(data,"VLEN");
-	if(c == H5T_ARRAY   ) strcpy(data,"ARRAY");
+	if(c == H5T_ENUM     ) strcpy(data,"ENUM");
+	if(c == H5T_VLEN     ) strcpy(data,"VLEN");
+	if(c == H5T_ARRAY    ) strcpy(data,"ARRAY");
+	int len = strlen(data);
+	SvCUR_set(class,len);
+	RETVAL = 1;
+OUTPUT:
+	RETVAL
+
+int
+H5Tget_nmembers(dtype_id)
+	hid_t dtype_id
+
+
+bool
+H5Tget_member_name (datatype,idx,name)
+	hid_t datatype
+	int idx
+	SV *name
+CODE:
+	char *namestr = H5Tget_member_name(datatype,idx);
+
+	SvUPGRADE(name, SVt_PV);
+        SvPOK_only(name);
+	char *data = SvGROW(name,strlen(namestr));
+	strcpy(data,namestr);
+	SvCUR_set(name,strlen(namestr));
+	RETVAL = 1;
+OUTPUT:
+	RETVAL
+
+bool
+H5Tget_member_class(dtype_id,idx,class)
+	hid_t dtype_id
+	int idx
+	SV *class
+CODE:
+	SvUPGRADE(class, SVt_PV);
+        SvPOK_only(class);
+	char *data = SvGROW(class,40);
+	SvCUR_set(class,40);
+
+	H5T_class_t c = H5Tget_member_class(dtype_id,idx);
+	if(c == H5T_INTEGER  ) strcpy(data,"INTEGER");
+	if(c == H5T_FLOAT    ) strcpy(data,"FLOAT");
+	if(c == H5T_STRING   ) strcpy(data,"STRING");
+	if(c == H5T_BITFIELD ) strcpy(data,"BITFIELD");
+	if(c == H5T_OPAQUE   ) strcpy(data,"OPAQUE");
+	if(c == H5T_COMPOUND ) strcpy(data,"COMPOUND");
+	if(c == H5T_REFERENCE) strcpy(data,"REFERENCE");
+	if(c == H5T_ENUM     ) strcpy(data,"ENUM");
+	if(c == H5T_VLEN     ) strcpy(data,"VLEN");
+	if(c == H5T_ARRAY    ) strcpy(data,"ARRAY");
 	int len = strlen(data);
 	SvCUR_set(class,len);
 	RETVAL = 1;

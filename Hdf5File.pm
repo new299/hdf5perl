@@ -123,6 +123,9 @@ sub read_dataset {
 
   Hdf5::H5Tget_class($datatype,$class);
   $size      = Hdf5::H5Tget_size($datatype);
+   
+  Hdf5::H5Dclose($dataset);
+  Hdf5::H5Tclose($datatype);
 
   if(($class eq "INTEGER") && ($size == 8 ) ) { return read_dataset_int8($dataset_path);  }
   if(($class eq "INTEGER") && ($size == 16) ) { return read_dataset_int16($dataset_path); }
@@ -134,7 +137,7 @@ sub read_dataset {
   if( $class eq "STRING"                  ) { return read_dataset_string($dataset_path);  }
   if( $class eq "BITFIELD"){ }
   if( $class eq "OPAQUE"  ){ }
-  if( $class eq "COMPOUND"                ) { return read_dataset_compound($dataset_path);}
+  if( $class eq "COMPOUND"                ) { return $self->read_dataset_compound($dataset_path);}
   if( $class eq "REFERENCE"){ }
   if( $class eq "ENUM") { }
   if( $class eq "VLEN") { }
@@ -171,7 +174,25 @@ sub read_dataset_string {
 }
 
 sub read_dataset_compound {
-  print "compound datatype\n";
+  
+  my ($self, @args) = @_;
+  my $dataset_path = $args[0];
+  $dataset   = Hdf5::H5Dopen2($self->{_filehandle},$dataset_path,$Hdf5::H5P_DEFAULT);
+  $datatype  = Hdf5::H5Dget_type($dataset);
+
+  print "compound datatype ", $dataset_path, "\n";
+
+  Hdf5::H5Tget_class($datatype,$class);
+  $size      = Hdf5::H5Tget_size($datatype);
+
+  $member_count = Hdf5::H5Tget_nmembers($datatype);
+  for($n=0;$n<$member_count;$n++) {
+    Hdf5::H5Tget_member_class($datatype,$n,$class);
+    Hdf5::H5Tget_member_name ($datatype,$n,$name );
+
+    print "compound: ", $name , " , " , $class , "\n";
+  }
+
   "";
 }
 

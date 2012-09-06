@@ -1521,20 +1521,112 @@ XS_EUPXS(XS_Hdf5_H5Tget_class)
 	SvCUR_set(class,40);
 
 	H5T_class_t c = H5Tget_class(dtype_id);
-	if(c == H5T_INTEGER ) strcpy(data,"INTEGER");
-	if(c == H5T_FLOAT   ) strcpy(data,"FLOAT");
-	if(c == H5T_STRING  ) strcpy(data,"STRING");
-	if(c == H5T_BITFIELD) strcpy(data,"BITFIELD");
-	if(c == H5T_OPAQUE  ) strcpy(data,"OPAQUE");
-	if(c == H5T_COMPOUND) strcpy(data,"COMPOUND");
+	if(c == H5T_INTEGER  ) strcpy(data,"INTEGER");
+	if(c == H5T_FLOAT    ) strcpy(data,"FLOAT");
+	if(c == H5T_STRING   ) strcpy(data,"STRING");
+	if(c == H5T_BITFIELD ) strcpy(data,"BITFIELD");
+	if(c == H5T_OPAQUE   ) strcpy(data,"OPAQUE");
+	if(c == H5T_COMPOUND ) strcpy(data,"COMPOUND");
 	if(c == H5T_REFERENCE) strcpy(data,"REFERENCE");
-	if(c == H5T_ENUM    ) strcpy(data,"ENUM");
-	if(c == H5T_VLEN    ) strcpy(data,"VLEN");
-	if(c == H5T_ARRAY   ) strcpy(data,"ARRAY");
+	if(c == H5T_ENUM     ) strcpy(data,"ENUM");
+	if(c == H5T_VLEN     ) strcpy(data,"VLEN");
+	if(c == H5T_ARRAY    ) strcpy(data,"ARRAY");
 	int len = strlen(data);
 	SvCUR_set(class,len);
 	RETVAL = 1;
 #line 1538 "Hdf5.c"
+	ST(0) = boolSV(RETVAL);
+	sv_2mortal(ST(0));
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Tget_nmembers); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Tget_nmembers)
+{
+    dVAR; dXSARGS;
+    if (items != 1)
+       croak_xs_usage(cv,  "dtype_id");
+    {
+	hid_t	dtype_id = (hid_t)SvUV(ST(0))
+;
+	int	RETVAL;
+	dXSTARG;
+
+	RETVAL = H5Tget_nmembers(dtype_id);
+	XSprePUSH; PUSHi((IV)RETVAL);
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Tget_member_name); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Tget_member_name)
+{
+    dVAR; dXSARGS;
+    if (items != 3)
+       croak_xs_usage(cv,  "datatype, idx, name");
+    {
+	hid_t	datatype = (hid_t)SvUV(ST(0))
+;
+	int	idx = (int)SvIV(ST(1))
+;
+	SV *	name = ST(2)
+;
+	bool	RETVAL;
+#line 474 "Hdf5.xs"
+	char *namestr = H5Tget_member_name(datatype,idx);
+
+	SvUPGRADE(name, SVt_PV);
+        SvPOK_only(name);
+	char *data = SvGROW(name,strlen(namestr));
+	strcpy(data,namestr);
+	SvCUR_set(name,strlen(namestr));
+	RETVAL = 1;
+#line 1588 "Hdf5.c"
+	ST(0) = boolSV(RETVAL);
+	sv_2mortal(ST(0));
+    }
+    XSRETURN(1);
+}
+
+
+XS_EUPXS(XS_Hdf5_H5Tget_member_class); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Hdf5_H5Tget_member_class)
+{
+    dVAR; dXSARGS;
+    if (items != 3)
+       croak_xs_usage(cv,  "dtype_id, idx, class");
+    {
+	hid_t	dtype_id = (hid_t)SvUV(ST(0))
+;
+	int	idx = (int)SvIV(ST(1))
+;
+	SV *	class = ST(2)
+;
+	bool	RETVAL;
+#line 491 "Hdf5.xs"
+	SvUPGRADE(class, SVt_PV);
+        SvPOK_only(class);
+	char *data = SvGROW(class,40);
+	SvCUR_set(class,40);
+
+	H5T_class_t c = H5Tget_member_class(dtype_id,idx);
+	if(c == H5T_INTEGER  ) strcpy(data,"INTEGER");
+	if(c == H5T_FLOAT    ) strcpy(data,"FLOAT");
+	if(c == H5T_STRING   ) strcpy(data,"STRING");
+	if(c == H5T_BITFIELD ) strcpy(data,"BITFIELD");
+	if(c == H5T_OPAQUE   ) strcpy(data,"OPAQUE");
+	if(c == H5T_COMPOUND ) strcpy(data,"COMPOUND");
+	if(c == H5T_REFERENCE) strcpy(data,"REFERENCE");
+	if(c == H5T_ENUM     ) strcpy(data,"ENUM");
+	if(c == H5T_VLEN     ) strcpy(data,"VLEN");
+	if(c == H5T_ARRAY    ) strcpy(data,"ARRAY");
+	int len = strlen(data);
+	SvCUR_set(class,len);
+	RETVAL = 1;
+#line 1630 "Hdf5.c"
 	ST(0) = boolSV(RETVAL);
 	sv_2mortal(ST(0));
     }
@@ -1607,6 +1699,9 @@ XS_EXTERNAL(boot_Hdf5)
         newXS("Hdf5::H5Aopen_idx", XS_Hdf5_H5Aopen_idx, file);
         newXS("Hdf5::H5Aget_name", XS_Hdf5_H5Aget_name, file);
         newXS("Hdf5::H5Tget_class", XS_Hdf5_H5Tget_class, file);
+        newXS("Hdf5::H5Tget_nmembers", XS_Hdf5_H5Tget_nmembers, file);
+        newXS("Hdf5::H5Tget_member_name", XS_Hdf5_H5Tget_member_name, file);
+        newXS("Hdf5::H5Tget_member_class", XS_Hdf5_H5Tget_member_class, file);
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);
