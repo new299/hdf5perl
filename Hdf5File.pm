@@ -1,4 +1,5 @@
 package Hdf5File;
+use Data::Dumper;
 
 use lib './lib';
 use lib './blib/arch/auto/Hdf5';
@@ -253,7 +254,17 @@ sub read_dataset_compound {
 
   my @as_array = unpack $unpack_string, $dataout;
 
-  [ @names, @as_array ];
+  my %result_data;
+  for($n=0;$n<($#names)+1;$n++) {
+    @result_data{$names[$n]} = [];
+  }
+
+  for($n=0;$n<$#as_array;$n++) {
+    my $i = $n % $member_count;
+    push(@result_data{$names[$i]},$as_array[$n]);
+  }
+
+  return %result_data;
 }
 
 # read a whole attribute
