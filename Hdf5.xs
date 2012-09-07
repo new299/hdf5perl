@@ -15,6 +15,41 @@ MODULE = Hdf5		PACKAGE = Hdf5
 INCLUDE: const-xs.inc
 
 hid_t
+get_H5T_STD_I64LE()
+CODE:
+	RETVAL = H5T_STD_I64LE;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_STD_U64LE()
+CODE:
+	RETVAL = H5T_STD_U64LE;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_C_S1()
+CODE:
+	RETVAL = H5T_C_S1;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_STRING()
+CODE:
+	RETVAL = H5T_STRING;
+OUTPUT:
+	RETVAL
+
+hid_t
+get_H5T_STD_I8LE()
+CODE:
+	RETVAL = H5T_STD_I8LE;
+OUTPUT:
+	RETVAL
+
+hid_t
 get_H5T_STD_U16LE()
 CODE:
 	RETVAL = H5T_STD_U16LE_g;
@@ -303,6 +338,25 @@ CODE:
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
 OUTPUT:
 	RETVAL
+
+herr_t 
+H5AreadRaw(attribute_id,mem_type_id,buf)
+	hid_t attribute_id
+	hid_t mem_type_id
+	SV* buf
+CODE:
+	H5A_info_t info;
+	H5Aget_info(attribute_id,&info);
+	size_t read_size = info.data_size;
+
+	SvUPGRADE(buf, SVt_PV);
+        SvPOK_only(buf);
+	char *data = SvGROW(buf,read_size);
+	SvCUR_set(buf,read_size);
+	RETVAL = H5Aread(attribute_id,mem_type_id,data);
+OUTPUT:
+	RETVAL
+
 	
 herr_t
 H5Sselect_hyperslab(space_id,op,start,stride,count,block)
@@ -548,4 +602,8 @@ H5Dget_storage_size(dataset_id)
 hssize_t
 H5Sget_simple_extent_npoints(space_id)
 	hid_t space_id
+
+hid_t
+H5Aget_type(attr_id)
+	hid_t attr_id
 

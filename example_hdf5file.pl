@@ -4,7 +4,7 @@ use v5.14;
 use Data::Dumper;
 
 my $file = Hdf5File->new();
-$file->open('./test.hdf5');
+$file->open('./random.hdf5');
 
 dump_groups("/");
 
@@ -19,6 +19,7 @@ sub dump_attributes_group {
   for(my $n=0;$n<=$#attributes;$n++) {
     if($attributes[$n] ne "") {
       say "attribute: " , $path , $attributes[$n];
+      print Dumper($file->read_attribute($path,$attributes[$n]));
     }
   }
 }
@@ -32,6 +33,7 @@ sub dump_attributes_dataset {
   for(my $n=0;$n<=$#attributes;$n++) {
     if($attributes[$n] ne "") {
       say "attribute: " , $path , $attributes[$n];
+      print Dumper($file->read_attribute($path . $attributes[$n]));
     }
   }
 }

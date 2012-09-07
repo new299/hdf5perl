@@ -298,6 +298,39 @@ sub read_dataset_compound {
 
 # read a whole attribute
 sub read_attribute {
+  my ($self, @args) = @_;
+  my $group_path     = $args[0];
+  my $attribute_name = $args[1];
+
+  my @sample_rate      = ( 0 );
+
+  my $group       = Hdf5::H5Gopen1($self->{_filehandle}, $group_path);
+  my $attribute   = Hdf5::H5Aopen_name($group, $attribute_name);
+  my $memdatatype = Hdf5::H5Aget_type($attribute);
+
+  Hdf5::H5AreadRaw($attribute, $memdatatype, $dataout);
+
+  my $unpack_string = "(";
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_C_S1      ())) { $unpack_string .= "Z"; $is_string=true; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= "i"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= "I"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "v"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "v"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_U64LE ())) { $unpack_string .= "Q"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_I64LE ())) { $unpack_string .= "q"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= "f"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= "d"; }
+  $unpack_string .= ")*";
+
+  my @as_array = unpack $unpack_string, $dataout;
+
+
+  Hdf5::H5Aclose($attribute);
+  Hdf5::H5Gclose($group);
+
+  if($is_string == true) { return $string = join('',@as_array); }
+
+  return @as_array;
 }
 
 1;
