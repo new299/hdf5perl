@@ -4,7 +4,7 @@ use v5.14;
 use Data::Dumper;
 
 my $file = Hdf5File->new();
-$file->open('./random.hdf5');
+$file->open('./test.hdf5');
 
 dump_groups("/");
 

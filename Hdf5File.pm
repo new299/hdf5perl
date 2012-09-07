@@ -130,51 +130,70 @@ sub read_dataset {
    
   Hdf5::H5Dclose($dataset);
   Hdf5::H5Tclose($datatype);
+  
+  # Processing for compound datatypes is different than everything else.
+  if( $class eq "COMPOUND") { return $self->read_dataset_compound($dataset_path,$start,$end);}
 
-  if(($class eq "INTEGER") && ($size == 8 ) ) { return read_dataset_int8($dataset_path,$start,$end);  }
-  if(($class eq "INTEGER") && ($size == 16) ) { return read_dataset_int16($dataset_path,$start,$end); }
-  if(($class eq "INTEGER") && ($size == 32) ) { return read_dataset_int32($dataset_path,$start,$end); }
-  if(($class eq "INTEGER") && ($size == 64) ) { return read_dataset_int32($dataset_path,$start,$end); }
-
-  if(($class eq "FLOAT") && ($size == 32) ) { return read_dataset_float32($dataset_path,$start,$end); }
-  if(($class eq "FLOAT") && ($size == 64) ) { return read_dataset_float64($dataset_path,$start,$end); }
-  if( $class eq "STRING"                  ) { return read_dataset_string($dataset_path,$start,$end);  }
-  if( $class eq "BITFIELD"){ }
-  if( $class eq "OPAQUE"  ){ }
-  if( $class eq "COMPOUND"                ) { return $self->read_dataset_compound($dataset_path,$start,$end);}
-  if( $class eq "REFERENCE"){ }
-  if( $class eq "ENUM") { }
-  if( $class eq "VLEN") { }
-  if( $class eq "ARRAY") { }
+  # Processing simple datatypes
+  return $self->read_dataset_simple($dataset_path,$start,$end);
 
 }
 
-sub read_dataset_int8 {
-  print "int8 datatype\n";
-}
+sub read_dataset_simple {
+  my ($self, @args) = @_;
+  my $dataset_path = $args[0];
+  my $start        = $args[1];
+  my $end          = $args[2];
 
-sub read_dataset_int16 {
-  print "int16 datatype\n";
-}
+  $dataset   = Hdf5::H5Dopen2($self->{_filehandle},$dataset_path,$Hdf5::H5P_DEFAULT);
+  $datatype  = Hdf5::H5Dget_type($dataset);
 
-sub read_dataset_int32 {
-  print "int32 datatype\n";
-}
+  Hdf5::H5Tget_class($datatype,$class);
+  $size      = Hdf5::H5Tget_size($datatype);
 
-sub read_dataset_int64 {
-  print "int64 datatype\n";
-}
+  # change this so, a) they are read as arguments, and b) they can be set to -1 to read everything.
 
-sub read_dataset_float32 {
-  print "float32 datatype\n";
-}
+  my @file_hcount   = ( $end - $start );
+  my @file_hnstart  = ( $start );
+  my @file_hnstride = ( 1 );
+  my @file_hblock   = ( 1 );
 
-sub read_dataset_float64 {
-  print "float64 datatype\n";
-}
+  my @mem_hcount   = ( $end - $start );
+  my @mem_hnstart  = ( 0 );
+  my @mem_hnstride = ( 1 );
+  my @mem_hblock   = ( 1 );
 
-sub read_dataset_string {
-  print "string datatype\n";
+  $memtype = $datatype;
+
+  # Select part of the dataset to read
+  if($start != -1) {
+    my $file_dataspace = Hdf5::H5Dget_space($dataset);
+    Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
+  
+    my $memory_dataspace = Hdf5::H5Dget_space($dataset);
+    Hdf5::H5Sselect_hyperslab($memory_dataspace, $Hdf5::H5S_SELECT_SET, \@mem_hnstart, \@mem_hnstride, \@mem_hcount, \@mem_hblock);
+
+    my $status = Hdf5::H5DreadRaw($dataset, $memtype, $memory_dataspace, $file_dataspace, $Hdf5::H5P_DEFAULT, $dataout, ($end - $start)*$size);
+  }
+
+  # Read complete dataset
+  if($start == -1) {
+    my $file_dataspace = Hdf5::H5Dget_space($dataset);
+    $dataset_size = Hdf5::H5Sget_simple_extent_npoints($file_dataspace)*$size;
+    my $status = Hdf5::H5DreadRaw($dataset, $memtype, $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout, $dataset_size);
+  }
+
+  my $unpack_string = "(";
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= "i"; }
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= "I"; }
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "v"; }
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "v"; }
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= "f"; }
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= "d"; }
+  $unpack_string .= ")*";
+  my @as_array = unpack $unpack_string, $dataout;
+
+  return @as_array;
 }
 
 sub read_dataset_compound {
@@ -186,8 +205,6 @@ sub read_dataset_compound {
 
   $dataset   = Hdf5::H5Dopen2($self->{_filehandle},$dataset_path,$Hdf5::H5P_DEFAULT);
   $datatype  = Hdf5::H5Dget_type($dataset);
-
-  print "compound datatype ", $dataset_path, "\n";
 
   Hdf5::H5Tget_class($datatype,$class);
   $size      = Hdf5::H5Tget_size($datatype);
@@ -250,7 +267,6 @@ sub read_dataset_compound {
   if($start == -1) {
     my $file_dataspace = Hdf5::H5Dget_space($dataset);
     $dataset_size = Hdf5::H5Sget_simple_extent_npoints($file_dataspace)*$total_size;
-    print "size: ", $dataset_size, "\n";
     my $status = Hdf5::H5DreadRaw($dataset, $memtype, $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout, $dataset_size);
   }
 
