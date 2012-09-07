@@ -414,7 +414,7 @@ CODE:
 	SvCUR_set(type,40);
 
 	H5G_stat_t info;
-	H5Gget_objinfo(loc_id,name,true,&info);
+	H5Gget_objinfo(loc_id,name,1,&info);
 	
 	if(info.type == H5G_UNKNOWN)    strcpy(data,"UNKNOWN");
 	if(info.type == H5G_GROUP)      strcpy(data,"GROUP");
