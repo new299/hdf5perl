@@ -299,8 +299,6 @@ CODE:
 	SvUPGRADE(buf, SVt_PV);
         SvPOK_only(buf);
 	char *data = SvGROW(buf,read_size);
-	data[0]='a';
-	data[1]=0;
 	SvCUR_set(buf,read_size);
 	RETVAL = H5Dread(dataset_id,mem_type_id,mem_space_id,file_space_id,xfer_plist_id,data);
 OUTPUT:
@@ -542,3 +540,12 @@ int
 H5Tequal(dtype_id1,dtype_id2)
 	hid_t dtype_id1
 	hid_t dtype_id2
+
+hsize_t
+H5Dget_storage_size(dataset_id)
+	hid_t dataset_id
+
+hssize_t
+H5Sget_simple_extent_npoints(space_id)
+	hid_t space_id
+

@@ -46,7 +46,7 @@ sub dump_datasets {
   for(my $n=0;$n<=$#datasets;$n++) {
     say "dataset  : " , $path , $datasets[$n];
     dump_attributes_dataset($path .$datasets[$n]);
-    print Dumper($file->read_dataset($path . $datasets[$n]));
+    print Dumper($file->read_dataset($path . $datasets[$n],-1,-1));
   }
 }
 
