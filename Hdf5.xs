@@ -397,7 +397,8 @@ CODE:
         SvPOK_only(name);
 	char *data = SvGROW(name,size);
 	SvCUR_set(name,size);
-	for(int n=0;n<size;n++) data[n] = 0;
+	int n=0;
+	for(n=0;n<size;n++) data[n] = 0;
 	H5Gget_objname_by_idx(loc_id,idx,data,size);
 	int len = strlen(data);
 	SvCUR_set(name,len);
