@@ -194,7 +194,10 @@ sub read_dataset_simple {
     my $status = Hdf5::H5DreadRaw($dataset, $memtype, $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout, $dataset_size);
   }
 
+  my $is_string = false;
+
   my $unpack_string = "(";
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_C_S1      ())) { $unpack_string .= "Z"; $is_string=true; }
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= "i"; }
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= "I"; }
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "v"; }
@@ -203,6 +206,9 @@ sub read_dataset_simple {
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= "d"; }
   $unpack_string .= ")*";
   my @as_array = unpack $unpack_string, $dataout;
+  
+
+  if($is_string == true) { return $string = join('',@as_array); }
 
   return @as_array;
 }
