@@ -111,6 +111,17 @@ sub get_dataset_attributes {
 
 # return the size of a dataset (given the path)
 sub get_dataset_size {
+
+  my ($self, @args) = @_;
+  my $dataset_path = $args[0];
+  
+  $dataset   = Hdf5::H5Dopen2($self->{_filehandle},$dataset_path,$Hdf5::H5P_DEFAULT);
+  $datatype  = Hdf5::H5Dget_type($dataset);
+
+  my $file_dataspace = Hdf5::H5Dget_space($dataset);
+  $dataset_size = Hdf5::H5Sget_simple_extent_npoints($file_dataspace);
+
+  return $dataset_size;
 }
 
 # read the dataset and return it as an array, optionally give a start and end position within the dataset.
@@ -285,12 +296,12 @@ sub read_dataset_compound {
 
   my %result_data;
   for($n=0;$n<($#names)+1;$n++) {
-    @result_data{$names[$n]} = [];
+    $result_data{$names[$n]} = [];
   }
 
-  for($n=0;$n<$#as_array;$n++) {
+  for($n=0;$n<($#as_array)+1;$n++) {
     my $i = $n % $member_count;
-    push(@result_data{$names[$i]},$as_array[$n]);
+    push($result_data{$names[$i]},$as_array[$n]);
   }
 
   return %result_data;
