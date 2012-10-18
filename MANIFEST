@@ -8,3 +8,4 @@ t/Hdf5.t
 fallback/const-c.inc
 fallback/const-xs.inc
 lib/Hdf5.pm
+blib/Hdf5File.pm
