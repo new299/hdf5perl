@@ -351,3 +351,18 @@ sub read_attribute {
 }
 
 1;
+
+=head1 NAME
+
+Hdf5File - A HDF5 reader
+
+=head1 SYNOPSIS
+
+See example_hdf5file.pl for an example, this will iterate over an HDF5 and dump the data much like hdf5dump.
+
+=head1 DESCRIPTION
+
+The module provides a low level interface to HDF5 files.
+
+=cut
+
