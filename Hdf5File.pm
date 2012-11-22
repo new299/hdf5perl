@@ -25,7 +25,14 @@ sub open {
 
   $self->{_filehandle} = $file = Hdf5::H5Fopen($self->{_filename},$Hdf5::H5F_ACC_RDONLY,$Hdf5::H5P_DEFAULT);
 
-  if($self->{_filehandle} < 0) return 0; 
+  if($self->{_filehandle} < 0) { return 0; }
+  return 1;
+}
+
+sub is_open {
+  my ($self, @args) = @_;
+
+  if($self->{_filehandle} < 0) { return 0; }
 
   return 1;
 }
@@ -35,6 +42,8 @@ sub open {
 sub get_groups {
 
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return (); }
+
   my $group_path = $args[0];
 
   $group = Hdf5::H5Gopen1($self->{_filehandle},$group_path);
@@ -57,6 +66,8 @@ sub get_groups {
 sub get_datasets {
 
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return (); }
+
   my $group_path = $args[0];
 
   $group = Hdf5::H5Gopen1($self->{_filehandle},$group_path);
@@ -79,6 +90,8 @@ sub get_datasets {
 sub get_group_attributes {
 
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return (); }
+
   my $group_path = $args[0];
   $group = Hdf5::H5Gopen1($self->{_filehandle},$group_path);
   $attr_count = Hdf5::H5Aget_num_attrs($group);
@@ -97,6 +110,8 @@ sub get_group_attributes {
 sub get_dataset_attributes {
 
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return (); }
+
   my $dataset_path = $args[0];
   $dataset = Hdf5::H5Dopen2($self->{_filehandle},$dataset_path,$Hdf5::H5P_DEFAULT);
   $attr_count = Hdf5::H5Aget_num_attrs($dataset);
@@ -115,6 +130,8 @@ sub get_dataset_attributes {
 sub get_dataset_size {
 
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return 0; }
+
   my $dataset_path = $args[0];
   
   $dataset   = Hdf5::H5Dopen2($self->{_filehandle},$dataset_path,$Hdf5::H5P_DEFAULT);
@@ -129,8 +146,11 @@ sub get_dataset_size {
 # read the dataset and return it as an array, optionally give a start and end position within the dataset.
 sub read_dataset {
 
-  # first we need to determine what datatype is contained in the dataset...
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return 0; }
+
+
+  # first we need to determine what datatype is contained in the dataset...
   my $dataset_path = $args[0];
   my $start        = $args[1];
   my $end          = $args[2];
@@ -153,7 +173,10 @@ sub read_dataset {
 }
 
 sub read_dataset_simple {
+
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return 0; }
+
   my $dataset_path = $args[0];
   my $start        = $args[1];
   my $end          = $args[2];
@@ -218,6 +241,8 @@ sub read_dataset_simple {
 sub read_dataset_compound {
   
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return 0; }
+
   my $dataset_path = $args[0];
   my $start        = $args[1];
   my $end          = $args[2];
@@ -317,7 +342,10 @@ sub read_dataset_compound {
 
 # read a whole attribute
 sub read_attribute {
+
   my ($self, @args) = @_;
+  if(!($self->is_open())) { return 0; }
+
   my $group_path     = $args[0];
   my $attribute_name = $args[1];
 

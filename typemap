@@ -1,4 +1,4 @@
-hid_t	T_UV
+hid_t	T_IV
 herr_t	T_INT
 hsize_t	T_U_LONG
 hsize_t * T_SV
