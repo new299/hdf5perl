@@ -24,7 +24,9 @@ sub open {
   $self->{_filename}   = $args[0];
 
   $self->{_filehandle} = $file = Hdf5::H5Fopen($self->{_filename},$Hdf5::H5F_ACC_RDONLY,$Hdf5::H5P_DEFAULT);
- 
+
+  if($self->{_filehandle} < 0) return 0; 
+
   return 1;
 }
 
