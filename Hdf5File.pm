@@ -225,8 +225,8 @@ sub read_dataset_simple {
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_C_S1      ())) { $unpack_string .= "Z"; $is_string = 1; }
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= "i"; }
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= "I"; }
-  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "v"; }
-  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "v"; }
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "s"; }
+  if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "S"; }
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= "f"; }
   if(Hdf5::H5Tequal($datatype,Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= "d"; }
   $unpack_string .= ")*";
