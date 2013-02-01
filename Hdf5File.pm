@@ -318,8 +318,8 @@ sub read_dataset_compound {
   for($n=0;$n<$member_count;$n++) {
     if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= "i"; }
     if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= "I"; }
-    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "v"; }
-    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "v"; }
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "s"; }
+    if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "S"; }
     if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= "f"; }
     if(Hdf5::H5Tequal($types[$n],Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= "d"; }
   }
@@ -361,8 +361,8 @@ sub read_attribute {
   if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_C_S1      ())) { $unpack_string .= "Z"; $is_string=true; }
   if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= "i"; }
   if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= "I"; }
-  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "v"; }
-  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "v"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= "s"; }
+  if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= "S"; }
   if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_U64LE ())) { $unpack_string .= "Q"; }
   if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_STD_I64LE ())) { $unpack_string .= "q"; }
   if(Hdf5::H5Tequal($memdatatype,Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= "f"; }
