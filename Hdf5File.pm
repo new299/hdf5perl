@@ -337,6 +337,7 @@ sub read_dataset_compound {
     push($result_data{$names[$i]},$as_array[$n]);
   }
 
+  print "This bit is really slow\n";
   return %result_data;
 }
 
