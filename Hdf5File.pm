@@ -7,7 +7,7 @@ use lib './blib/arch/auto/Hdf5';
 
 
 use Hdf5;
-use HdfHelper
+use HdfHelper;
 
 sub new {
   my ($class) = @_;
