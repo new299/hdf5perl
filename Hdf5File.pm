@@ -2,8 +2,9 @@ package Hdf5File;
 use Data::Dumper;
 
 use lib './lib';
-use lib './lib/HdfHelper';
 use lib './blib/arch/auto/Hdf5';
+use lib './blib/lib/HdfHelper/blib/lib';
+use lib './blib/lib/HdfHelper/blib/arch/auto/HdfHelper';
 
 
 use Hdf5;
