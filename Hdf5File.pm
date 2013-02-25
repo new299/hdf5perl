@@ -2,8 +2,9 @@ package Hdf5File;
 use Data::Dumper;
 
 use lib './lib';
-use lib './lib/HdfHelper';
 use lib './blib/arch/auto/Hdf5';
+use lib './blib/lib/HdfHelper/blib/lib';
+use lib './blib/lib/HdfHelper/blib/arch/auto/HdfHelper';
 
 
 use Hdf5;
@@ -332,18 +333,10 @@ sub read_dataset_compound {
 
   my %result_data;
   for($n=0;$n<($#names)+1;$n++) {
-
-
     my $slice = HdfHelper::get_every_nth(\@as_array, scalar @names ,$n);
     $result_data{$names[$n]} = $slice;
   }
 
-  #for($n=0;$n<($#as_array)+1;$n++) {
-  #  my $i = $n % $member_count;
-  #  push($result_data{$names[$i]},$as_array[$n]);
-  #}
-
-  print "This bit is really slow\n";
   return %result_data;
 }
 
