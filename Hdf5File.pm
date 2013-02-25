@@ -329,13 +329,16 @@ sub read_dataset_compound {
 
   my %result_data;
   for($n=0;$n<($#names)+1;$n++) {
-    $result_data{$names[$n]} = [];
+
+
+    my $slice = get_every_nth(\@as_array, scalar @names ,$n);
+    $result_data{$names[$n]} = $slice;
   }
 
-  for($n=0;$n<($#as_array)+1;$n++) {
-    my $i = $n % $member_count;
-    push($result_data{$names[$i]},$as_array[$n]);
-  }
+  #for($n=0;$n<($#as_array)+1;$n++) {
+  #  my $i = $n % $member_count;
+  #  push($result_data{$names[$i]},$as_array[$n]);
+  #}
 
   print "This bit is really slow\n";
   return %result_data;

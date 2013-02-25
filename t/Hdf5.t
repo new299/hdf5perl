@@ -8,7 +8,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More tests => 2;
 BEGIN { use_ok('Hdf5') };
 
 #########################
@@ -16,3 +16,7 @@ BEGIN { use_ok('Hdf5') };
 # Insert your test code below, the Test::More module is use()ed here so read
 # its man page ( perldoc Test::More ) for help writing this test script.
 
+my @array = (0,1,2,3,4,5,6,7,8,9);
+my $slice = Hdf5::get_every_nth(\@array, 2, 0);
+my $expected = [0,2,4,6,8];
+is_deeply($slice, $expected, "get_every_nth");
