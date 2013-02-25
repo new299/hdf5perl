@@ -2,9 +2,12 @@ package Hdf5File;
 use Data::Dumper;
 
 use lib './lib';
+use lib './lib/HdfHelper';
 use lib './blib/arch/auto/Hdf5';
 
+
 use Hdf5;
+use HdfHelper
 
 sub new {
   my ($class) = @_;
@@ -331,7 +334,7 @@ sub read_dataset_compound {
   for($n=0;$n<($#names)+1;$n++) {
 
 
-    my $slice = Hdf5::get_every_nth(\@as_array, scalar @names ,$n);
+    my $slice = HdfHelper::get_every_nth(\@as_array, scalar @names ,$n);
     $result_data{$names[$n]} = $slice;
   }
 

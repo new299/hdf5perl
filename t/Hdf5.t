@@ -8,13 +8,8 @@ use strict;
 use warnings;
 use Hdf5;
 
-use Test::More tests => 2;
+use Test::More tests => 1;
 BEGIN { use_ok('Hdf5') };
 
 #########################
 
-
-my @array = (0,1,2,3,4,5,6,7,8,9);
-my $slice = Hdf5::get_every_nth(\@array, 2, 0);
-my $expected = [0,2,4,6,8];
-is_deeply($slice, $expected, "get_every_nth");
