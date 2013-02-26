@@ -3,8 +3,12 @@ use Data::Dumper;
 
 use lib './lib';
 use lib './blib/arch/auto/Hdf5';
+use lib './blib/lib/HdfHelper/blib/lib';
+use lib './blib/lib/HdfHelper/blib/arch/auto/HdfHelper';
+
 
 use Hdf5;
+use HdfHelper;
 
 sub new {
   my ($class) = @_;
@@ -329,12 +333,8 @@ sub read_dataset_compound {
 
   my %result_data;
   for($n=0;$n<($#names)+1;$n++) {
-    $result_data{$names[$n]} = [];
-  }
-
-  for($n=0;$n<($#as_array)+1;$n++) {
-    my $i = $n % $member_count;
-    push($result_data{$names[$i]},$as_array[$n]);
+    my $slice = HdfHelper::get_every_nth(\@as_array, scalar @names ,$n);
+    $result_data{$names[$n]} = $slice;
   }
 
   return %result_data;
