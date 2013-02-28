@@ -1,6 +1,4 @@
 package Hdf5File;
-use Hdf5;
-use HdfHelper;
 
 sub new {
   my ($class) = @_;
