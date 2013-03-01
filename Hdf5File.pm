@@ -327,7 +327,7 @@ sub read_dataset_compound {
     $result_data{$names[$n]} = $slice;
   }
 
-  return %result_data;
+  return \%result_data;
 }
 
 # read a whole attribute
