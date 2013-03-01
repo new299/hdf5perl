@@ -38,3 +38,28 @@ CODE:
     RETVAL = results;
 OUTPUT:
     RETVAL
+
+void
+rescale_array(aref, A, B)
+    SV * aref;
+    SV * A;
+    SV * B;
+INIT:
+    I32 numvalues = 0;
+    int i;
+    
+    /* Check that aref is a reference, then check that it is an
+    array reference, then check that it is non-empty. */
+    if ((! SvROK(aref))
+    || (SvTYPE(SvRV(aref)) != SVt_PVAV)
+    || ((numvalues = av_len((AV *)SvRV(aref))) < 0))
+    {
+        XSRETURN_UNDEF;
+    }
+CODE:
+    /* Performs the transformation V_i -> (V_i + A) * B  */
+    for (i=0; i<=numvalues; i++) {
+       SV** elem = av_fetch( (AV*)SvRV(aref), i, 1);
+       SV* new_elem = newSVnv( (SvNV(*elem) + SvNV(A)) * SvNV(B) );
+       av_store( (AV*)SvRV(aref), i, new_elem );
+    }
