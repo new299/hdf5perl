@@ -229,7 +229,7 @@ sub read_dataset_simple {
 
   if($is_string == 1) { return $string = join('',@as_array); }
 
-  return @as_array;
+  return \@as_array;
 }
 
 sub read_dataset_compound {
