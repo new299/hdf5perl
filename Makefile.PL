@@ -11,7 +11,7 @@ WriteMakefile(
        AUTHOR         => 'new@sgenomics.co.uk') : ()),
     LIBS              => ['-lhdf5 -lz -lsz -L~/hdf5/include -L~/szip-2.1/src/.libs '], # e.g., '-lm'
     DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
-    INC               => '-I.', # e.g., '-I. -I/usr/include/other'
+    INC               => '-I. -I/home/user/hdf5/include', # e.g., '-I. -I/usr/include/other'
 	# Un-comment this if you add C files to link with later:
     # OBJECT            => '$(O_FILES)', # link all the C files too
 );
