@@ -5,17 +5,20 @@ const-c.inc
 const-xs.inc
 fallback/const-c.inc
 fallback/const-xs.inc
-Hdf5.bs
-Hdf5.c
-Hdf5.o
 Hdf5.xs
-Hdf5File.pm
 lib/Hdf5.pm
+lib/Hdf5/File.pm
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README
 README.md
+t/00-compile-pl.t
+t/00-compile-pm.t
+t/00-critic.t
+t/00-distribution.t
+t/00-pod.t
+t/00-podcoverage.t
 t/Hdf5.t
 t/HdfHelper.t
 typemap
