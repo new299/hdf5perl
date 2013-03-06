@@ -10,6 +10,11 @@ package Hdf5::File;
 use strict;
 use warnings;
 use Hdf5;
+use Readonly;
+
+our $VERSION = '0.01';
+
+Readonly::Scalar my $START_ALL => -1;
 
 sub new {
   my ($class) = @_;
@@ -19,14 +24,11 @@ sub new {
   return $self;
 }
 
-
 # Open the Hdf5 file
-sub open {
- 
-  my ($self, @args) = @_;
+sub open { ## no critic (Homonym)
+  my ($self, $filename) = @_;
 
-  $self->{_filename}   = $args[0];
-
+  $self->{_filename}   = $filename;
   $self->{_filehandle} = Hdf5::H5Fopen($self->{_filename}, $Hdf5::H5F_ACC_RDONLY, $Hdf5::H5P_DEFAULT);
 
   if($self->{_filehandle} < 0) { return 0; }
@@ -34,14 +36,13 @@ sub open {
 }
 
 sub is_open {
-  my ($self, @args) = @_;
+  my ($self) = @_;
 
-  if($self->{_filehandle} < 0) { return 0; }
-
-  return 1;
+  return ($self->{_filehandle} < 0) ? 0 : 1;
 }
 
-use constant ROOT => 1;
+Readonly::Scalar my $ROOT => 1;
+Readonly::Scalar my $SIZE => 1000;
 
 # Get all group names under the provided path
 sub get_groups {
@@ -54,12 +55,13 @@ sub get_groups {
 
   Hdf5::H5Gget_num_objs($group, $num_obj);
 
+
   my @object_names;
-  for(my $n=0; $n<$num_obj->[0]; $n++) {
+  for my $n (0..($num_obj->[0] - 1)) {
     my ($str, $type);
 
-    Hdf5::H5Gget_objname_by_idx($group, $n, $str, 1000);
-    Hdf5::H5Gget_objtype(ROOT, $path . $str, $type);
+    Hdf5::H5Gget_objname_by_idx($group, $n, $str, $SIZE);
+    Hdf5::H5Gget_objtype($ROOT, $path . $str, $type);
 
     if($type eq 'GROUP') {
       $object_names[$n] = $str;
@@ -81,11 +83,11 @@ sub get_datasets {
   Hdf5::H5Gget_num_objs($group, $num_obj);
 
   my @object_names;
-  for(my $n=0; $n<$num_obj->[0]; $n++) {
+  for my $n (0..($num_obj->[0] - 1)) {
     my ($str, $type);
-    
-    Hdf5::H5Gget_objname_by_idx($group, $n, $str, 1000);
-    Hdf5::H5Gget_objtype(ROOT, $path . $str, $type);
+
+    Hdf5::H5Gget_objname_by_idx($group, $n, $str, $SIZE);
+    Hdf5::H5Gget_objtype($ROOT, $path . $str, $type);
 
     if($type eq 'DATASET') {
       $object_names[$n] = $str;
@@ -105,11 +107,11 @@ sub get_group_attributes {
   my $attr_count = Hdf5::H5Aget_num_attrs($group);
 
   my @attribute_names;
-  for(my $n=0; $n<$attr_count; $n++) {
+  for my $n (0..$attr_count-1) {
     my $attr_id = Hdf5::H5Aopen_idx($group, $n);
     my $name;
 
-    Hdf5::H5Aget_name($attr_id, 1000, $name);
+    Hdf5::H5Aget_name($attr_id, $SIZE, $name);
     $attribute_names[$n] = $name;
   }
 
@@ -126,11 +128,11 @@ sub get_dataset_attributes {
   my $attr_count = Hdf5::H5Aget_num_attrs($dataset);
 
   my @attribute_names;
-  for(my $n=0; $n<$attr_count; $n++) {
+  for my $n (0..$attr_count-1) {
     my $attr_id = Hdf5::H5Aopen_idx($dataset, $n);
     my $name;
 
-    Hdf5::H5Aget_name($attr_id, 1000, $name);
+    Hdf5::H5Aget_name($attr_id, $SIZE, $name);
     $attribute_names[$n] = $name;
   }
 
@@ -163,10 +165,10 @@ sub read_dataset {
 
   Hdf5::H5Tget_class($datatype, $class);
   my $size = Hdf5::H5Tget_size($datatype);
-   
+
   Hdf5::H5Dclose($dataset);
   Hdf5::H5Tclose($datatype);
-  
+
   # Processing for compound datatypes is different than everything else.
   if( $class eq 'COMPOUND') {
     return $self->read_dataset_compound($path, $start, $end);
@@ -204,10 +206,10 @@ sub read_dataset_simple {
   my $dataout;
 
   # Select part of the dataset to read
-  if($start != -1) {
+  if($start != $START_ALL) {
     my $file_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
-  
+
     my $memory_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($memory_dataspace, $Hdf5::H5S_SELECT_SET, \@mem_hnstart, \@mem_hnstride, \@mem_hcount, \@mem_hblock);
 
@@ -215,7 +217,7 @@ sub read_dataset_simple {
   }
 
   # Read complete dataset
-  if($start == -1) {
+  if($start == $START_ALL) {
     my $file_dataspace = Hdf5::H5Dget_space($dataset);
     my $dataset_size   = Hdf5::H5Sget_simple_extent_npoints($file_dataspace)*$size;
 
@@ -232,8 +234,8 @@ sub read_dataset_simple {
   if(Hdf5::H5Tequal($datatype, Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= 'S'; }
   if(Hdf5::H5Tequal($datatype, Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= 'f'; }
   if(Hdf5::H5Tequal($datatype, Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= 'd'; }
-  $unpack_string .= ")*";
- 
+  $unpack_string .= q[)*];
+
   my @as_array = unpack $unpack_string, $dataout;
 
   if($is_string) {
@@ -263,18 +265,18 @@ sub read_dataset_compound {
 
   my $member_count = Hdf5::H5Tget_nmembers($datatype);
 
-  for(my $n=0; $n<$member_count; $n++) {
+  for my $n (0..$member_count-1) {
     my $name;
 
     Hdf5::H5Tget_member_name ($datatype, $n, $name );
     Hdf5::H5Tget_member_class($datatype, $n, $class);
 
-    my $type = Hdf5::H5Tget_member_type($datatype, $n);
-    my $size = Hdf5::H5Tget_size($type);
+    my $type  = Hdf5::H5Tget_member_type($datatype, $n);
+    my $size2 = Hdf5::H5Tget_size($type);
 
     $names  [$n] = $name;
     $classes[$n] = $class;
-    $sizes  [$n] = $size;
+    $sizes  [$n] = $size2;
     $types  [$n] = $type;
     $total_size += $size;
   }
@@ -283,7 +285,7 @@ sub read_dataset_compound {
 
   # Build in memory representation
   my $position=0;
-  for(my $n=0;$n<$member_count;$n++) {
+  for my $n (0..$member_count-1) {
     Hdf5::H5Tinsert($memtype,$names[$n],$position,$types[$n]);
     $position += $sizes[$n];
   }
@@ -303,10 +305,10 @@ sub read_dataset_compound {
   my $dataout;
 
   # Select part of the dataset to read
-  if($start != -1) {
+  if($start != $START_ALL) {
     my $file_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
-  
+
     my $memory_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($memory_dataspace, $Hdf5::H5S_SELECT_SET, \@mem_hnstart, \@mem_hnstride, \@mem_hcount, \@mem_hblock);
 
@@ -314,14 +316,14 @@ sub read_dataset_compound {
   }
 
   # Read complete dataset
-  if($start == -1) {
+  if($start == $START_ALL) {
     my $file_dataspace = Hdf5::H5Dget_space($dataset);
     my $dataset_size   = Hdf5::H5Sget_simple_extent_npoints($file_dataspace)*$total_size;
     my $status         = Hdf5::H5DreadRaw($dataset, $memtype, $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout, $dataset_size);
   }
 
   my $unpack_string = q[(];
-  for(my $n=0;$n<$member_count;$n++) {
+  for my $n (0..$member_count-1) {
     if(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= 'i'; }
     if(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= 'I'; }
     if(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= 's'; }
@@ -334,7 +336,7 @@ sub read_dataset_compound {
   my @as_array = unpack $unpack_string, $dataout;
 
   my %result_data;
-  for(my $n=0;$n<($#names)+1;$n++) {
+  for my $n (0..scalar @names-1) {
     my $slice = HdfHelper::get_every_nth(\@as_array, scalar @names ,$n);
     $result_data{$names[$n]} = $slice;
   }
@@ -439,7 +441,7 @@ See example_hdf5file.pl for an example, this will iterate over an HDF5 and dump 
 
 =item Hdf5
 
-=item constant ROOT => 1
+=item Readonly
 
 =back
 

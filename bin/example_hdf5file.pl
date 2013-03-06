@@ -13,19 +13,21 @@ use Hdf5::File;
 use Data::Dumper;
 use Carp;
 use English qw(-no_match_vars);
+use Readonly;
+
+our $VERSION = '0.01';
 
 my $file = Hdf5::File->new();
 $file->open(q[./random.hdf5]);
 
 dump_groups(q[/]);
 
-
 sub dump_attributes_group {
   my ($path) = @_;
 
   my @attributes = $file->get_group_attributes($path);
 
-  for (my $n=0; $n<=$#attributes; $n++) {
+  for my $n (0..scalar @attributes-1) {
     if(!$attributes[$n]) {
       next;
     }
@@ -42,7 +44,7 @@ sub dump_attributes_dataset {
 
   my @attributes = $file->get_dataset_attributes($path);
 
-  for(my $n=0; $n<=$#attributes; $n++) {
+  for my $n (0..scalar @attributes-1) {
     if(!$attributes[$n]) {
       next;
     }
@@ -57,12 +59,14 @@ sub dump_attributes_dataset {
 sub dump_datasets {
   my ($path) = @_;
 
+  Readonly::Scalar my $READ_ALL => -1;
+
   my @datasets = $file->get_datasets($path);
 
-  for (my $n=0; $n<=$#datasets; $n++) {
+  for my $n (0..scalar @datasets-1) {
     printf "dataset  : %s %s\n", $path , $datasets[$n] or croak qq[Error printing: $ERRNO];
     dump_attributes_dataset($path .$datasets[$n]);
-    print Dumper($file->read_dataset($path . $datasets[$n], -1, -1)) or croak qq[Error printing: $ERRNO];
+    print Dumper($file->read_dataset($path . $datasets[$n], $READ_ALL, $READ_ALL)) or croak qq[Error printing: $ERRNO];
   }
 
   return 1;
@@ -77,7 +81,7 @@ sub dump_groups {
 
   my @groups = $file->get_groups($path);
 
-  for (my $n=0; $n<=$#groups; $n++) {
+  for my $n (0..scalar @groups-1) {
     if(!$groups[$n]) {
       next;
     }

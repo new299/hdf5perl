@@ -10,72 +10,54 @@ package Hdf5;
 use strict;
 use warnings;
 use Carp;
+use base qw(Exporter);
+use Readonly;
 
-require Exporter;
-#use AutoLoader;
+our %EXPORT_TAGS = ( 'all' => [ qw() ] );
+our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our @ISA = qw(Exporter);
+our $VERSION     = '0.02';
 
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
+sub AUTOLOAD { ## no critic (ProhibitAutoloading)
+  # This AUTOLOAD is used to 'autoload' constants from the constant()
+  # XS function.
 
-# This allows declaration	use Hdf5 ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-) ] );
+  my $constname;
+  our $AUTOLOAD;
+  ($constname = $AUTOLOAD) =~ s/.*:://smx;
 
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+  if ($constname eq 'constant') {
+    croak q[&Hdf5::constant not defined];
+  }
 
-our @EXPORT = qw(
-);
+  my ($error, $val) = constant($constname);
+  if ($error) {
+    croak $error;
+  }
 
-our $VERSION = '0.02';
-
-sub AUTOLOAD {
-    # This AUTOLOAD is used to 'autoload' constants from the constant()
-    # XS function.
-
-    my $constname;
-    our $AUTOLOAD;
-    ($constname = $AUTOLOAD) =~ s/.*:://;
-    croak "&Hdf5::constant not defined" if $constname eq 'constant';
-    my ($error, $val) = constant($constname);
-    if ($error) { croak $error; }
-    {
-	no strict 'refs';
-	# Fixed between 5.005_53 and 5.005_61
-#XXX	if ($] >= 5.00561) {
-#XXX	    *$AUTOLOAD = sub () { $val };
-#XXX	}
-#XXX	else {
-	    *$AUTOLOAD = sub { $val };
-#XXX	}
-    }
-    goto &$AUTOLOAD;
+  {
+    no strict 'refs'; ## no critic (Strict);
+    *{$AUTOLOAD} = sub { $val };
+  }
+  goto &{$AUTOLOAD};
 }
 
 require XSLoader;
 XSLoader::load('Hdf5', $VERSION);
 
-$Hdf5::H5F_ACC_RDONLY = 0;
-$Hdf5::H5F_ACC_RDWR   = 1;
-$Hdf5::H5F_ACC_TRUNC  = 2;
-$Hdf5::H5F_ACC_EXCL   = 4;
-$Hdf5::H5F_ACC_DEBUG  = 8;
-$Hdf5::H5F_ACC_CREAT  = 16;
-$Hdf5::H5P_DEFAULT    = 0;
+Readonly::Scalar our $H5F_ACC_RDONLY => 0;
+Readonly::Scalar our $H5F_ACC_RDWR   => 1;
+Readonly::Scalar our $H5F_ACC_TRUNC  => 2;
+Readonly::Scalar our $H5F_ACC_EXCL   => 4;
+Readonly::Scalar our $H5F_ACC_DEBUG  => 8;
+Readonly::Scalar our $H5F_ACC_CREAT  => 16;
+Readonly::Scalar our $H5P_DEFAULT    => 0;
 
-$Hdf5::H5T_NATIVE_INT = 50331660;
-$Hdf5::H5T_ORDER_LE   = 0;
-$Hdf5::H5S_ALL        = 0;
+Readonly::Scalar our $H5T_NATIVE_INT => 50_331_660;
+Readonly::Scalar our $H5T_ORDER_LE   => 0;
+Readonly::Scalar our $H5S_ALL        => 0;
 
-$Hdf5::H5S_SELECT_SET = 0;
-
-# Preloaded methods go here.
-
-# Autoload methods go after =cut, and are processed by the autosplit program.
+Readonly::Scalar our $H5S_SELECT_SET => 0;
 
 1;
 __END__
@@ -248,6 +230,8 @@ A read only HDF5 file reader.
 =item Exporter
 
 =item XSLoader
+
+=item Readonly
 
 =back
 
