@@ -73,11 +73,14 @@ $Hdf5::H5S_SELECT_SET = 0;
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
 Hdf5 - Hdf5 reader perl extension
+
+=head1 VERSION
+
+$LastChangedRevision$
 
 =head1 SYNOPSIS
 
@@ -88,27 +91,48 @@ Hdf5 - Hdf5 reader perl extension
 
 A read only HDF5 file reader.
 
-=head2 EXPORT
+=head1 SUBROUTINES/METHODS
 
-None by default.
+=head2 AUTOLOAD
 
+=head1 DIAGNOSTICS
 
+=head1 CONFIGURATION AND ENVIRONMENT
 
-=head1 SEE ALSO
+=head1 DEPENDENCIES
 
-Nothing.
+=over
+
+=item 5.014002
+
+=item strict
+
+=item warnings
+
+=item Carp
+
+=item Exporter
+
+=item XSLoader
+
+=back
+
+=head1 INCOMPATIBILITIES
+
+=head1 BUGS AND LIMITATIONS
 
 =head1 AUTHOR
 
+$Author: Nava Whiteford$
+
 new@sgenomics.co.uk
 
-=head1 COPYRIGHT AND LICENSE
+=head1 LICENSE AND COPYRIGHT
 
 Copyright (C) 2012 by Nava Whiteford
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.14.2 or,
 at your option, any later version of Perl 5 you may have available.
-
 
 =cut

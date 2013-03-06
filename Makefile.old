@@ -1,7 +1,7 @@
 # This Makefile is for the Hdf5 extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 6.64 (Revision: 66400) from the contents of
+# 6.6302 (Revision: 66302) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -16,11 +16,10 @@
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
 #     DEFINE => q[]
-#     INC => q[-I.]
+#     INC => q[-I. -I/home/user/hdf5/include]
 #     LIBS => [q[-lhdf5 -lz -lsz -L~/hdf5/include -L~/szip-2.1/src/.libs]]
 #     NAME => q[Hdf5]
 #     PREREQ_PM => {  }
-#     TEST_REQUIRES => {  }
 #     VERSION_FROM => q[lib/Hdf5.pm]
 
 # --- MakeMaker post_initialize section:
@@ -28,30 +27,30 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /usr/lib/perl/5.14/Config.pm).
+# These definitions are from config.sh (via /usr/local/lib/perl5/5.16.2/darwin-2level/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
 CC = cc
-CCCDLFLAGS = -fPIC
-CCDLFLAGS = -Wl,-E
-DLEXT = so
+CCCDLFLAGS =  
+CCDLFLAGS =  
+DLEXT = bundle
 DLSRC = dl_dlopen.xs
 EXE_EXT = 
 FULL_AR = /usr/bin/ar
-LD = cc
-LDDLFLAGS = -shared -O2 -g -L/usr/local/lib -fstack-protector
-LDFLAGS =  -fstack-protector -L/usr/local/lib
+LD = env MACOSX_DEPLOYMENT_TARGET=10.3 cc
+LDDLFLAGS =  -bundle -undefined dynamic_lookup -L/usr/local/lib -L/opt/local/lib -fstack-protector
+LDFLAGS =  -fstack-protector -L/usr/local/lib -L/opt/local/lib
 LIBC = 
 LIB_EXT = .a
 OBJ_EXT = .o
-OSNAME = linux
-OSVERS = 2.6.42-32-generic
-RANLIB = :
-SITELIBEXP = /usr/local/share/perl/5.14.2
-SITEARCHEXP = /usr/local/lib/perl/5.14.2
-SO = so
-VENDORARCHEXP = /usr/lib/perl5
-VENDORLIBEXP = /usr/share/perl5
+OSNAME = darwin
+OSVERS = 11.4.2
+RANLIB = ranlib
+SITELIBEXP = /usr/local/lib/perl5/site_perl/5.16.2
+SITEARCHEXP = /usr/local/lib/perl5/site_perl/5.16.2/darwin-2level
+SO = dylib
+VENDORARCHEXP = 
+VENDORLIBEXP = 
 
 
 # --- MakeMaker constants section:
@@ -73,58 +72,60 @@ INST_BIN = blib/bin
 INST_LIB = blib/lib
 INST_MAN1DIR = blib/man1
 INST_MAN3DIR = blib/man3
-MAN1EXT = 1p
-MAN3EXT = 3pm
+MAN1EXT = 1
+MAN3EXT = 3
 INSTALLDIRS = site
-INSTALL_BASE = /home/OXFORDNANOLABS/cwright/perl5
 DESTDIR = 
-PREFIX = $(INSTALL_BASE)
-INSTALLPRIVLIB = $(INSTALL_BASE)/lib/perl5
+PREFIX = $(SITEPREFIX)
+PERLPREFIX = /usr/local
+SITEPREFIX = /usr/local
+VENDORPREFIX = 
+INSTALLPRIVLIB = /usr/local/lib/perl5/5.16.2
 DESTINSTALLPRIVLIB = $(DESTDIR)$(INSTALLPRIVLIB)
-INSTALLSITELIB = $(INSTALL_BASE)/lib/perl5
+INSTALLSITELIB = /usr/local/lib/perl5/site_perl/5.16.2
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
-INSTALLVENDORLIB = $(INSTALL_BASE)/lib/perl5
+INSTALLVENDORLIB = 
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = $(INSTALL_BASE)/lib/perl5/x86_64-linux-gnu-thread-multi
+INSTALLARCHLIB = /usr/local/lib/perl5/5.16.2/darwin-2level
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = $(INSTALL_BASE)/lib/perl5/x86_64-linux-gnu-thread-multi
+INSTALLSITEARCH = /usr/local/lib/perl5/site_perl/5.16.2/darwin-2level
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = $(INSTALL_BASE)/lib/perl5/x86_64-linux-gnu-thread-multi
+INSTALLVENDORARCH = 
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
-INSTALLBIN = $(INSTALL_BASE)/bin
+INSTALLBIN = /usr/local/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
-INSTALLSITEBIN = $(INSTALL_BASE)/bin
+INSTALLSITEBIN = /usr/local/bin
 DESTINSTALLSITEBIN = $(DESTDIR)$(INSTALLSITEBIN)
-INSTALLVENDORBIN = $(INSTALL_BASE)/bin
+INSTALLVENDORBIN = 
 DESTINSTALLVENDORBIN = $(DESTDIR)$(INSTALLVENDORBIN)
-INSTALLSCRIPT = $(INSTALL_BASE)/bin
+INSTALLSCRIPT = /usr/local/bin
 DESTINSTALLSCRIPT = $(DESTDIR)$(INSTALLSCRIPT)
-INSTALLSITESCRIPT = $(INSTALL_BASE)/bin
+INSTALLSITESCRIPT = /usr/local/bin
 DESTINSTALLSITESCRIPT = $(DESTDIR)$(INSTALLSITESCRIPT)
-INSTALLVENDORSCRIPT = $(INSTALL_BASE)/bin
+INSTALLVENDORSCRIPT = 
 DESTINSTALLVENDORSCRIPT = $(DESTDIR)$(INSTALLVENDORSCRIPT)
-INSTALLMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLMAN1DIR = /usr/local/man/man1
 DESTINSTALLMAN1DIR = $(DESTDIR)$(INSTALLMAN1DIR)
-INSTALLSITEMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLSITEMAN1DIR = /usr/local/man/man1
 DESTINSTALLSITEMAN1DIR = $(DESTDIR)$(INSTALLSITEMAN1DIR)
-INSTALLVENDORMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLVENDORMAN1DIR = 
 DESTINSTALLVENDORMAN1DIR = $(DESTDIR)$(INSTALLVENDORMAN1DIR)
-INSTALLMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLMAN3DIR = /usr/local/man/man3
 DESTINSTALLMAN3DIR = $(DESTDIR)$(INSTALLMAN3DIR)
-INSTALLSITEMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLSITEMAN3DIR = /usr/local/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
-INSTALLVENDORMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLVENDORMAN3DIR = 
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
-PERL_LIB = /usr/share/perl/5.14
-PERL_ARCHLIB = /usr/lib/perl/5.14
+PERL_LIB = /usr/local/lib/perl5/5.16.2
+PERL_ARCHLIB = /usr/local/lib/perl5/5.16.2/darwin-2level
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /usr/lib/perl/5.14/CORE
-PERL = /usr/bin/perl
-FULLPERL = /usr/bin/perl
+PERL_INC = /usr/local/lib/perl5/5.16.2/darwin-2level/CORE
+PERL = /usr/local/bin/perl
+FULLPERL = /usr/local/bin/perl
 ABSPERL = $(PERL)
 PERLRUN = $(PERL)
 FULLPERLRUN = $(FULLPERL)
@@ -137,9 +138,9 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /usr/local/share/perl/5.14.2/ExtUtils/MakeMaker.pm
-MM_VERSION  = 6.64
-MM_REVISION = 66400
+MAKEMAKER   = /usr/local/lib/perl5/5.16.2/ExtUtils/MakeMaker.pm
+MM_VERSION  = 6.6302
+MM_REVISION = 66302
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -151,7 +152,7 @@ BASEEXT = Hdf5
 PARENT_NAME = 
 DLBASE = $(BASEEXT)
 VERSION_FROM = lib/Hdf5.pm
-INC = -I.
+INC = -I. -I/home/user/hdf5/include
 DEFINE = 
 OBJECT = $(BASEEXT)$(OBJ_EXT)
 LDFROM = $(OBJECT)
@@ -164,10 +165,8 @@ C_FILES  = Hdf5.c
 O_FILES  = Hdf5.o
 H_FILES  = ppport.h
 MAN1PODS = 
-MAN3PODS = Hdf5File.pm \
-	lib/Hdf5.pm \
-	lib/HdfHelper/blib/lib/HdfHelper.pm \
-	lib/HdfHelper/lib/HdfHelper.pm
+MAN3PODS = lib/Hdf5.pm \
+	lib/Hdf5/File.pm
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
@@ -189,104 +188,17 @@ PERL_ARCHIVE       =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = Hdf5File.pm \
-	example.pl \
-	example_hdf5file.pl \
-	lib/Hdf5.pm \
-	lib/HdfHelper/Changes \
-	lib/HdfHelper/HdfHelper.bs \
-	lib/HdfHelper/HdfHelper.c \
-	lib/HdfHelper/HdfHelper.o \
-	lib/HdfHelper/HdfHelper.xs \
-	lib/HdfHelper/MANIFEST \
-	lib/HdfHelper/MYMETA.json \
-	lib/HdfHelper/MYMETA.yml \
-	lib/HdfHelper/Makefile \
-	lib/HdfHelper/Makefile.PL \
-	lib/HdfHelper/README \
-	lib/HdfHelper/blib/arch/.exists \
-	lib/HdfHelper/blib/arch/auto/HdfHelper/.exists \
-	lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.bs \
-	lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.so \
-	lib/HdfHelper/blib/bin/.exists \
-	lib/HdfHelper/blib/lib/.exists \
-	lib/HdfHelper/blib/lib/HdfHelper.pm \
-	lib/HdfHelper/blib/lib/auto/HdfHelper/.exists \
-	lib/HdfHelper/blib/man1/.exists \
-	lib/HdfHelper/blib/man3/.exists \
-	lib/HdfHelper/blib/man3/HdfHelper.3pm \
-	lib/HdfHelper/blib/script/.exists \
-	lib/HdfHelper/lib/HdfHelper.pm \
-	lib/HdfHelper/pm_to_blib \
-	lib/HdfHelper/ppport.h \
-	lib/HdfHelper/t/HdfHelper.t
+TO_INST_PM = lib/Hdf5.pm \
+	lib/Hdf5/File.pm
 
-PM_TO_BLIB = lib/HdfHelper/MANIFEST \
-	blib/lib/HdfHelper/MANIFEST \
-	lib/HdfHelper/t/HdfHelper.t \
-	blib/lib/HdfHelper/t/HdfHelper.t \
-	lib/HdfHelper/HdfHelper.bs \
-	blib/lib/HdfHelper/HdfHelper.bs \
-	example_hdf5file.pl \
-	$(INST_LIB)/example_hdf5file.pl \
-	lib/HdfHelper/pm_to_blib \
-	blib/lib/HdfHelper/pm_to_blib \
-	lib/HdfHelper/Makefile \
-	blib/lib/HdfHelper/Makefile \
-	lib/HdfHelper/ppport.h \
-	blib/lib/HdfHelper/ppport.h \
-	Hdf5File.pm \
-	$(INST_LIB)/Hdf5File.pm \
-	lib/Hdf5.pm \
+PM_TO_BLIB = lib/Hdf5.pm \
 	blib/lib/Hdf5.pm \
-	lib/HdfHelper/HdfHelper.xs \
-	blib/lib/HdfHelper/HdfHelper.xs \
-	lib/HdfHelper/blib/script/.exists \
-	blib/lib/HdfHelper/blib/script/.exists \
-	lib/HdfHelper/blib/man3/.exists \
-	blib/lib/HdfHelper/blib/man3/.exists \
-	lib/HdfHelper/Changes \
-	blib/lib/HdfHelper/Changes \
-	lib/HdfHelper/Makefile.PL \
-	blib/lib/HdfHelper/Makefile.PL \
-	lib/HdfHelper/MYMETA.yml \
-	blib/lib/HdfHelper/MYMETA.yml \
-	lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.so \
-	blib/lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.so \
-	lib/HdfHelper/HdfHelper.c \
-	blib/lib/HdfHelper/HdfHelper.c \
-	lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.bs \
-	blib/lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.bs \
-	lib/HdfHelper/blib/lib/.exists \
-	blib/lib/HdfHelper/blib/lib/.exists \
-	lib/HdfHelper/blib/lib/auto/HdfHelper/.exists \
-	blib/lib/HdfHelper/blib/lib/auto/HdfHelper/.exists \
-	lib/HdfHelper/HdfHelper.o \
-	blib/lib/HdfHelper/HdfHelper.o \
-	lib/HdfHelper/blib/lib/HdfHelper.pm \
-	blib/lib/HdfHelper/blib/lib/HdfHelper.pm \
-	lib/HdfHelper/lib/HdfHelper.pm \
-	blib/lib/HdfHelper/lib/HdfHelper.pm \
-	lib/HdfHelper/blib/arch/auto/HdfHelper/.exists \
-	blib/lib/HdfHelper/blib/arch/auto/HdfHelper/.exists \
-	lib/HdfHelper/blib/arch/.exists \
-	blib/lib/HdfHelper/blib/arch/.exists \
-	lib/HdfHelper/blib/man1/.exists \
-	blib/lib/HdfHelper/blib/man1/.exists \
-	lib/HdfHelper/blib/bin/.exists \
-	blib/lib/HdfHelper/blib/bin/.exists \
-	lib/HdfHelper/MYMETA.json \
-	blib/lib/HdfHelper/MYMETA.json \
-	lib/HdfHelper/blib/man3/HdfHelper.3pm \
-	blib/lib/HdfHelper/blib/man3/HdfHelper.3pm \
-	example.pl \
-	$(INST_LIB)/example.pl \
-	lib/HdfHelper/README \
-	blib/lib/HdfHelper/README
+	lib/Hdf5/File.pm \
+	blib/lib/Hdf5/File.pm
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 6.64
+MM_Unix_VERSION = 6.6302
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
@@ -298,12 +210,12 @@ AUTOSPLITFILE = $(ABSPERLRUN)  -e 'use AutoSplit;  autosplit($$$$ARGV[0], $$$$AR
 
 # --- MakeMaker tool_xsubpp section:
 
-XSUBPPDIR = /usr/share/perl/5.14/ExtUtils
+XSUBPPDIR = /usr/local/lib/perl5/5.16.2/ExtUtils
 XSUBPP = $(XSUBPPDIR)$(DFSEP)xsubpp
 XSUBPPRUN = $(PERLRUN) $(XSUBPP)
 XSPROTOARG = 
-XSUBPPDEPS = /usr/share/perl/5.14/ExtUtils/typemap typemap $(XSUBPP)
-XSUBPPARGS = -typemap /usr/share/perl/5.14/ExtUtils/typemap -typemap typemap
+XSUBPPDEPS = /usr/local/lib/perl5/5.16.2/ExtUtils/typemap typemap $(XSUBPP)
+XSUBPPARGS = -typemap /usr/local/lib/perl5/5.16.2/ExtUtils/typemap -typemap typemap
 XSUBPP_EXTRA_ARGS = 
 
 
@@ -344,7 +256,7 @@ makemakerdflt : all
 
 
 # --- MakeMaker dist section:
-TAR = tar
+TAR = COPY_EXTENDED_ATTRIBUTES_DISABLE=1 COPYFILE_DISABLE=1 tar
 TARFLAGS = cvf
 ZIP = zip
 ZIPFLAGS = -r
@@ -370,8 +282,8 @@ DISTVNAME = Hdf5-0.01
 
 # --- MakeMaker cflags section:
 
-CCFLAGS = -D_REENTRANT -D_GNU_SOURCE -DDEBIAN -fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
-OPTIMIZE = -O2 -g
+CCFLAGS = -fno-common -DPERL_DARWIN -fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -I/opt/local/include
+OPTIMIZE = -O3
 PERLTYPE = 
 MPOLLUTE = 
 
@@ -384,7 +296,7 @@ MPOLLUTE =
 EXTRALIBS = -lhdf5 -lz
 LDLOADLIBS = -lhdf5 -lz
 BSLOADLIBS = 
-LD_RUN_PATH = /usr/lib/../lib:/lib/x86_64-linux-gnu
+LD_RUN_PATH = /opt/local/lib
 
 
 # --- MakeMaker const_cccmd section:
@@ -402,7 +314,6 @@ PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	LINKTYPE="$(LINKTYPE)"\
 	OPTIMIZE="$(OPTIMIZE)"\
 	PREFIX="$(PREFIX)"\
-	INSTALL_BASE="$(INSTALL_BASE)"\
 	PASTHRU_DEFINE="$(PASTHRU_DEFINE)"\
 	PASTHRU_INC="$(PASTHRU_INC)"
 
@@ -600,15 +511,11 @@ POD2MAN = $(POD2MAN_EXE)
 
 
 manifypods : pure_all  \
-	Hdf5File.pm \
 	lib/Hdf5.pm \
-	lib/HdfHelper/blib/lib/HdfHelper.pm \
-	lib/HdfHelper/lib/HdfHelper.pm
+	lib/Hdf5/File.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
-	  Hdf5File.pm $(INST_MAN3DIR)/Hdf5File.$(MAN3EXT) \
 	  lib/Hdf5.pm $(INST_MAN3DIR)/Hdf5.$(MAN3EXT) \
-	  lib/HdfHelper/blib/lib/HdfHelper.pm $(INST_MAN3DIR)/HdfHelper::blib::lib::HdfHelper.$(MAN3EXT) \
-	  lib/HdfHelper/lib/HdfHelper.pm $(INST_MAN3DIR)/HdfHelper::lib::HdfHelper.$(MAN3EXT) 
+	  lib/Hdf5/File.pm $(INST_MAN3DIR)/Hdf5::File.$(MAN3EXT) 
 
 
 
@@ -683,7 +590,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: 0' >> META_new.yml
 	$(NOECHO) $(ECHO) 'dynamic_config: 1' >> META_new.yml
-	$(NOECHO) $(ECHO) 'generated_by: '\''ExtUtils::MakeMaker version 6.64, CPAN::Meta::Converter version 2.112621'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'generated_by: '\''ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.120630'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'license: unknown' >> META_new.yml
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
@@ -703,7 +610,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "new@sgenomics.co.uk"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
-	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 6.64, CPAN::Meta::Converter version 2.112621",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.120630",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "license" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '      "unknown"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
@@ -721,12 +628,12 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '   "prereqs" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '      "build" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
-	$(NOECHO) $(ECHO) '            "ExtUtils::MakeMaker" : 0' >> META_new.json
+	$(NOECHO) $(ECHO) '            "ExtUtils::MakeMaker" : "0"' >> META_new.json
 	$(NOECHO) $(ECHO) '         }' >> META_new.json
 	$(NOECHO) $(ECHO) '      },' >> META_new.json
 	$(NOECHO) $(ECHO) '      "configure" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
-	$(NOECHO) $(ECHO) '            "ExtUtils::MakeMaker" : 0' >> META_new.json
+	$(NOECHO) $(ECHO) '            "ExtUtils::MakeMaker" : "0"' >> META_new.json
 	$(NOECHO) $(ECHO) '         }' >> META_new.json
 	$(NOECHO) $(ECHO) '      },' >> META_new.json
 	$(NOECHO) $(ECHO) '      "runtime" : {' >> META_new.json
@@ -1035,7 +942,7 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 
 # --- MakeMaker makeaperl section ---
 MAP_TARGET    = perl
-FULLPERL      = /usr/bin/perl
+FULLPERL      = /usr/local/bin/perl
 
 $(MAP_TARGET) :: static $(MAKE_APERL_FILE)
 	$(MAKE) $(USEMAKEFILE) $(MAKE_APERL_FILE) $@
@@ -1087,7 +994,7 @@ ppd :
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Hdf5 reader perl extension</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>new@sgenomics.co.uk</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-gnu-thread-multi-5.14" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-2level-5.16" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '</SOFTPKG>' >> $(DISTNAME).ppd
@@ -1097,37 +1004,8 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/HdfHelper/MANIFEST blib/lib/HdfHelper/MANIFEST \
-	  lib/HdfHelper/t/HdfHelper.t blib/lib/HdfHelper/t/HdfHelper.t \
-	  lib/HdfHelper/HdfHelper.bs blib/lib/HdfHelper/HdfHelper.bs \
-	  example_hdf5file.pl $(INST_LIB)/example_hdf5file.pl \
-	  lib/HdfHelper/pm_to_blib blib/lib/HdfHelper/pm_to_blib \
-	  lib/HdfHelper/Makefile blib/lib/HdfHelper/Makefile \
-	  lib/HdfHelper/ppport.h blib/lib/HdfHelper/ppport.h \
-	  Hdf5File.pm $(INST_LIB)/Hdf5File.pm \
 	  lib/Hdf5.pm blib/lib/Hdf5.pm \
-	  lib/HdfHelper/HdfHelper.xs blib/lib/HdfHelper/HdfHelper.xs \
-	  lib/HdfHelper/blib/script/.exists blib/lib/HdfHelper/blib/script/.exists \
-	  lib/HdfHelper/blib/man3/.exists blib/lib/HdfHelper/blib/man3/.exists \
-	  lib/HdfHelper/Changes blib/lib/HdfHelper/Changes \
-	  lib/HdfHelper/Makefile.PL blib/lib/HdfHelper/Makefile.PL \
-	  lib/HdfHelper/MYMETA.yml blib/lib/HdfHelper/MYMETA.yml \
-	  lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.so blib/lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.so \
-	  lib/HdfHelper/HdfHelper.c blib/lib/HdfHelper/HdfHelper.c \
-	  lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.bs blib/lib/HdfHelper/blib/arch/auto/HdfHelper/HdfHelper.bs \
-	  lib/HdfHelper/blib/lib/.exists blib/lib/HdfHelper/blib/lib/.exists \
-	  lib/HdfHelper/blib/lib/auto/HdfHelper/.exists blib/lib/HdfHelper/blib/lib/auto/HdfHelper/.exists \
-	  lib/HdfHelper/HdfHelper.o blib/lib/HdfHelper/HdfHelper.o \
-	  lib/HdfHelper/blib/lib/HdfHelper.pm blib/lib/HdfHelper/blib/lib/HdfHelper.pm \
-	  lib/HdfHelper/lib/HdfHelper.pm blib/lib/HdfHelper/lib/HdfHelper.pm \
-	  lib/HdfHelper/blib/arch/auto/HdfHelper/.exists blib/lib/HdfHelper/blib/arch/auto/HdfHelper/.exists \
-	  lib/HdfHelper/blib/arch/.exists blib/lib/HdfHelper/blib/arch/.exists \
-	  lib/HdfHelper/blib/man1/.exists blib/lib/HdfHelper/blib/man1/.exists \
-	  lib/HdfHelper/blib/bin/.exists blib/lib/HdfHelper/blib/bin/.exists \
-	  lib/HdfHelper/MYMETA.json blib/lib/HdfHelper/MYMETA.json \
-	  lib/HdfHelper/blib/man3/HdfHelper.3pm blib/lib/HdfHelper/blib/man3/HdfHelper.3pm \
-	  example.pl $(INST_LIB)/example.pl \
-	  lib/HdfHelper/README blib/lib/HdfHelper/README 
+	  lib/Hdf5/File.pm blib/lib/Hdf5/File.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
