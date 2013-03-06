@@ -9,33 +9,33 @@
 #
 use strict;
 use warnings;
-use lib qw(./blib/arch/auto/Hdf5);
 use Hdf5;
 use English qw(-no_match_vars);
 use Carp;
+use Readonly;
+
+our $VERSION = '0.01';
 
 #Create a file
 {
-  my $file = Hdf5::H5Fcreate("/tmp/test.hdf5", $Hdf5::H5F_ACC_TRUNC, $Hdf5::H5P_DEFAULT, $Hdf5::H5P_DEFAULT);
-
-  my @dimsf = ( 5 , 6 );
-
-  my @datain = ( 0 , 1 , 2 , 3 , 4 ,5 ,
-                 1 , 2 , 3 , 4 , 5 ,6 ,
-                 2 , 3 , 4 , 5 , 6 ,7 ,
-                 3 , 4 , 5 , 6 , 7 ,8 ,
-                 4 , 5 , 6 , 7 , 8 ,9 ,
-                 5 , 6 , 7 , 8 , 9 ,10 );
+  my $file   = Hdf5::H5Fcreate(q[/tmp/test.hdf5], $Hdf5::H5F_ACC_TRUNC, $Hdf5::H5P_DEFAULT, $Hdf5::H5P_DEFAULT);
+  Readonly::Scalar my $DIMSF  => [ 5 , 6 ];
+  Readonly::Scalar my $DATAIN => [ 0 , 1 , 2 , 3 , 4 , 5 ,
+                                   1 , 2 , 3 , 4 , 5 , 6 ,
+                                   2 , 3 , 4 , 5 , 6 , 7 ,
+                                   3 , 4 , 5 , 6 , 7 , 8 ,
+                                   4 , 5 , 6 , 7 , 8 , 9 ,
+                                   5 , 6 , 7 , 8 , 9 , 10 ];
 
   # create an array called data filled with data.
-  my $dataspace = Hdf5::H5Screate_simpleNULL(2, \@dimsf);
+  my $dataspace = Hdf5::H5Screate_simpleNULL(2, $DIMSF);
   my $datatype  = Hdf5::H5Tcopy(Hdf5::get_H5T_NATIVE_INT());
 
   Hdf5::H5Tset_order($datatype, $Hdf5::H5T_ORDER_LE);
 
   my $dataset   = Hdf5::H5Dcreate2($file, 'IntArray', $datatype, $dataspace, $Hdf5::H5P_DEFAULT, $Hdf5::H5P_DEFAULT, $Hdf5::H5P_DEFAULT);
 
-  Hdf5::H5Dwrite($dataset, Hdf5::get_H5T_NATIVE_INT(), $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, \@datain);
+  Hdf5::H5Dwrite($dataset, Hdf5::get_H5T_NATIVE_INT(), $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $DATAIN);
 
   Hdf5::H5Sclose($dataspace);
   Hdf5::H5Tclose($datatype);
@@ -44,31 +44,29 @@ use Carp;
 }
 
 {
-  my @dataout = ( 0 , 0 , 0 , 0 , 0 ,0 ,
-                  0 , 0 , 0 , 0 , 0 ,0 ,
-                  0 , 0 , 0 , 0 , 0 ,0 ,
-                  0 , 0 , 0 , 0 , 0 ,0 ,
-                  0 , 0 , 0 , 0 , 0 ,0 ,
-                  0 , 0 , 0 , 0 , 0 ,0 );
+  my $dataout = [ 0 , 0 , 0 , 0 , 0 , 0 ,
+                  0 , 0 , 0 , 0 , 0 , 0 ,
+                  0 , 0 , 0 , 0 , 0 , 0 ,
+                  0 , 0 , 0 , 0 , 0 , 0 ,
+                  0 , 0 , 0 , 0 , 0 , 0 ,
+                  0 , 0 , 0 , 0 , 0 , 0 ];
   #Read the created file
-  my $file      = Hdf5::H5Fopen('/tmp/test.hdf5', $Hdf5::H5F_ACC_RDONLY, $Hdf5::H5P_DEFAULT);
+  my $file      = Hdf5::H5Fopen(q[/tmp/test.hdf5], $Hdf5::H5F_ACC_RDONLY, $Hdf5::H5P_DEFAULT);
   my $dataset   = Hdf5::H5Dopen2($file, 'IntArray', $Hdf5::H5P_DEFAULT);
 
-  Hdf5::H5Dread32($dataset, Hdf5::get_H5T_NATIVE_INT(), $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, \@dataout);
+  Hdf5::H5Dread32($dataset, Hdf5::get_H5T_NATIVE_INT(), $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout);
 
-  my @num_obj = ( 0 );
+  my $num_obj = [ 0 ];
 
-  Hdf5::H5Gget_num_objs($file, \@num_obj);
-  printf "obj count: %d\n", $num_obj[0] or croak qq[Error printing: $ERRNO];
+  Hdf5::H5Gget_num_objs($file, $num_obj);
+  printf "obj count: %d\n", $num_obj->[0] or croak qq[Error printing: $ERRNO];
 
+  Readonly::Scalar my $SIZE => 40;
   my $str;
-  Hdf5::H5Gget_objname_by_idx($file, 0, $str, 40);
+  Hdf5::H5Gget_objname_by_idx($file, 0, $str, $SIZE);
 
   printf "name: %s END\n", $str or croak qq[Error printing: $ERRNO];
-
-  for(my $c=0; $c<30; $c++) {
-    print $dataout[$c], q[ ] or croak qq[Error printing: $ERRNO];
-  }
+  print join q[ ], @{$dataout} or croak qq[Error printing: $ERRNO];
   print "\n" or croak qq[Error printing: $ERRNO];
 }
 
