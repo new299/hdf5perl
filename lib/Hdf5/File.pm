@@ -17,10 +17,15 @@ our $VERSION = '0.01';
 Readonly::Scalar my $START_ALL => -1;
 
 sub new {
-  my ($class) = @_;
-  my $self    = {};
+  my ($class, $filename) = @_;
+  my $self = {};
 
   bless $self, $class;
+
+  if($filename) {
+    $self->open($filename);
+  }
+
   return $self;
 }
 
