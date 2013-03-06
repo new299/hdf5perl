@@ -1,6 +1,0 @@
-Revision history for Perl extension HdfHelper.
-
-0.01  Mon Feb 25 14:30:00 2013
-	- original version; created by h2xs 1.23 with options
-		-A -n HdfHelper
-

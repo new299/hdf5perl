@@ -1,14 +1,14 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
 use Hdf5;
-use Hdf5File;
-use HdfHelper;
-use v5.14;
-
+use Hdf5::File;
 use Data::Dumper;
 
-my $file = Hdf5File->new();
+my $file = Hdf5::File->new();
 $file->open('./random.hdf5');
 
-dump_groups("/");
+dump_groups('/');
 
 
 sub dump_attributes_group {
