@@ -1,73 +1,81 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use Hdf5;
 use Hdf5::File;
 use Data::Dumper;
+use Carp;
+use English qw(-no_match_vars);
 
 my $file = Hdf5::File->new();
-$file->open('./random.hdf5');
+$file->open(q[./random.hdf5]);
 
-dump_groups('/');
+dump_groups(q[/]);
 
 
 sub dump_attributes_group {
-
-  my (@args) = @_;
-  my $path = $args[0];
+  my ($path) = @_;
 
   my @attributes = $file->get_group_attributes($path);
 
-  for(my $n=0;$n<=$#attributes;$n++) {
-    if($attributes[$n] ne "") {
-      say "attribute: " , $path , $attributes[$n];
-      print Dumper($file->read_attribute($path,$attributes[$n]));
+  for (my $n=0; $n<=$#attributes; $n++) {
+    if(!$attributes[$n]) {
+      next;
     }
+
+    printf "attribute: %s %s\n", $path, $attributes[$n] or croak qq[Error printing: $ERRNO];
+    print Dumper($file->read_attribute($path, $attributes[$n])) or croak qq[Error printing: $ERRNO];
   }
+
+  return 1;
 }
 
 sub dump_attributes_dataset {
-  my (@args) = @_;
-  my $path = $args[0];
+  my ($path) = @_;
 
   my @attributes = $file->get_dataset_attributes($path);
 
-  for(my $n=0;$n<=$#attributes;$n++) {
-    if($attributes[$n] ne "") {
-      say "attribute: " , $path , $attributes[$n];
-      print Dumper($file->read_attribute($path . $attributes[$n]));
+  for(my $n=0; $n<=$#attributes; $n++) {
+    if(!$attributes[$n]) {
+      next;
     }
+
+    printf "attribute: %s %s\n", $path , $attributes[$n] or croak qq[Error printing: $ERRNO];
+    print Dumper($file->read_attribute($path . $attributes[$n])) or croak qq[Error printing: $ERRNO];
   }
+
+  return 1;
 }
 
 sub dump_datasets {
-  my (@args) = @_;
-
-  my $path = $args[0];
+  my ($path) = @_;
 
   my @datasets = $file->get_datasets($path);
 
-  for(my $n=0;$n<=$#datasets;$n++) {
-    say "dataset  : " , $path , $datasets[$n];
+  for (my $n=0; $n<=$#datasets; $n++) {
+    printf "dataset  : %s %s\n", $path , $datasets[$n] or croak qq[Error printing: $ERRNO];
     dump_attributes_dataset($path .$datasets[$n]);
-    print Dumper($file->read_dataset($path . $datasets[$n],-1,-1));
+    print Dumper($file->read_dataset($path . $datasets[$n], -1, -1)) or croak qq[Error printing: $ERRNO];
   }
+
+  return 1;
 }
 
 sub dump_groups {
-  my (@args) = @_;
+  my ($path) = @_;
 
-  my $path = $args[0];
-  say "group    : " , $path;
+  printf "group    : %s\n" , $path or croak qq[Error printing: $ERRNO];
   dump_attributes_group($path);
   dump_datasets($path);
 
   my @groups = $file->get_groups($path);
 
-  for(my $n=0;$n<=$#groups;$n++) {
-    if($groups[$n] ne "") {
-      dump_groups($path . $groups[$n] . "/");
+  for (my $n=0; $n<=$#groups; $n++) {
+    if(!$groups[$n]) {
+      next;
     }
-  }
-}
 
+    dump_groups(sprintf q[%s%s/], $path, $groups[$n]);
+  }
+
+  return 1;
+}

@@ -93,6 +93,136 @@ A read only HDF5 file reader.
 
 =head1 SUBROUTINES/METHODS
 
+=head2 H5Aclose
+
+=head2 H5Aget_name
+
+=head2 H5Aget_num_attrs
+
+=head2 H5Aget_type
+
+=head2 H5Aopen_idx
+
+=head2 H5Aopen_name
+
+=head2 H5Aread64f
+
+=head2 H5AreadRaw
+
+=head2 H5Dclose
+
+=head2 H5Dcreate2
+
+=head2 H5Dget_space
+
+=head2 H5Dget_storage_size
+
+=head2 H5Dget_type
+
+=head2 H5Dopen2
+
+=head2 H5Dread16
+
+=head2 H5Dread32
+
+=head2 H5DreadRaw
+
+=head2 H5Dwrite
+
+=head2 H5Fclose
+
+=head2 H5Fcreate
+
+=head2 H5Fopen
+
+=head2 H5Gclose
+
+=head2 H5Gget_num_objs
+
+=head2 H5Gget_objname_by_idx
+
+=head2 H5Gget_objtype
+
+=head2 H5Gopen1
+
+=head2 H5Sclose
+
+=head2 H5Screate_simple
+
+=head2 H5Screate_simpleNULL
+
+=head2 H5Sget_simple_extent_dims
+
+=head2 H5Sget_simple_extent_ndims
+
+=head2 H5Sget_simple_extent_npoints
+
+=head2 H5Sselect_hyperslab
+
+=head2 H5Tclose
+
+=head2 H5Tcopy
+
+=head2 H5Tcreate
+
+=head2 H5Tequal
+
+=head2 H5Tget_class
+
+=head2 H5Tget_member_class
+
+=head2 H5Tget_member_name
+
+=head2 H5Tget_member_type
+
+=head2 H5Tget_nmembers
+
+=head2 H5Tget_order
+
+=head2 H5Tget_size
+
+=head2 H5Tinsert
+
+=head2 H5Tset_order
+
+=head2 constant
+
+=head2 get_H5S_SELECT_SET
+
+=head2 get_H5T_COMPOUND
+
+=head2 get_H5T_C_S1
+
+=head2 get_H5T_IEEE_F32LE
+
+=head2 get_H5T_IEEE_F64LE
+
+=head2 get_H5T_NATIVE_DOUBLE
+
+=head2 get_H5T_NATIVE_FLOAT
+
+=head2 get_H5T_NATIVE_INT
+
+=head2 get_H5T_STD_I16LE
+
+=head2 get_H5T_STD_I32LE
+
+=head2 get_H5T_STD_I64LE
+
+=head2 get_H5T_STD_I8LE
+
+=head2 get_H5T_STD_U16LE
+
+=head2 get_H5T_STD_U32LE
+
+=head2 get_H5T_STD_U64LE
+
+=head2 get_H5T_STRING
+
+=head2 get_every_nth
+
+=head2 rescale_array
+
 =head2 AUTOLOAD
 
 =head1 DIAGNOSTICS
