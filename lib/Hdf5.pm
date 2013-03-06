@@ -1,6 +1,12 @@
+# -*- mode: cperl; tab-width: 8; indent-tabs-mode: nil; basic-offset: 2 -*-
+# vim:ts=8:sw=2:et:sta:sts=2
+#########
+# Author:        new
+# Last Modified: $Date$
+# Id:            $Id$
+# $HeadURL$
+#
 package Hdf5;
-
-use 5.014002;
 use strict;
 use warnings;
 use Carp;
@@ -232,8 +238,6 @@ A read only HDF5 file reader.
 =head1 DEPENDENCIES
 
 =over
-
-=item 5.014002
 
 =item strict
 

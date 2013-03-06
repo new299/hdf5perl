@@ -1,4 +1,12 @@
 #!/usr/bin/env perl
+# -*- mode: cperl; tab-width: 8; indent-tabs-mode: nil; basic-offset: 2 -*-
+# vim:ts=8:sw=2:et:sta:sts=2
+#########
+# Author:        cwright
+# Last Modified: $Date$
+# Id:            $Id$
+# $HeadURL$
+#
 use strict;
 use warnings;
 use Hdf5::File;
