@@ -25,7 +25,8 @@ use_ok($PKG);
 
 {
   my $hf = $PKG->new();
-  $hf->open('t/data/14521.hdf5');
+  $hf->open('t/data/test.hdf5');
+
   ok($hf->is_open, 'file is open');
 }
 
@@ -36,13 +37,14 @@ use_ok($PKG);
 }
 
 {
-  my $hf = $PKG->new('t/data/14521.hdf5');
+  my $hf = $PKG->new('t/data/test.hdf5');
   isa_ok($hf, $PKG);
+
   ok($hf->is_open, 'file is open with constructor');
 }
 
 {
-  my $hf = $PKG->new('t/data/14521.hdf5');
+  my $hf = $PKG->new('t/data/test.hdf5');
 
  SKIP: {
     skip "all either broken or unchecked", 1;
@@ -51,7 +53,7 @@ use_ok($PKG);
 }
 
 {
-  my $hf = $PKG->new('t/data/14521.hdf5');
+  my $hf = $PKG->new('t/data/test.hdf5');
 
  SKIP: {
     skip "all either broken or unchecked", 1;
