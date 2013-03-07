@@ -43,7 +43,8 @@ sub open { ## no critic (Homonym)
 sub is_open {
   my ($self) = @_;
 
-  return ($self->{_filehandle} < 0) ? 0 : 1;
+  return (!$self->{_filehandle} ||
+          $self->{_filehandle} < 0) ? 0 : 1;
 }
 
 Readonly::Scalar my $ROOT => 1;
@@ -54,6 +55,10 @@ sub get_groups {
   my ($self, $path) = @_;
 
   if(!$self->is_open()) { return (); }
+
+  if(!$path) {
+    $path = q[/];
+  }
 
   my $group   = Hdf5::H5Gopen1($self->{_filehandle}, $path);
   my $num_obj = [];

@@ -17,8 +17,10 @@ use Readonly;
 
 our $VERSION = '0.01';
 
-my $file = Hdf5::File->new();
-$file->open(q[./random.hdf5]);
+my $fn = shift @ARGV;
+$fn   ||= q[t/data/14521.hdf5];
+
+my $file = Hdf5::File->new($fn);
 
 dump_groups(q[/]);
 
