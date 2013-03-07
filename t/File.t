@@ -60,3 +60,17 @@ use_ok($PKG);
     is_deeply([$hf->get_datasets(q[/Meta/User])], [qw(Edge Seal Wave)], 'get_groups');
   }
 }
+
+{
+  my $hf = Hdf5::File->new('t/data/test.hdf5');
+  
+  my $start = 0;
+  my $end   = 5;
+  my %data = $hf->read_dataset("/IntermediateData/Channel_1/Events", $start, $end);
+
+  my $result = $data{start};
+  my $expected = [0,1,2,4,6];
+  print "Result:   ", join " ", @{$result}, "\n";
+  print "Expected: ", join " ", @{$expected}, "(View file with HdfView))\n";
+  is_deeply($result, $expected, 'get compound dataset');
+}
