@@ -13,34 +13,36 @@ use strict;
 use warnings;
 use Test::More tests => 9;
 
-BEGIN { use_ok('Hdf5::File') };
+our $PKG = 'Hdf5::File';
+
+use_ok($PKG);
 
 {
-  my $hf = Hdf5::File->new();
-  isa_ok($hf, 'Hdf5::File');
+  my $hf = $PKG->new();
+  isa_ok($hf, $PKG);
   ok(!$hf->is_open, 'file is not open yet');
 }
 
 {
-  my $hf = Hdf5::File->new();
+  my $hf = $PKG->new();
   $hf->open('t/data/14521.hdf5');
   ok($hf->is_open, 'file is open');
 }
 
 {
-  my $hf = Hdf5::File->new();
+  my $hf = $PKG->new();
   $hf->open('t/data/nonexistent.hdf5');
   ok(!$hf->is_open, 'file is not open');
 }
 
 {
-  my $hf = Hdf5::File->new('t/data/14521.hdf5');
-  isa_ok($hf, 'Hdf5::File');
+  my $hf = $PKG->new('t/data/14521.hdf5');
+  isa_ok($hf, $PKG);
   ok($hf->is_open, 'file is open with constructor');
 }
 
 {
-  my $hf = Hdf5::File->new('t/data/14521.hdf5');
+  my $hf = $PKG->new('t/data/14521.hdf5');
 
  SKIP: {
     skip "all either broken or unchecked", 1;
@@ -49,7 +51,7 @@ BEGIN { use_ok('Hdf5::File') };
 }
 
 {
-  my $hf = Hdf5::File->new('t/data/14521.hdf5');
+  my $hf = $PKG->new('t/data/14521.hdf5');
 
  SKIP: {
     skip "all either broken or unchecked", 1;

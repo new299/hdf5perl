@@ -63,8 +63,7 @@ sub get_groups {
   my $group   = Hdf5::H5Gopen1($self->{_filehandle}, $path);
   my $num_obj = [];
 
-  Hdf5::H5Gget_num_objs($group, $num_obj);
-
+  Hdf5::H5Gget_num_objs($group, $num_obj); ## gah! why is $num_obj an arrayref??
 
   my @object_names;
   for my $n (0..($num_obj->[0] - 1)) {
