@@ -342,7 +342,7 @@ sub read_dataset_compound {
 
   my %result_data;
   for my $n (0..scalar @names-1) {
-    my $slice = HdfHelper::get_every_nth(\@as_array, scalar @names ,$n);
+    my $slice = Hdf5::get_every_nth(\@as_array, scalar @names ,$n);
     $result_data{$names[$n]} = $slice;
   }
 
