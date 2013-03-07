@@ -73,3 +73,7 @@
 
 ^cover_db
 ^test.hdf5
+Hdf5.bs
+Hdf5.c
+Hdf5.o
+^libhdf5-perl
