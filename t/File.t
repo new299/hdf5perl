@@ -11,8 +11,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 7;
-use IO::Capture::Stderr;
+use Test::More tests => 9;
 
 BEGIN { use_ok('Hdf5::File') };
 
@@ -29,20 +28,31 @@ BEGIN { use_ok('Hdf5::File') };
 }
 
 {
-  my $cap = IO::Capture::Stderr->new;
-  $cap->start;
   my $hf = Hdf5::File->new();
   $hf->open('t/data/nonexistent.hdf5');
-  $cap->stop;
   ok(!$hf->is_open, 'file is not open');
 }
 
 {
   my $hf = Hdf5::File->new('t/data/14521.hdf5');
   isa_ok($hf, 'Hdf5::File');
+  ok($hf->is_open, 'file is open with constructor');
+}
+
+{
+  my $hf = Hdf5::File->new('t/data/14521.hdf5');
 
  SKIP: {
     skip "all either broken or unchecked", 1;
     is_deeply([$hf->get_groups(q[/])], [qw(IntermediateData Meta Raw Sequences)], 'get_groups');
+  }
+}
+
+{
+  my $hf = Hdf5::File->new('t/data/14521.hdf5');
+
+ SKIP: {
+    skip "all either broken or unchecked", 1;
+    is_deeply([$hf->get_datasets(q[/Meta/User])], [qw(Edge Seal Wave)], 'get_groups');
   }
 }
