@@ -23,7 +23,7 @@ BEGIN { use_ok('Hdf5::File') };
 
 {
   my $hf = Hdf5::File->new();
-  $hf->open('t/data/14521.hdf5');
+  $hf->open('t/data/test.hdf5');
   ok($hf->is_open, 'file is open');
 }
 
@@ -34,13 +34,13 @@ BEGIN { use_ok('Hdf5::File') };
 }
 
 {
-  my $hf = Hdf5::File->new('t/data/14521.hdf5');
+  my $hf = Hdf5::File->new('t/data/test.hdf5');
   isa_ok($hf, 'Hdf5::File');
   ok($hf->is_open, 'file is open with constructor');
 }
 
 {
-  my $hf = Hdf5::File->new('t/data/14521.hdf5');
+  my $hf = Hdf5::File->new('t/data/test.hdf5');
 
  SKIP: {
     skip "all either broken or unchecked", 1;
@@ -49,7 +49,7 @@ BEGIN { use_ok('Hdf5::File') };
 }
 
 {
-  my $hf = Hdf5::File->new('t/data/14521.hdf5');
+  my $hf = Hdf5::File->new('t/data/test.hdf5');
 
  SKIP: {
     skip "all either broken or unchecked", 1;
