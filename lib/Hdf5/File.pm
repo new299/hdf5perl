@@ -11,6 +11,7 @@ use strict;
 use warnings;
 use Hdf5;
 use Readonly;
+use Carp;
 
 our $VERSION = '0.01';
 
@@ -196,7 +197,7 @@ sub read_dataset_simple {
   my $datatype  = Hdf5::H5Dget_type($dataset);
   my $class;
 
-  Hdf5::H5Tget_class($datatype,$class);
+  Hdf5::H5Tget_class($datatype, $class);
   my $size = Hdf5::H5Tget_size($datatype);
 
   # change this so, a) they are read as arguments, and b) they can be set to -1 to read everything.
@@ -259,8 +260,8 @@ sub read_dataset_compound {
 
   if(!$self->is_open()) { return 0; }
 
-  my $dataset   = Hdf5::H5Dopen2($self->{_filehandle}, $path, $Hdf5::H5P_DEFAULT);
-  my $datatype  = Hdf5::H5Dget_type($dataset);
+  my $dataset  = Hdf5::H5Dopen2($self->{_filehandle}, $path, $Hdf5::H5P_DEFAULT);
+  my $datatype = Hdf5::H5Dget_type($dataset);
   my $class;
 
   Hdf5::H5Tget_class($datatype, $class);
@@ -287,7 +288,7 @@ sub read_dataset_compound {
     $classes[$n] = $class;
     $sizes  [$n] = $size2;
     $types  [$n] = $type;
-    $total_size += $size;
+    $total_size += $size2;
   }
 
   my $memtype = Hdf5::H5Tcreate(Hdf5::get_H5T_COMPOUND(), $total_size);

@@ -11,7 +11,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 9;
+use Test::More tests => 10;
 
 our $PKG = 'Hdf5::File';
 
@@ -62,15 +62,13 @@ use_ok($PKG);
 }
 
 {
-  my $hf = Hdf5::File->new('t/data/test.hdf5');
-  
+  my $hf    = Hdf5::File->new('t/data/test.hdf5');
   my $start = 0;
   my $end   = 5;
-  my %data = $hf->read_dataset("/IntermediateData/Channel_1/Events", $start, $end);
+  my %data  = $hf->read_dataset("/IntermediateData/Channel_1/Events", $start, $end);
 
-  my $result = $data{start};
+  my $result   = $data{start};
   my $expected = [0,1,2,4,6];
-  print "Result:   ", join " ", @{$result}, "\n";
-  print "Expected: ", join " ", @{$expected}, "(View file with HdfView))\n";
+
   is_deeply($result, $expected, 'get compound dataset');
 }
