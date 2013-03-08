@@ -16,7 +16,7 @@ use Readonly;
 our %EXPORT_TAGS = ( 'all' => [ qw() ] );
 our @EXPORT_OK   = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION     = '0.03';
+our $VERSION     = '0.04';
 
 sub AUTOLOAD { ## no critic (ProhibitAutoloading)
   # This AUTOLOAD is used to 'autoload' constants from the constant()
