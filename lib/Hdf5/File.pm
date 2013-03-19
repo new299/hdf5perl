@@ -54,7 +54,6 @@ Readonly::Scalar my $SIZE => 1000;
 # Get all group names under the provided path
 sub get_groups {
   my ($self, $path) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -87,7 +86,6 @@ sub get_groups {
 # Get all dataset names under the provided path
 sub get_datasets {
   my ($self, $path) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -116,7 +114,6 @@ sub get_datasets {
 # Get all attribute names under the provided path
 sub get_group_attributes {
   my ($self, $path) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -142,7 +139,6 @@ sub get_group_attributes {
 # Get all attribute names under the provided path
 sub get_dataset_attributes {
   my ($self, $path) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -168,7 +164,6 @@ sub get_dataset_attributes {
 # return the size of a dataset (given the path)
 sub get_dataset_size {
   my ($self, $path) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -187,7 +182,6 @@ sub get_dataset_size {
 # read the dataset and return it as an array, optionally give a start and end position within the dataset.
 sub read_dataset {
   my ($self, $path, $start, $end) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -212,7 +206,6 @@ sub read_dataset {
 
 sub read_dataset_simple {
   my ($self, $path, $start, $end) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -287,7 +280,6 @@ sub read_dataset_simple {
 
 sub read_dataset_compound {
   my ($self, $path, $start, $end) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -304,7 +296,7 @@ sub read_dataset_compound {
   my @sizes;
   my $total_size = 0;
 
-  my $member_count = Hdf5::H5Tget_nmembers($datatype); ### Possible leak here: http://www.hdfgroup.org/HDF5/doc/RM/RM_H5T.html#Datatype-GetMemberName
+  my $member_count = Hdf5::H5Tget_nmembers($datatype);
 
   for my $n (0..$member_count-1) {
     my $name;
@@ -400,7 +392,6 @@ sub read_dataset_compound {
 # read a whole attribute
 sub read_attribute {
   my ($self, $path, $attribute_name) = @_;
-  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
