@@ -54,6 +54,7 @@ Readonly::Scalar my $SIZE => 1000;
 # Get all group names under the provided path
 sub get_groups {
   my ($self, $path) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -78,12 +79,15 @@ sub get_groups {
     }
   }
 
+  Hdf5::H5Gclose($group);
+
   return @object_names;
 }
 
 # Get all dataset names under the provided path
 sub get_datasets {
   my ($self, $path) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -104,12 +108,15 @@ sub get_datasets {
     }
   }
 
+  Hdf5::H5Gclose($group);
+
   return @object_names;
 }
 
 # Get all attribute names under the provided path
 sub get_group_attributes {
   my ($self, $path) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -123,7 +130,11 @@ sub get_group_attributes {
 
     Hdf5::H5Aget_name($attr_id, $SIZE, $name);
     $attribute_names[$n] = $name;
+
+    Hdf5:H5Aclose($attr_id);
   }
+
+  Hdf5::H5Gclose($group);
 
   return @attribute_names;
 }
@@ -131,6 +142,7 @@ sub get_group_attributes {
 # Get all attribute names under the provided path
 sub get_dataset_attributes {
   my ($self, $path) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return (); }
 
@@ -144,7 +156,11 @@ sub get_dataset_attributes {
 
     Hdf5::H5Aget_name($attr_id, $SIZE, $name);
     $attribute_names[$n] = $name;
+
+    Hdf5::H5Aclose($attr_id);
   }
+
+  Hdf5::H5Dclose($dataset);
 
   return @attribute_names;
 }
@@ -152,6 +168,7 @@ sub get_dataset_attributes {
 # return the size of a dataset (given the path)
 sub get_dataset_size {
   my ($self, $path) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -160,12 +177,17 @@ sub get_dataset_size {
   my $file_dataspace = Hdf5::H5Dget_space($dataset);
   my $dataset_size   = Hdf5::H5Sget_simple_extent_npoints($file_dataspace);
 
+  Hdf5::H5Dclose($dataset);
+  Hdf5::H5Tclose($datatype);
+  Hdf5::H5Sclose($file_dataspace);
+
   return $dataset_size;
 }
 
 # read the dataset and return it as an array, optionally give a start and end position within the dataset.
 sub read_dataset {
   my ($self, $path, $start, $end) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -190,6 +212,7 @@ sub read_dataset {
 
 sub read_dataset_simple {
   my ($self, $path, $start, $end) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -214,6 +237,8 @@ sub read_dataset_simple {
 
   my $memtype = $datatype;
   my $dataout;
+  my $file_dataspace;
+  my $memory_dataspace;
 
   # Select part of the dataset to read
   if($start != $START_ALL) {
@@ -248,6 +273,11 @@ sub read_dataset_simple {
 
   my @as_array = unpack $unpack_string, $dataout;
 
+  Hdf5::H5Dclose($dataset);
+  Hdf5::H5Tclose($datatype);
+  Hdf5::H5Sclose($file_dataspace);
+  Hdf5::H5Sclose($memory_dataspace);
+
   if($is_string) {
     return join q[], @as_array;
   }
@@ -257,6 +287,7 @@ sub read_dataset_simple {
 
 sub read_dataset_compound {
   my ($self, $path, $start, $end) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -273,7 +304,7 @@ sub read_dataset_compound {
   my @sizes;
   my $total_size = 0;
 
-  my $member_count = Hdf5::H5Tget_nmembers($datatype);
+  my $member_count = Hdf5::H5Tget_nmembers($datatype); ### Possible leak here: http://www.hdfgroup.org/HDF5/doc/RM/RM_H5T.html#Datatype-GetMemberName
 
   for my $n (0..$member_count-1) {
     my $name;
@@ -313,13 +344,16 @@ sub read_dataset_compound {
   my @mem_hblock   = ( 1 );
 
   my $dataout;
+  my $file_dataspace;
+  my $memory_dataspace;
+
 
   # Select part of the dataset to read
   if($start != $START_ALL) {
-    my $file_dataspace = Hdf5::H5Dget_space($dataset);
+    $file_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
 
-    my $memory_dataspace = Hdf5::H5Dget_space($dataset);
+    $memory_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($memory_dataspace, $Hdf5::H5S_SELECT_SET, \@mem_hnstart, \@mem_hnstride, \@mem_hcount, \@mem_hblock);
 
     my $status = Hdf5::H5DreadRaw($dataset, $memtype, $memory_dataspace, $file_dataspace, $Hdf5::H5P_DEFAULT, $dataout, ($end - $start)*$total_size);
@@ -327,7 +361,7 @@ sub read_dataset_compound {
 
   # Read complete dataset
   if($start == $START_ALL) {
-    my $file_dataspace = Hdf5::H5Dget_space($dataset);
+    $file_dataspace = Hdf5::H5Dget_space($dataset);
     my $dataset_size   = Hdf5::H5Sget_simple_extent_npoints($file_dataspace)*$total_size;
     my $status         = Hdf5::H5DreadRaw($dataset, $memtype, $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout, $dataset_size);
   }
@@ -345,6 +379,15 @@ sub read_dataset_compound {
 
   my @as_array = unpack $unpack_string, $dataout;
 
+  Hdf5::H5Dclose($dataset);
+  Hdf5::H5Tclose($datatype);
+  Hdf5::H5Tclose($memtype);
+  Hdf5::H5Sclose($file_dataspace);
+  Hdf5::H5Sclose($memory_dataspace);
+  for my $type (@types) {
+    Hdf5::H5Tclose($type);
+  }
+
   my %result_data;
   for my $n (0..scalar @names-1) {
     my $slice = Hdf5::get_every_nth(\@as_array, scalar @names ,$n);
@@ -357,6 +400,7 @@ sub read_dataset_compound {
 # read a whole attribute
 sub read_attribute {
   my ($self, $path, $attribute_name) = @_;
+  ### Have checked all of this function for closing HDF data
 
   if(!$self->is_open()) { return 0; }
 
@@ -383,9 +427,9 @@ sub read_attribute {
 
   my @as_array = unpack $unpack_string, $dataout;
 
-
-  Hdf5::H5Aclose($attribute);
   Hdf5::H5Gclose($group);
+  Hdf5::H5Aclose($attribute);
+  Hdf5::H5Tclose($memdatatype);
 
   if($is_string) {
     return join q[], @as_array;
