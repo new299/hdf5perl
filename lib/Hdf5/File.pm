@@ -168,6 +168,10 @@ sub get_dataset_size {
   if(!$self->is_open()) { return 0; }
 
   my $dataset        = Hdf5::H5Dopen2($self->{_filehandle}, $path, $Hdf5::H5P_DEFAULT);
+  if($dataset < 0) {
+    carp "Dataset $path does not exist\n";
+    return 0;
+  }
   my $datatype       = Hdf5::H5Dget_type($dataset);
   my $file_dataspace = Hdf5::H5Dget_space($dataset);
   my $dataset_size   = Hdf5::H5Sget_simple_extent_npoints($file_dataspace);
