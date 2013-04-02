@@ -61,9 +61,6 @@ sub get_groups {
     $path = q[/];
   }
 
-  print "$path\n";
-
-
   my $group   = Hdf5::H5Gopen1($self->{_filehandle}, $path);
   my $num_obj = [];
 
