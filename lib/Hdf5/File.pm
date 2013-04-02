@@ -82,7 +82,6 @@ sub get_groups {
   }
 
   Hdf5::H5Gclose($group);
-print join "\n", @object_names;
   return @object_names;
 }
 
