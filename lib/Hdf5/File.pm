@@ -61,6 +61,9 @@ sub get_groups {
     $path = q[/];
   }
 
+  print "$path\n";
+
+
   my $group   = Hdf5::H5Gopen1($self->{_filehandle}, $path);
   my $num_obj = [];
 
@@ -71,7 +74,7 @@ sub get_groups {
     my ($str, $type);
 
     Hdf5::H5Gget_objname_by_idx($group, $n, $str, $SIZE);
-    Hdf5::H5Gget_objtype($ROOT, $path . $str, $type);
+    Hdf5::H5Gget_objtype($self->{_filehandle}, $path . $str, $type);
 
     if($type eq 'GROUP') {
       $object_names[$n] = $str;
@@ -79,7 +82,7 @@ sub get_groups {
   }
 
   Hdf5::H5Gclose($group);
-
+print join "\n", @object_names;
   return @object_names;
 }
 
@@ -99,7 +102,7 @@ sub get_datasets {
     my ($str, $type);
 
     Hdf5::H5Gget_objname_by_idx($group, $n, $str, $SIZE);
-    Hdf5::H5Gget_objtype($ROOT, $path . $str, $type);
+    Hdf5::H5Gget_objtype($self->{_filehandle}, $path . $str, $type);
 
     if($type eq 'DATASET') {
       $object_names[$n] = $str;
