@@ -181,6 +181,8 @@ A read only HDF5 file reader.
 
 =head2 get_H5T_C_S1
 
+=head2 get_H5T_NATIVE_UCHAR
+
 =head2 get_H5T_IEEE_F32LE
 
 =head2 get_H5T_IEEE_F64LE

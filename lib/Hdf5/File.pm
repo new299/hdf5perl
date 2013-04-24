@@ -363,13 +363,16 @@ sub read_dataset_compound {
 
   my $unpack_string = q[(];
   for my $n (0..$member_count-1) {
-    if(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_I32LE ())) { $unpack_string .= 'i'; }
-    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_IEEE_F64LE())) { $unpack_string .= 'd'; } 
-    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_U32LE ())) { $unpack_string .= 'I'; }
-    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_I16LE ())) { $unpack_string .= 's'; }
-    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_U16LE ())) { $unpack_string .= 'S'; }
-    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= 'f'; }
- 
+    if(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_I32LE()       )) { $unpack_string .= 'i'; }
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_IEEE_F64LE()   )) { $unpack_string .= 'd'; } 
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_U32LE()    )) { $unpack_string .= 'I'; }
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_I16LE()    )) { $unpack_string .= 's'; }
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_U16LE()    )) { $unpack_string .= 'S'; }
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_IEEE_F32LE()   )) { $unpack_string .= 'f'; }
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_STD_U64LE()    )) { $unpack_string .= 'Q'; }
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_C_S1()         )) { $unpack_string .= 'Z'; }
+    elsif(Hdf5::H5Tequal($types[$n], Hdf5::get_H5T_NATIVE_UCHAR() )) { $unpack_string .= 'c'; }
+    else{croak sprintf "Type of %s is unsupported", $names[$n]}
   }
   $unpack_string .= q[)*];
 
@@ -418,6 +421,7 @@ sub read_attribute {
   elsif(Hdf5::H5Tequal($memdatatype, Hdf5::get_H5T_STD_U64LE ())) { $unpack_string .= 'Q'; }
   elsif(Hdf5::H5Tequal($memdatatype, Hdf5::get_H5T_STD_I64LE ())) { $unpack_string .= 'q'; }
   elsif(Hdf5::H5Tequal($memdatatype, Hdf5::get_H5T_IEEE_F32LE())) { $unpack_string .= 'f'; }
+  else{croak sprintf "Type of %s is unsupported", $attribute_name}
   $unpack_string .= q[)*];
 
   my @as_array = unpack $unpack_string, $dataout;
