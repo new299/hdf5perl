@@ -221,16 +221,6 @@ sub read_dataset_simple {
 
   # change this so, a) they are read as arguments, and b) they can be set to -1 to read everything.
 
-  my @file_hcount   = ( $end - $start );
-  my @file_hnstart  = ( $start );
-  my @file_hnstride = ( 1 );
-  my @file_hblock   = ( 1 );
-
-  my @mem_hcount   = ( $end - $start );
-  my @mem_hnstart  = ( 0 );
-  my @mem_hnstride = ( 1 );
-  my @mem_hblock   = ( 1 );
-
   my $memtype = $datatype;
   my $dataout;
   my $file_dataspace;
@@ -238,6 +228,16 @@ sub read_dataset_simple {
 
   # Select part of the dataset to read
   if($start != $START_ALL) {
+    my @file_hcount   = ( $end - $start );
+    my @file_hnstart  = ( $start );
+    my @file_hnstride = ( 1 );
+    my @file_hblock   = ( 1 );
+
+    my @mem_hcount   = ( $end - $start );
+    my @mem_hnstart  = ( 0 );
+    my @mem_hnstride = ( 1 );
+    my @mem_hblock   = ( 1 );
+
     my $file_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
 
@@ -328,16 +328,6 @@ sub read_dataset_compound {
 
   # change this so, a) they are read as arguments, and b) they can be set to -1 to read everything.
 
-  my @file_hcount   = ( $end - $start );
-  my @file_hnstart  = ( $start );
-  my @file_hnstride = ( 1 );
-  my @file_hblock   = ( 1 );
-
-  my @mem_hcount   = ( $end - $start );
-  my @mem_hnstart  = ( 0 );
-  my @mem_hnstride = ( 1 );
-  my @mem_hblock   = ( 1 );
-
   my $dataout;
   my $file_dataspace;
   my $memory_dataspace;
@@ -345,6 +335,16 @@ sub read_dataset_compound {
 
   # Select part of the dataset to read
   if($start != $START_ALL) {
+    my @file_hcount   = ( $end - $start );
+    my @file_hnstart  = ( $start );
+    my @file_hnstride = ( 1 );
+    my @file_hblock   = ( 1 );
+
+    my @mem_hcount   = ( $end - $start );
+    my @mem_hnstart  = ( 0 );
+    my @mem_hnstride = ( 1 );
+    my @mem_hblock   = ( 1 );
+
     $file_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
 
