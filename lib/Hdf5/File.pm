@@ -223,8 +223,6 @@ sub read_dataset_simple {
 
   my $memtype = $datatype;
   my $dataout;
-  my $file_dataspace;
-  my $memory_dataspace;
 
   # Select part of the dataset to read
   if($start != $START_ALL) {
@@ -245,6 +243,9 @@ sub read_dataset_simple {
     Hdf5::H5Sselect_hyperslab($memory_dataspace, $Hdf5::H5S_SELECT_SET, \@mem_hnstart, \@mem_hnstride, \@mem_hcount, \@mem_hblock);
 
     Hdf5::H5DreadRaw($dataset, $memtype, $memory_dataspace, $file_dataspace, $Hdf5::H5P_DEFAULT, $dataout, ($end - $start)*$size);
+    
+    Hdf5::H5Sclose($file_dataspace);
+    Hdf5::H5Sclose($memory_dataspace);
   }
 
   # Read complete dataset
@@ -253,6 +254,7 @@ sub read_dataset_simple {
     my $dataset_size   = Hdf5::H5Sget_simple_extent_npoints($file_dataspace)*$size;
 
     Hdf5::H5DreadRaw($dataset, $memtype, $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout, $dataset_size);
+    Hdf5::H5Sclose($file_dataspace);
   }
 
   my $is_string;
@@ -271,8 +273,6 @@ sub read_dataset_simple {
 
   Hdf5::H5Dclose($dataset);
   Hdf5::H5Tclose($datatype);
-  Hdf5::H5Sclose($file_dataspace);
-  Hdf5::H5Sclose($memory_dataspace);
 
   if($is_string) {
     return join q[], @as_array;
@@ -326,12 +326,7 @@ sub read_dataset_compound {
     $position += $sizes[$n];
   }
 
-  # change this so, a) they are read as arguments, and b) they can be set to -1 to read everything.
-
   my $dataout;
-  my $file_dataspace;
-  my $memory_dataspace;
-
 
   # Select part of the dataset to read
   if($start != $START_ALL) {
@@ -345,20 +340,25 @@ sub read_dataset_compound {
     my @mem_hnstride = ( 1 );
     my @mem_hblock   = ( 1 );
 
-    $file_dataspace = Hdf5::H5Dget_space($dataset);
+    my $file_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($file_dataspace, $Hdf5::H5S_SELECT_SET, \@file_hnstart, \@file_hnstride, \@file_hcount, \@file_hblock);
 
-    $memory_dataspace = Hdf5::H5Dget_space($dataset);
+    my $memory_dataspace = Hdf5::H5Dget_space($dataset);
     Hdf5::H5Sselect_hyperslab($memory_dataspace, $Hdf5::H5S_SELECT_SET, \@mem_hnstart, \@mem_hnstride, \@mem_hcount, \@mem_hblock);
 
     my $status = Hdf5::H5DreadRaw($dataset, $memtype, $memory_dataspace, $file_dataspace, $Hdf5::H5P_DEFAULT, $dataout, ($end - $start)*$total_size);
+    
+    Hdf5::H5Sclose($file_dataspace);
+    Hdf5::H5Sclose($memory_dataspace);
   }
 
   # Read complete dataset
   if($start == $START_ALL) {
-    $file_dataspace = Hdf5::H5Dget_space($dataset);
+    my $file_dataspace = Hdf5::H5Dget_space($dataset);
     my $dataset_size   = Hdf5::H5Sget_simple_extent_npoints($file_dataspace)*$total_size;
     my $status         = Hdf5::H5DreadRaw($dataset, $memtype, $Hdf5::H5S_ALL, $Hdf5::H5S_ALL, $Hdf5::H5P_DEFAULT, $dataout, $dataset_size);
+    
+    Hdf5::H5Sclose($file_dataspace);
   }
 
   my $unpack_string = q[(];
@@ -381,8 +381,6 @@ sub read_dataset_compound {
   Hdf5::H5Dclose($dataset);
   Hdf5::H5Tclose($datatype);
   Hdf5::H5Tclose($memtype);
-  Hdf5::H5Sclose($file_dataspace);
-  Hdf5::H5Sclose($memory_dataspace);
   for my $type (@types) {
     Hdf5::H5Tclose($type);
   }
