@@ -179,6 +179,8 @@ A read only HDF5 file reader.
 
 =head2 get_H5T_COMPOUND
 
+=head2 get_H5T_ENUM
+
 =head2 get_H5T_C_S1
 
 =head2 get_H5T_NATIVE_UCHAR
