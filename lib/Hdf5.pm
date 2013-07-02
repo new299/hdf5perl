@@ -161,6 +161,8 @@ A read only HDF5 file reader.
 
 =head2 H5Tget_member_name
 
+=head2 H5Tget_member_value
+
 =head2 H5Tget_member_type
 
 =head2 H5Tget_nmembers

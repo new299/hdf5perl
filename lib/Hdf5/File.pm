@@ -395,12 +395,6 @@ sub read_dataset_compound {
     my $enum_name = $names[$n];
     my $enum_type = $types[$n];
 
-    #We have the values in $result_data{$names[$n]};
-    #We need the names
-    # go through members and make hash of value->name
-    #for i (0..Hdf5::H5Tget_nmembers) {
-    # hash -> get_member_value(i) = get_member_name(i);
-    #}
     my $enum = {};
     for my $i (0..Hdf5::H5Tget_nmembers($enum_type) - 1) {
       my $name;
