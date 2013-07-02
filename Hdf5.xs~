@@ -577,8 +577,10 @@ H5Tget_member_value(datatype,idx,buf)
 	int idx
 	SV *buf
 CODE:
+        printf("idx: %d .\n", idx);
         int *data = malloc(sizeof(int));
 	RETVAL = H5Tget_member_value(datatype,idx,data);
+        printf("data: %d .\n", *data);
         sv_setiv(buf, *data);
         free(data);
 OUTPUT:

@@ -408,7 +408,9 @@ sub read_dataset_compound {
       Hdf5::H5Tget_member_name($enum_type, $i, $name);
       Hdf5::H5Tget_member_value($enum_type, $i, $value); #not implemented, use index as value
       $enum->{$value} = $name;
+      print "Member $i: name:$name, value:$value\n";
     }
+print "Created enum hash\n";
 
     my $column = $result_data{$names[$n]};
     for my $i (0..scalar @{$column} - 1) {
@@ -422,6 +424,12 @@ sub read_dataset_compound {
   for my $type (@types) {
     Hdf5::H5Tclose($type);
   }
+
+
+use Data::Dumper;
+print Dumper(@{$result_data{read_start}}[0..10]);
+print Dumper(@{$result_data{classification}}[0..10]);
+die;
 
   return %result_data;
 }
